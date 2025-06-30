@@ -35,7 +35,6 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CaerulaArborModVariables {
-    public static File crowd_will = new File("");
 
     @SubscribeEvent
     public static void init(FMLCommonSetupEvent event) {
