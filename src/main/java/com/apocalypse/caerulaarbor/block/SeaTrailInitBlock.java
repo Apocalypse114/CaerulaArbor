@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.block;
 
 import com.apocalypse.caerulaarbor.procedures.AgeAddInitProcedure;
-import com.apocalypse.caerulaarbor.procedures.AgeAddMoreProcedure;
 import com.apocalypse.caerulaarbor.procedures.CanPutTrailProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -118,8 +117,8 @@ public class SeaTrailInitBlock extends Block implements SimpleWaterloggedBlock, 
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader worldIn, BlockPos pos, BlockState blockstate, boolean clientSide) {
-		return true;
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState blockstate, boolean clientSide) {
+		return blockstate.getValue(GROW_AGE) < 30;
 	}
 
 	@Override
@@ -129,6 +128,7 @@ public class SeaTrailInitBlock extends Block implements SimpleWaterloggedBlock, 
 
 	@Override
 	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState blockstate) {
-		AgeAddMoreProcedure.execute(world, pos.getX(), pos.getY(), pos.getZ(), blockstate);
+		final int current_age = blockstate.getValue(GROW_AGE);
+		world.setBlock(pos, blockstate.setValue(GROW_AGE, current_age + 8), 3);
 	}
 }
