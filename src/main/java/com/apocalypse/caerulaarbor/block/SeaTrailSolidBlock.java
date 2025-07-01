@@ -20,11 +20,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.IPlantable;
 
 public class SeaTrailSolidBlock extends Block {
-	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-
 	public SeaTrailSolidBlock() {
 		super(BlockBehaviour.Properties.of().sound(SoundType.SCULK).strength(4f, 6f).lightLevel(s -> 1).friction(0.7f).speedFactor(0.7f).jumpFactor(0.7f));
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -35,25 +32,6 @@ public class SeaTrailSolidBlock extends Block {
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
 		return 8;
-	}
-
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(FACING);
-	}
-
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
-	}
-
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
@@ -75,13 +53,13 @@ public class SeaTrailSolidBlock extends Block {
 
 	@Override
 	public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-		super.entityInside(blockstate, world, pos, entity);
 		GiveTrailBuffProcedure.execute(entity);
+		super.entityInside(blockstate, world, pos, entity);
 	}
 
 	@Override
 	public void stepOn(Level world, BlockPos pos, BlockState blockstate, Entity entity) {
-		super.stepOn(world, pos, blockstate, entity);
 		GiveTrailBuffProcedure.execute(entity);
+		super.stepOn(world, pos, blockstate, entity);
 	}
 }
