@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -74,7 +73,7 @@ public class SeaTrailGrowingBlock extends SeaTrailBaseBlock {
 	}
 
 	@Override
-	public void playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		tryCauseSanityDamage(player);
 		if (level instanceof ServerLevel serverLevel) {
 			serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK,
@@ -86,7 +85,7 @@ public class SeaTrailGrowingBlock extends SeaTrailBaseBlock {
 		super.playerWillDestroy(level, pos, state, player);
 	}
 
-	private void tryCauseSanityDamage(@NotNull Player player){
+	private void tryCauseSanityDamage(Player player){
 		var capability = player.getCapability(ModCapabilities.PLAYER_VARIABLE).resolve();
 		if (capability.isPresent() && capability.get().player_oceanization >= 3) return;
 		if (player.hasEffect(ModMobEffects.SANITY_IMMUNE.get())) return;

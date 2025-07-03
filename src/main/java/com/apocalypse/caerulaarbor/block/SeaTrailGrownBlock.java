@@ -62,7 +62,7 @@ public class SeaTrailGrownBlock extends SeaTrailBaseBlock {
 		if (longevity < 64) {
 			level.setBlock(pos, blockstate.setValue(LONGEVITY, longevity + 1), 2);
 		}
-		perSecondTick(level, pos, blockstate, random);
+		expandOrDie(level, pos, blockstate, random);
 		super.tick(blockstate, level, pos, random);
 	}
 
@@ -111,24 +111,27 @@ public class SeaTrailGrownBlock extends SeaTrailBaseBlock {
 		sanAttribute.setBaseValue(Mth.clamp(sanity - damage, -1, 1000));
 	}
 
-	private static void perSecondTick(ServerLevel world, BlockPos pos, BlockState blockstate, RandomSource random) {
+	private static void expandOrDie(ServerLevel world, BlockPos pos, BlockState blockstate, RandomSource random) {
 		if (blockstate.getValue(GROW_AGE) < MAX_AGE) return;
-		if (mayExpand(world, pos, blockstate) && random.nextFloat() < 0.2F) {
-			tryExpandToDirection(world, pos, Direction.Plane.HORIZONTAL.getRandomDirection(random));
+		if (random.nextFloat() >= 0.2F) return;
+		if (blockstate.getValue(LONGEVITY) < MAX_LONGEVITY) {
+			if (mayExpand(world, pos, blockstate)) {
+				tryExpandToDirection(world, pos, Direction.Plane.HORIZONTAL.getRandomDirection(random));
+			}
 		}
-		if (blockstate.getValue(LONGEVITY) >= MAX_LONGEVITY
-				&& world.getBlockState(pos.below()).is(ModTags.Blocks.ERRODABLE) && random.nextFloat() < 0.2F) {
+		else {
 			world.setBlock(pos, blockstate.getFluidState().createLegacyBlock(), 3);
-			world.setBlock(pos.below(), ModBlocks.SEA_TRAIL_SOLID.get().defaultBlockState(), 3);
-			world.playSound(null, pos, SoundEvents.SCULK_BLOCK_BREAK, SoundSource.BLOCKS, 1, 1);
+			if (world.getBlockState(pos.below()).is(ModTags.Blocks.ERRODABLE)) {
+				world.setBlock(pos.below(), ModBlocks.SEA_TRAIL_SOLID.get().defaultBlockState(), 3);
+				world.playSound(null, pos, SoundEvents.SCULK_BLOCK_BREAK, SoundSource.BLOCKS, 1, 1);
+			}
 		}
 	}
 	private static boolean mayExpand(ServerLevel level, BlockPos pos, BlockState state) {
-		if (!level.getEntitiesOfClass(LivingEntity.class,
-				new AABB(pos).inflate(0.1),
-				e -> e.getHealth() > 5).isEmpty()) return false;
-		return state.getValue(GROW_AGE) >= MAX_AGE && state.getValue(LONGEVITY) < MAX_LONGEVITY;
-	}
+        return level.getEntitiesOfClass(LivingEntity.class,
+                new AABB(pos).inflate(0.1),
+                e -> e.getHealth() > 5).isEmpty();
+    }
 	private static void tryExpandToDirection(ServerLevel level, BlockPos originPos, Direction direction) {
 		BlockPos posToPlace = originPos.relative(direction);
 		if (tryExpand(level, posToPlace, null)) return;
