@@ -17,7 +17,9 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -98,6 +100,9 @@ public abstract class SeaTrailBaseBlock extends Block implements SimpleWaterlogg
         if (blockstate.getValue(GROW_AGE) == MAX_AGE) return;
         int newAge = Math.min(blockstate.getValue(GROW_AGE) + amount, MAX_AGE);
         level.setBlock(pos, blockstate.setValue(GROW_AGE, newAge), 2);
-        if (newAge == MAX_AGE) this.onGrown(level, pos, blockstate);
+        if (newAge == MAX_AGE) onGrown(level, pos, blockstate);
+    }
+    public void onEntityDeathNearby(ServerLevel level, BlockPos pos, BlockState state) {
+        grow(level, pos, state, 4);
     }
 }

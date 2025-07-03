@@ -100,8 +100,6 @@ public class PlayerEventHandler {
         boolean shouldCancel = false;
 
         double lightCost = 0;
-        double dx;
-        double dz;
 
         if (cap.shield > 0) {
             cap.shield -= 1;
@@ -135,40 +133,6 @@ public class PlayerEventHandler {
             player.setHealth(player.getMaxHealth() * 0.5f);
             player.getCapability(ModCapabilities.SANITY_INJURY).ifPresent(capability -> capability.setValue(1000));
         }
-
-        // TODO 这一坨是啥
-//        dx = -1;
-//        for (int index0 = 0; index0 < 3; index0++) {
-//            dz = -1;
-//            for (int index1 = 0; index1 < 3; index1++) {
-//                if ((level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getBlock() == ModBlocks.SEA_TRAIL_INIT.get()
-//                        || (level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getBlock() == ModBlocks.SEA_TRAIL_GROWING.get()) {
-//                    {
-//                        int _value = ((level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getBlock().getStateDefinition().getProperty("grow_age") instanceof IntegerProperty _getip36
-//                                ? (level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getValue(_getip36)
-//                                : -1) + 4;
-//                        BlockPos _pos = BlockPos.containing(x + dx, y, z + dz);
-//                        BlockState _bs = level.getBlockState(_pos);
-//                        if (_bs.getBlock().getStateDefinition().getProperty("grow_age") instanceof IntegerProperty _integerProp && _integerProp.getPossibleValues().contains(_value))
-//                            level.setBlock(_pos, _bs.setValue(_integerProp, _value), 3);
-//                    }
-//                }
-//                if ((level.getBlockState(BlockPos.containing(x + dx, y - 1, z + dz))).getBlock() == ModBlocks.SEA_TRAIL_INIT.get()
-//                        || (level.getBlockState(BlockPos.containing(x + dx, y - 1, z + dz))).getBlock() == ModBlocks.SEA_TRAIL_GROWING.get()) {
-//                    {
-//                        int _value = ((level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getBlock().getStateDefinition().getProperty("grow_age") instanceof IntegerProperty _getip43
-//                                ? (level.getBlockState(BlockPos.containing(x + dx, y, z + dz))).getValue(_getip43)
-//                                : -1) + 4;
-//                        BlockPos _pos = BlockPos.containing(x + dx, y - 1, z + dz);
-//                        BlockState _bs = level.getBlockState(_pos);
-//                        if (_bs.getBlock().getStateDefinition().getProperty("grow_age") instanceof IntegerProperty _integerProp && _integerProp.getPossibleValues().contains(_value))
-//                            level.setBlock(_pos, _bs.setValue(_integerProp, _value), 3);
-//                    }
-//                }
-//                dz = dz + 1;
-//            }
-//            dx = dx + 1;
-//        }
     }
 
     private static void sendSoundAndParticles(Level level, BlockPos pos, ParticleOptions particleOptions) {
