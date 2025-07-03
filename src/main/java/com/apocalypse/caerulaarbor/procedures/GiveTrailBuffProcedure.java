@@ -9,9 +9,9 @@ public class GiveTrailBuffProcedure {
 	public static void execute(Entity entity) {
 		if (entity == null)
 			return;
-		if (!(entity instanceof LivingEntity _livEnt0 && _livEnt0.hasEffect(ModMobEffects.TRAIL_BUFF.get()))) {
-			if (entity instanceof LivingEntity _entity && !_entity.level().isClientSide())
-				_entity.addEffect(new MobEffectInstance(ModMobEffects.TRAIL_BUFF.get(), 40, 0, false, false));
-		}
+		if (!(entity instanceof LivingEntity livingEntity)) return;
+		if (livingEntity.level().isClientSide()) return;
+		if (livingEntity.hasEffect(ModMobEffects.TRAIL_BUFF.get())) return;
+		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.TRAIL_BUFF.get(), 40, 0, false, false));
 	}
 }

@@ -14,6 +14,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -148,5 +150,14 @@ public class SeaTrailGrownBlock extends SeaTrailBaseBlock {
 		level.setBlock(posToPlace, blockToPlace, 3);
 		level.levelEvent(2001, posToPlace, Block.getId(blockToPlace));
 		return true;
+	}
+
+	@Override
+	public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
+		if (!(pEntity instanceof LivingEntity livingEntity)) return;
+		if (pLevel.isClientSide()) return;
+		if (livingEntity.hasEffect(ModMobEffects.TRAIL_BUFF.get())) return;
+		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.TRAIL_BUFF.get(), 40, 0, false, false));
+		super.stepOn(pLevel, pPos, pState, pEntity);
 	}
 }

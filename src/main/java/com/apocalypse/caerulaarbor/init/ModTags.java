@@ -26,6 +26,7 @@ public class ModTags {
 
     public static class Blocks {
         public static final TagKey<Block> ERRODABLE = tag("errodable");
+        public static final TagKey<Block> SEA_TRAIL = tag("sea_trail");
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(CaerulaArborMod.loc(name));
         }

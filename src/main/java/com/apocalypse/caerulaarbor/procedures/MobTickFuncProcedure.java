@@ -3,6 +3,7 @@ package com.apocalypse.caerulaarbor.procedures;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
 import com.apocalypse.caerulaarbor.init.ModGameRules;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
+import com.apocalypse.caerulaarbor.init.ModTags;
 import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -52,7 +53,7 @@ public class MobTickFuncProcedure {
                     _livingEntity9.getAttribute(ModAttributes.SANITY.get()).setBaseValue(1000);
             }
         }
-        if (!(world.getBlockState(BlockPos.containing(x, y, z))).is(BlockTags.create(new ResourceLocation("caerula_arbor:sea_trail")))) {
+        if (!(world.getBlockState(BlockPos.containing(x, y, z))).is(ModTags.Blocks.SEA_TRAIL)) {
             if (entity instanceof LivingEntity _entity)
                 _entity.removeEffect(ModMobEffects.TRAIL_BUFF.get());
         }
