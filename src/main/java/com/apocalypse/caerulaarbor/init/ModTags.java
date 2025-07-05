@@ -1,9 +1,11 @@
 package com.apocalypse.caerulaarbor.init;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -29,6 +31,14 @@ public class ModTags {
         public static final TagKey<Block> SEA_TRAIL = tag("sea_trail");
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(CaerulaArborMod.loc(name));
+        }
+    }
+
+    public static class EntityTypes {
+        public static final TagKey<EntityType<?>> OCEAN_OFFSPRING = tag("oceanoffspring");
+        public static final TagKey<EntityType<?>> OCEAN_SPAWN = tag("oceanspawn");
+        private static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, CaerulaArborMod.loc(name));
         }
     }
 }

@@ -4,7 +4,7 @@ import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,8 +25,8 @@ public class CapabilityHandler {
 
     @SubscribeEvent
     public static void registerCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof LivingEntity) {
-            event.addCapability(SanityInjuryCapability.ID, createProvider(LazyOptional.of(SanityInjuryCapability::new), ModCapabilities.SANITY_INJURY));
+        if (event.getObject() instanceof LivingEntity livingEntity) {
+            event.addCapability(SanityInjuryCapability.ID, createProvider(LazyOptional.of(() -> new SanityInjuryCapability(livingEntity)), ModCapabilities.SANITY_INJURY));
         }
         if (event.getObject() instanceof Player && !(event.getObject() instanceof FakePlayer)) {
             event.addCapability(PlayerVariable.ID, createProvider(LazyOptional.of(PlayerVariable::new), ModCapabilities.PLAYER_VARIABLE));
@@ -97,20 +97,20 @@ public class CapabilityHandler {
         }
     }
 
-    public static <T extends INBTSerializable<CompoundTag>> ICapabilitySerializable<CompoundTag> createProvider(LazyOptional<T> instance, Capability<T> capability) {
-        return new ICapabilitySerializable<>() {
+    public static <S extends Tag, T extends INBTSerializable<S>> ICapabilitySerializable<S> createProvider(LazyOptional<T> instance, Capability<T> capability) {
+        return new ICapabilitySerializable<S>() {
             @Override
             public @NotNull <C> LazyOptional<C> getCapability(@NotNull Capability<C> cap, @Nullable Direction side) {
                 return capability.orEmpty(cap, instance.cast());
             }
 
             @Override
-            public CompoundTag serializeNBT() {
+            public S serializeNBT() {
                 return instance.orElseThrow(NullPointerException::new).serializeNBT();
             }
 
             @Override
-            public void deserializeNBT(CompoundTag nbt) {
+            public void deserializeNBT(S nbt) {
                 instance.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
             }
         };

@@ -1,6 +1,7 @@
 package com.apocalypse.caerulaarbor.procedures;
 
 import com.apocalypse.caerulaarbor.init.ModAttributes;
+import com.apocalypse.caerulaarbor.init.ModTags;
 import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.fml.common.Mod;
@@ -38,10 +39,7 @@ public class BornFuncProcedure {
 	private static void execute(@Nullable Event event, LevelAccessor world, Entity entity) {
 		if (entity == null)
 			return;
-		double stra = 0;
-		String prefix = "";
-		String num = "";
-		if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("caerula_arbor:oceanoffspring")))) {
+        if (entity.getType().is(ModTags.EntityTypes.OCEAN_OFFSPRING)) {
 			if (entity instanceof LivingEntity _livingEntity2 && _livingEntity2.getAttributes().hasAttribute(ForgeMod.SWIM_SPEED.get()))
 				_livingEntity2.getAttribute(ForgeMod.SWIM_SPEED.get())
 						.setBaseValue(((entity instanceof LivingEntity _livingEntity1 && _livingEntity1.getAttributes().hasAttribute(Attributes.MOVEMENT_SPEED) ? _livingEntity1.getAttribute(Attributes.MOVEMENT_SPEED).getBaseValue() : 0) * 10));
@@ -65,8 +63,7 @@ public class BornFuncProcedure {
 							.setBaseValue(((entity instanceof LivingEntity _livingEntity12 && _livingEntity12.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) ? _livingEntity12.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() : 0)
 									* (1 + 0.25 * CaerulaArborModVariables.MapVariables.get(world).strategy_grow)));
 				if (CaerulaArborModVariables.MapVariables.get(world).strategy_breed > 0) {
-					if (!entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("caerula_arbor:bossoffspring")))
-							&& !entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("caerula_arbor:oceanspawn")))) {
+					if (!entity.getType().is(ModTags.EntityTypes.OCEAN_OFFSPRING) && !entity.getType().is(ModTags.EntityTypes.OCEAN_SPAWN)) {
 						if (Math.random() < 0.05 + 0.05 * CaerulaArborModVariables.MapVariables.get(world).strategy_breed) {
 							{
 								Entity _ent = entity;

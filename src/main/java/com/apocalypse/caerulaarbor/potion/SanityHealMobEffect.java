@@ -1,6 +1,7 @@
 
 package com.apocalypse.caerulaarbor.potion;
 
+import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -10,6 +11,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 
 import java.util.ArrayList;
@@ -32,15 +34,8 @@ public class SanityHealMobEffect extends MobEffect {
 
     @Override
     public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
-        var san = entity.getAttribute(ModAttributes.SANITY.get());
-
-        double newSan = (san != null ? san.getBaseValue() : 0) + 100.0 * (amplifier + 1);
-        if (newSan > 1000) {
-            newSan = 1000;
-        }
-        if (san != null) {
-            san.setBaseValue(newSan);
-        }
+        entity.getCapability(ModCapabilities.SANITY_INJURY)
+                .ifPresent(cap -> cap.heal(100.0 * (amplifier + 1)));
     }
 
     @Override

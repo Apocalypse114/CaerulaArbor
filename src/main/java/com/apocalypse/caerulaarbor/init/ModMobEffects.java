@@ -29,7 +29,6 @@ public class ModMobEffects {
 	public static final RegistryObject<MobEffect> FISH_REAP = REGISTRY.register("fish_reap", () -> new FishReapMobEffect());
 	public static final RegistryObject<MobEffect> TRAIL_BUFF = REGISTRY.register("trail_buff", () -> new TrailBuffMobEffect());
 	public static final RegistryObject<MobEffect> TIDE_OF_CHITIN = REGISTRY.register("tide_of_chitin", () -> new TideOfChitinMobEffect());
-	public static final RegistryObject<MobEffect> SANITY_PROTECT = REGISTRY.register("sanity_protect", () -> new SanityProtectMobEffect());
 	public static final RegistryObject<MobEffect> SANIDY_DEFENDER = REGISTRY.register("sanidy_defender", () -> new SanidyDefenderMobEffect());
 	public static final RegistryObject<MobEffect> UNTAME_CONFIRM = REGISTRY.register("untame_confirm", () -> new UntameConfirmMobEffect());
 	public static final RegistryObject<MobEffect> SPLASHER_ATTACK = REGISTRY.register("splasher_attack", () -> new SplasherAttackMobEffect());

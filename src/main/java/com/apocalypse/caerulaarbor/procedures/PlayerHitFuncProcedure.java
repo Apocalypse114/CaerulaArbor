@@ -10,6 +10,7 @@ import com.apocalypse.caerulaarbor.init.ModAttributes;
 import com.apocalypse.caerulaarbor.init.ModEnchantments;
 import com.apocalypse.caerulaarbor.init.ModItems;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
+import com.apocalypse.caerulaarbor.init.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -359,7 +360,7 @@ public class PlayerHitFuncProcedure {
                 }
             }.timedLoop(0, 5, 1);
         }
-        if (entity.getType().is(TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("caerula_arbor:oceanoffspring")))) {
+        if (entity.getType().is(ModTags.EntityTypes.OCEAN_OFFSPRING)) {
             if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.OCEANOSPR_KILLER.get(), (sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY)) != 0
                     && !damagesource.is(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("caerula_arbor:oceankiller_damage")))) {
                 entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("caerula_arbor:oceankiller_damage"))), sourceentity),

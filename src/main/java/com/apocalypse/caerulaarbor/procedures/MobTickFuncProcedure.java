@@ -46,13 +46,6 @@ public class MobTickFuncProcedure {
             return;
         double amplifi;
         double pnt;
-        if ((entity instanceof LivingEntity living && living.getAttributes().hasAttribute(ModAttributes.SANITY.get()) ? living.getAttribute(ModAttributes.SANITY.get()).getBaseValue() : 0) < 0) {
-            LivingEntity _entity = (LivingEntity) entity;
-            if (!_entity.canBeAffected(new MobEffectInstance(ModMobEffects.SANITY_IMMUNE.get()))) {
-                if (entity instanceof LivingEntity _livingEntity9 && _livingEntity9.getAttributes().hasAttribute(ModAttributes.SANITY.get()))
-                    _livingEntity9.getAttribute(ModAttributes.SANITY.get()).setBaseValue(1000);
-            }
-        }
         if (!(world.getBlockState(BlockPos.containing(x, y, z))).is(ModTags.Blocks.SEA_TRAIL)) {
             if (entity instanceof LivingEntity _entity)
                 _entity.removeEffect(ModMobEffects.TRAIL_BUFF.get());

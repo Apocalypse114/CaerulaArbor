@@ -3,6 +3,8 @@ package com.apocalypse.caerulaarbor.client.gui;
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
+import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
+import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import com.apocalypse.caerulaarbor.network.message.CaerulaRecordGUIButtonMessage;
 import com.apocalypse.caerulaarbor.procedures.*;
 import com.apocalypse.caerulaarbor.menu.CaerulaRecorderMenu;
@@ -20,6 +22,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecorderMenu> {
 
@@ -106,7 +110,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
             guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/light_extinguish.png"), this.leftPos + 36, this.topPos - 37, 0, 0, 64, 32, 64, 32);
         }
 
-        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/sanity.png"), this.leftPos + 106, this.topPos + 43, Mth.clamp((int) GetSanityIndexProcedure.execute(entity) * 16, 0, 304), 0, 16, 16, 320, 16);
+        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/sanity.png"), this.leftPos + 106, this.topPos + 43, Mth.clamp(getSanityIndex(entity) * 16, 0, 304), 0, 16, 16, 320, 16);
 
         if (HasDisoNeuroProcedure.execute(entity)) {
             guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/disoclution_neuro.png"), this.leftPos + 101, this.topPos + 90, 0, 0, 64, 64, 64, 64);
@@ -218,5 +222,21 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
                 .orElse(false));
 //        guistate.put("checkbox:show_ptc", show_ptc);
         this.addRenderableWidget(show_ptc);
+    }
+
+    /**
+     * @param player 目标玩家
+     * @return 0-19的int，代表损伤条从空到满
+     */
+    private static int getSanityIndex(Player player) {
+        var effect = Optional.ofNullable(player.getEffect(ModMobEffects.SANITY_IMMUNE.get()));
+        if (effect.isPresent()) {
+            return Math.min(effect.get().getDuration() / 10, 19);
+        }
+        var capability = player.getCapability(ModCapabilities.SANITY_INJURY).resolve();
+        if (capability.isPresent() && capability.get() instanceof SanityInjuryCapability capabilityImpl) {
+            return Math.min((int) capabilityImpl.getValue() / 50, 19);
+        }
+        return 0;
     }
 }

@@ -1,14 +1,16 @@
 package com.apocalypse.caerulaarbor.procedures;
 
-import com.apocalypse.caerulaarbor.init.ModAttributes;
-import net.minecraft.world.entity.Entity;
+import com.apocalypse.caerulaarbor.capability.ModCapabilities;
+import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
 import net.minecraft.world.entity.LivingEntity;
 
 public class GetSanityProcedure {
-	public static String execute(Entity entity) {
+	public static String execute(LivingEntity entity) {
 		if (entity == null)
 			return "";
-		return "" + Math
-				.round(entity instanceof LivingEntity _livingEntity0 && _livingEntity0.getAttributes().hasAttribute(ModAttributes.SANITY.get()) ? _livingEntity0.getAttribute(ModAttributes.SANITY.get()).getBaseValue() : 0);
+		var cap = entity.getCapability(ModCapabilities.SANITY_INJURY).resolve();
+		if (cap.isEmpty()) return "";
+		if (!(cap.get() instanceof SanityInjuryCapability capImpl)) return "";
+		return "" + Math.round(capImpl.getValue());
 	}
 }

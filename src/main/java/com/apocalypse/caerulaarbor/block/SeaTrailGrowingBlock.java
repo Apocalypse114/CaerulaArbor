@@ -86,18 +86,11 @@ public class SeaTrailGrowingBlock extends SeaTrailBaseBlock {
 	}
 
 	private void tryCauseSanityDamage(Player player){
-		var capability = player.getCapability(ModCapabilities.PLAYER_VARIABLE).resolve();
-		if (capability.isPresent() && capability.get().player_oceanization >= 3) return;
-		if (player.hasEffect(ModMobEffects.SANITY_IMMUNE.get())) return;
+		if (player.getCapability(ModCapabilities.PLAYER_VARIABLE)
+				.map(cap -> cap.player_oceanization >= 3)
+				.orElse(false)) return;
 
-		var sanAttribute = player.getAttribute(ModAttributes.SANITY.get());
-		if (sanAttribute == null) return;
-		var sanResistanceAttribute = player.getAttribute(ModAttributes.SANITY_INJURY_RESISTANCE.get());
-
-		double sanity = sanAttribute.getValue();
-		double sanityDamageFactor = sanResistanceAttribute == null ? 0 : 1 - (sanResistanceAttribute.getValue() / 100.0D);
-
-		double damage = player.getRandom().nextInt(16, 32) * sanityDamageFactor;
-		sanAttribute.setBaseValue(Mth.clamp(sanity - damage, -1, 1000));
+		player.getCapability(ModCapabilities.SANITY_INJURY)
+				.ifPresent(cap -> cap.hurt(player.getRandom().nextInt(16, 32)));
 	}
 }

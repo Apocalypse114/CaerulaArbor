@@ -2,6 +2,7 @@ package com.apocalypse.caerulaarbor.client.overlay;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
+import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +21,9 @@ public class SanityOverlay implements IGuiOverlay {
         Player player = gui.getMinecraft().player;
         if (player == null) return;
 
-        player.getCapability(ModCapabilities.SANITY_INJURY).ifPresent(
+        player.getCapability(ModCapabilities.SANITY_INJURY)
+                .filter(cap -> cap instanceof SanityInjuryCapability)
+                .map(cap -> (SanityInjuryCapability) cap).ifPresent(
                 cap -> guiGraphics.blit(CaerulaArborMod.loc("textures/screens/sanity.png"),
                         screenWidth / 2 + 92, screenHeight - 19,
                         Mth.clamp((int) Math.ceil(cap.getValue() / 50) * 16, 0, 304),

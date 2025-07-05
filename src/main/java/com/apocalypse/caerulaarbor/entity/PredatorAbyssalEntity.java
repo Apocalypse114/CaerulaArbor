@@ -61,7 +61,6 @@ public class PredatorAbyssalEntity extends Monster implements GeoEntity {
     public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(PredatorAbyssalEntity.class, EntityDataSerializers.STRING);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean swinging;
-    private boolean lastloop;
     private long lastSwing;
     public String animationprocedure = "empty";
 

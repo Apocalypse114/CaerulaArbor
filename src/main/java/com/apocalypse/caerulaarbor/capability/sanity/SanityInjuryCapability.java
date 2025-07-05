@@ -1,100 +1,107 @@
 package com.apocalypse.caerulaarbor.capability.sanity;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
-import net.minecraft.nbt.CompoundTag;
+import com.apocalypse.caerulaarbor.init.ModAttributes;
+import com.apocalypse.caerulaarbor.init.ModDamageTypes;
+import com.apocalypse.caerulaarbor.init.ModMobEffects;
+import net.minecraft.nbt.DoubleTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class SanityInjuryCapability implements ISanityInjuryCapability {
-
     public static final ResourceLocation ID = CaerulaArborMod.loc("sanity_injury");
 
+    private final LivingEntity owner;
     private double value;
-    private boolean immune;
 
-    public SanityInjuryCapability() {
-        this.value = 1000;
-        this.immune = false;
+    public SanityInjuryCapability(LivingEntity owner) {
+        this(owner, 1000);
     }
 
-    public SanityInjuryCapability(double value) {
-        this.value = Mth.clamp(value, -1, 1000);
-        this.immune = false;
-    }
-
-    @Override
-    public double getValue() {
-        return this.value;
+    public SanityInjuryCapability(LivingEntity owner, double value) {
+        this.owner = owner;
+        this.value = Mth.clamp(value, 0, 1000);
     }
 
     @Override
-    public void setValue(double value) {
-        this.value = Mth.clamp(value, -1, 1000);
-    }
-
-    @Override
-    public double injure(double damage) {
-        if (this.immune) return 0;
-        if (this.value < 0) return 0;
-        if (damage <= 0) return 0;
-
-        if (this.value > damage) {
-            this.value -= damage;
-            return damage;
-        } else {
-            double injured = this.value + 1;
-            this.value = -1;
-            return injured;
-        }
-    }
-
-    @Override
-    public double heal(double health) {
-        if (this.immune) return 0;
-        if (this.value < 0 || this.value >= 1000) return 0;
-        if (health <= 0) return 0;
-
-        if (this.value < 1000 - health) {
-            this.value += health;
-            return health;
-        } else {
-            double healed = 1000 - this.value;
+    public boolean hurt(double damage) {
+        if (owner.hasEffect(ModMobEffects.SANITY_IMMUNE.get())) return false;
+        var sanityResistanceAttr = Optional.ofNullable(owner.getAttribute(ModAttributes.SANITY_INJURY_RESISTANCE.get()));
+        double sanityResistance = sanityResistanceAttr.map(AttributeInstance::getValue).orElse(0D);
+        damage *= 1 - (sanityResistance / 100);
+        if (damage <= 0) return false;
+        if (value < damage) {
+            sanityBreak();
             this.value = 1000;
-            return healed;
+        }
+        this.value -= damage;
+        return true;
+    }
+
+    private void sanityBreak() {
+        if (owner.level().isClientSide) {
+            owner.level().playLocalSound(owner.getX(), owner.getY(), owner.getZ(), SoundEvents.ELDER_GUARDIAN_CURSE,
+                    owner.getSoundSource(), 2.2f, 1, false);
+        } else {
+            owner.addEffect(new MobEffectInstance(ModMobEffects.SANITY_IMMUNE.get(), 200, 0, false, false));
+            if (owner instanceof Player) {
+                owner.addEffect(new MobEffectInstance(ModMobEffects.DIZZY.get(), 200, 0, false, false));
+                owner.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200, 0, false, true));
+                owner.hurt(ModDamageTypes.causeNervousImpairmentDamage(owner.level().registryAccess(), null), 12);
+            } else {
+                // TODO 改为麻痹（以下是具体实现）
+                /*
+                状态效果：麻痹，麻痹震颤
+                爆条时给3级无限持续时间麻痹
+                生物造成伤害时：
+                    如果有麻痹震颤：
+                        取消伤害
+                    否则如果有麻痹：
+                        取消伤害
+                        给半秒麻痹震颤
+                        减少1级（0级时消除）
+                 */
+                owner.addEffect(new MobEffectInstance(ModMobEffects.DIZZY.get(), 60, 0, false, false));
+                owner.hurt(ModDamageTypes.causeNervousImpairmentDamage(owner.level().registryAccess(), null),
+                        Mth.clamp(owner.getMaxHealth() * 0.8f, 12, 72));
+            }
+            owner.level().playSound(owner instanceof Player player ? player : null,
+                    owner.getX(), owner.getY(), owner.getZ(),
+                    SoundEvents.ELDER_GUARDIAN_CURSE, owner.getSoundSource(), 2.2f, 1);
         }
     }
 
-    @Override
-    public void regenerate(double amount) {
-        if (!this.immune) return;
-        this.value = Mth.clamp(this.value + amount, -1, 1000);
-        if (this.value >= 1000) {
-            this.immune = false;
-        }
+    public void tick() {
+        double regenerateRate = Objects.requireNonNull(owner.getAttribute(ModAttributes.SANITY_REGENERATE.get())).getValue();
+        if (regenerateRate > 0) this.heal(regenerateRate);
+    }
+
+    public double getValue() {
+        return value;
     }
 
     @Override
-    public boolean isImmune() {
-        return this.immune;
+    public void heal(double value) {
+        this.value = Math.min(this.value + value, 1000);
     }
 
     @Override
-    public void setImmune(boolean immune) {
-        if (immune) this.value = 0;
-        this.immune = immune;
+    public DoubleTag serializeNBT() {
+        return DoubleTag.valueOf(this.value);
     }
 
     @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag tag = new CompoundTag();
-        tag.putDouble("SanityInjury", this.value);
-        tag.putBoolean("Immune", this.immune);
-        return tag;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        this.value = nbt.getDouble("SanityInjury");
-        this.immune = nbt.getBoolean("Immune");
+    public void deserializeNBT(DoubleTag nbt) {
+        this.value = nbt.getAsDouble();
     }
 }

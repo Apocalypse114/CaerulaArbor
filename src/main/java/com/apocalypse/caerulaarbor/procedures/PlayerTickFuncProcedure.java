@@ -264,10 +264,6 @@ public class PlayerTickFuncProcedure {
                 capability.syncPlayerVariables(entity);
             });
         }
-        if ((entity instanceof LivingEntity _livingEntity52 && _livingEntity52.getAttributes().hasAttribute(ModAttributes.SANITY.get()) ? _livingEntity52.getAttribute(ModAttributes.SANITY.get()).getBaseValue() : 0) > 1000) {
-            if (entity instanceof LivingEntity _livingEntity53 && _livingEntity53.getAttributes().hasAttribute(ModAttributes.SANITY.get()))
-                _livingEntity53.getAttribute(ModAttributes.SANITY.get()).setBaseValue(1000);
-        }
 
         enchant = 0;
         if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SANITY_DEFEND.get(), (entity instanceof LivingEntity _entGetArmor ? _entGetArmor.getItemBySlot(EquipmentSlot.FEET) : ItemStack.EMPTY)) != 0) {
