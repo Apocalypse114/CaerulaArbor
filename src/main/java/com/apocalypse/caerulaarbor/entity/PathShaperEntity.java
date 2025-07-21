@@ -3,20 +3,19 @@ package com.apocalypse.caerulaarbor.entity;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.procedures.SummonFractalProcedure;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -40,7 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -51,9 +49,9 @@ import software.bernie.geckolib.core.object.PlayState;
 
 public class PathShaperEntity extends SeaMonster {
 
-    public static final EntityDataAccessor<Integer> DATA_skillp = SynchedEntityData.defineId(PathShaperEntity.class, EntityDataSerializers.INT);
-
     private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(), ServerBossEvent.BossBarColor.BLUE, ServerBossEvent.BossBarOverlay.PROGRESS);
+    private int hurtCount = 0;
+    private int skillCooldown = 0;
 
     public PathShaperEntity(PlayMessages.SpawnEntity packet, Level world) {
         this(ModEntities.PATH_SHAPER.get(), world);
@@ -65,12 +63,6 @@ public class PathShaperEntity extends SeaMonster {
         setNoAi(false);
         setMaxUpStep(1.5f);
         setPersistenceRequired();
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_skillp, 0);
     }
 
     @Override
@@ -120,46 +112,81 @@ public class PathShaperEntity extends SeaMonster {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
-        double skillP = this.getEntityData().get(DATA_skillp);
-        this.getEntityData().set(DATA_skillp, (int) (skillP + 1));
-
-        if (skillP >= 7) {
-            SummonFractalProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
-            this.getEntityData().set(DATA_skillp, 0);
-        }
-
-        if (source.is(DamageTypes.FALL))
+        boolean flag = super.hurt(source, amount);
+        if (source.is(DamageTypes.FALL)) {
             return false;
-        return super.hurt(source, amount);
+        }
+        if (flag) {
+            this.hurtCount = Math.min(this.hurtCount + 1, 10);
+        }
+        return flag;
     }
 
     @Override
     public void die(@NotNull DamageSource source) {
         super.die(source);
 
-        final Vec3 center = new Vec3(this.getX(), this.getY(), this.getZ());
-        for (var entity : this.level().getEntitiesOfClass(PathshaperFractalEntity.class, new AABB(center, center).inflate(32), e -> true)) {
-            entity.hurt(new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD)), 999999);
-        }
+        var list = this.level().getEntitiesOfClass(PathshaperFractalEntity.class, new AABB(this.getOnPos()).inflate(32), e -> true);
+        list.forEach(LivingEntity::kill);
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putInt("Dataskillp", this.entityData.get(DATA_skillp));
+        compound.putInt("HUrtCount", this.hurtCount);
+        compound.putInt("SkillCooldown", this.skillCooldown);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Dataskillp"))
-            this.entityData.set(DATA_skillp, compound.getInt("Dataskillp"));
+        if (compound.contains("AttackCount")) {
+            this.hurtCount = compound.getInt("AttackCount");
+        }
+        if (compound.contains("SkillCooldown")) {
+            this.skillCooldown = compound.getInt("SkillCooldown");
+        }
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
         this.refreshDimensions();
+
+        if (!this.level().isClientSide) {
+            if (this.hurtCount >= 10) {
+                this.summonFractals();
+                this.hurtCount = 0;
+            }
+        }
+        if (this.skillCooldown > 0) {
+            this.skillCooldown--;
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (this.skillCooldown <= 0) {
+            this.skillCooldown = 40;
+            this.summonFractals();
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    private void summonFractals() {
+        var num = this.level().getEntitiesOfClass(PathshaperFractalEntity.class, this.getBoundingBox().inflate(32), e -> true).size();
+        if (num >= 8) return;
+        var dx = Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+        var dz = Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            var entity = new PathshaperFractalEntity(serverLevel);
+            entity.setPos(this.getX() + dx, this.getY(), this.getZ() + dz);
+            entity.setYRot(this.level().random.nextFloat() * 360F);
+            entity.setHealth(entity.getMaxHealth() * (this.getHealth() / this.getMaxHealth()));
+            serverLevel.addFreshEntity(entity);
+            serverLevel.sendParticles(ParticleTypes.CLOUD, this.getX() + dx, this.getY(), this.getZ() + dz, 24, 0.5, 1, 0.5, 0.1);
+        }
     }
 
     @Override
@@ -232,6 +259,7 @@ public class PathShaperEntity extends SeaMonster {
         this.remove(PathShaperEntity.RemovalReason.KILLED);
         this.dropExperience();
 
+        // TODO 战利品表换了
         if (this.level() instanceof ServerLevel serverLevel && this.level().getServer() != null) {
             for (ItemStack stack : this.level().getServer().getLootData().getLootTable(new ResourceLocation("caerula_arbor:gameplay/relic_route")).getRandomItems(new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY))) {
                 ItemEntity stackEntity = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), stack);

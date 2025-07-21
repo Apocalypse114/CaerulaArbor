@@ -4,11 +4,11 @@ import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
-import com.apocalypse.caerulaarbor.entity.*;
-import com.apocalypse.caerulaarbor.init.*;
+import com.apocalypse.caerulaarbor.init.ModAttributes;
+import com.apocalypse.caerulaarbor.init.ModEntities;
+import com.apocalypse.caerulaarbor.init.ModGameRules;
+import com.apocalypse.caerulaarbor.init.ModTags;
 import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -24,7 +23,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -41,13 +39,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 
+// TODO 把这坨铲了
 @Mod.EventBusSubscriber
 public class MobHitFuncProcedure {
     @SubscribeEvent
     public static void onEntityAttacked(LivingAttackEvent event) {
         if (event != null && event.getEntity() != null) {
-            execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getSource(), event.getEntity(), event.getSource().getDirectEntity(), event.getSource().getEntity(),
-                    event.getAmount());
+//            execute(event, event.getEntity().level(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getSource(), event.getEntity(), event.getSource().getDirectEntity(), event.getSource().getEntity(),
+//                    event.getAmount());
         }
     }
 
@@ -61,22 +60,7 @@ public class MobHitFuncProcedure {
 
         double amplifi;
         double sklp;
-        double limithard;
-        if (entity instanceof LivingEntity _livEnt0 && _livEnt0.hasEffect(ModMobEffects.INVULNERABLE.get())) {
-            if (event != null && event.isCancelable()) {
-                event.setCanceled(true);
-            }
-        }
-        if (CaerulaArborModVariables.MapVariables.get(world).strategyGrow >= 3) {
-            if (sourceentity.getType().is(ModTags.EntityTypes.SEA_BORN) && !damagesource.is(DamageTypes.MAGIC)) {
-                CaerulaArborMod.queueServerWork(10, () -> {
-                    entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC), immediatesourceentity, sourceentity),
-                            (float) (amount * 0.2 * (CaerulaArborModVariables.MapVariables.get(world).strategyGrow - 2)));
-                    if (world instanceof ServerLevel _level)
-                        _level.sendParticles(ParticleTypes.ENCHANTED_HIT, x, (y + 1), z, 48, 1.5, 1.5, 1.5, 0.2);
-                });
-            }
-        }
+
         if (entity.getType().is(ModTags.EntityTypes.SEA_BORN) && !sourceentity.getType().is(ModTags.EntityTypes.SEA_BORN)) {
             if (CaerulaArborModVariables.MapVariables.get(world).strategyMigration > 0) {
                 for (Entity entityiterator : world.getEntities(entity,
@@ -126,14 +110,6 @@ public class MobHitFuncProcedure {
             }
         }
         if (entity.getType().is(ModTags.EntityTypes.SEA_BORN)) {
-            if (sourceentity instanceof ServerPlayer _player) {
-                Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("caerula_arbor:encounter_from_the_ocean"));
-                AdvancementProgress _ap = _player.getAdvancements().getOrStartProgress(_adv);
-                if (!_ap.isDone()) {
-                    for (String criteria : _ap.getRemainingCriteria())
-                        _player.getAdvancements().award(_adv, criteria);
-                }
-            }
             if (world.getLevelData().getGameRules().getBoolean(ModGameRules.NATURAL_EVOLUTION)) {
                 CaerulaArborModVariables.MapVariables.get(world).evo_point_subsisting = CaerulaArborModVariables.MapVariables.get(world).evo_point_subsisting + amount * 0.025;
                 CaerulaArborModVariables.MapVariables.get(world).syncData(world);
@@ -222,47 +198,6 @@ public class MobHitFuncProcedure {
                                 (float) ((entity instanceof LivingEntity _livingEntity57 && _livingEntity57.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) ? _livingEntity57.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 0) * 0.5));
                     }
                 }
-            }
-        }
-        if (sourceentity instanceof NetherseaReefbreakerEntity livEnt) {
-            amplifi = livEnt.hasEffect(ModMobEffects.REEF_CRACKER.get()) ? livEnt.getEffect(ModMobEffects.REEF_CRACKER.get()).getAmplifier() : 0;
-            if (livEnt.hasEffect(ModMobEffects.REEF_CRACKER.get())) {
-                if (amplifi < 14) {
-                    if (!livEnt.level().isClientSide())
-                        livEnt.addEffect(new MobEffectInstance(ModMobEffects.REEF_CRACKER.get(), 120, (int) (amplifi + 1), false, false));
-                } else {
-                    if (!livEnt.level().isClientSide())
-                        livEnt.addEffect(new MobEffectInstance(ModMobEffects.REEF_CRACKER.get(), 120, 14, false, false));
-                }
-            } else {
-                if (!livEnt.level().isClientSide())
-                    livEnt.addEffect(new MobEffectInstance(ModMobEffects.REEF_CRACKER.get(), 120, 0, false, false));
-            }
-        }
-        if (sourceentity instanceof BoneSeaDrifterEntity) {
-            GiveLessArmorProcedure.execute(entity, 1);
-        }
-        if (sourceentity instanceof BalefulBroodlingEntity) {
-            GiveLessArmorProcedure.execute(entity, 2);
-        }
-        if (sourceentity instanceof PathShaperEntity) {
-            sklp = sourceentity instanceof PathShaperEntity _datEntI ? _datEntI.getEntityData().get(PathShaperEntity.DATA_skillp) : 0;
-            if (sourceentity instanceof PathShaperEntity _datEntSetI)
-                _datEntSetI.getEntityData().set(PathShaperEntity.DATA_skillp, (int) (sklp + 1));
-            if (sklp + 1 >= 8) {
-                SummonFractalProcedure.execute(sourceentity.level(), x, y, z);
-                if (sourceentity instanceof PathShaperEntity _datEntSetI)
-                    _datEntSetI.getEntityData().set(PathShaperEntity.DATA_skillp, 0);
-            }
-        }
-        if (sourceentity instanceof PathshaperFractalEntity) {
-            sklp = sourceentity instanceof PathshaperFractalEntity _datEntI ? _datEntI.getEntityData().get(PathshaperFractalEntity.DATA_skillp) : 0;
-            if (sourceentity instanceof PathshaperFractalEntity _datEntSetI)
-                _datEntSetI.getEntityData().set(PathshaperFractalEntity.DATA_skillp, (int) (sklp + 1));
-            if (sklp + 1 >= 6) {
-                SummonFractalProcedure.execute(sourceentity.level(), x, y, z);
-                if (sourceentity instanceof PathshaperFractalEntity _datEntSetI)
-                    _datEntSetI.getEntityData().set(PathshaperFractalEntity.DATA_skillp, 0);
             }
         }
     }

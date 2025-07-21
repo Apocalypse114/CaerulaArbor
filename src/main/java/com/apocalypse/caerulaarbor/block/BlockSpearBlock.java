@@ -65,10 +65,8 @@ public class BlockSpearBlock extends Block implements SimpleWaterloggedBlock {
     @ParametersAreNonnullByDefault
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(FACING)) {
+            case EAST, WEST -> box(0, 0, 4, 16, 4, 12);
             default -> box(4, 0, 0, 12, 4, 16);
-            case NORTH -> box(4, 0, 0, 12, 4, 16);
-            case EAST -> box(0, 0, 4, 16, 4, 12);
-            case WEST -> box(0, 0, 4, 16, 4, 12);
         };
     }
 

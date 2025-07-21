@@ -4,17 +4,16 @@ import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -45,26 +44,23 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 public class PathshaperFractalEntity extends SeaMonster {
 
-    public static final EntityDataAccessor<Integer> DATA_skillp = SynchedEntityData.defineId(PathshaperFractalEntity.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DATA_time_left = SynchedEntityData.defineId(PathshaperFractalEntity.class, EntityDataSerializers.INT);
+    private int attackCount = 0;
+    private int life = 1800;
 
-    public PathshaperFractalEntity(PlayMessages.SpawnEntity packet, Level world) {
-        this(ModEntities.PATHSHAPER_FRACTAL.get(), world);
+    public PathshaperFractalEntity(PlayMessages.SpawnEntity packet, Level level) {
+        this(ModEntities.PATHSHAPER_FRACTAL.get(), level);
     }
 
-    public PathshaperFractalEntity(EntityType<PathshaperFractalEntity> type, Level world) {
-        super(type, world);
+    public PathshaperFractalEntity(Level level) {
+        this(ModEntities.PATHSHAPER_FRACTAL.get(), level);
+    }
+
+    public PathshaperFractalEntity(EntityType<PathshaperFractalEntity> type, Level level) {
+        super(type, level);
         xpReward = 8;
         setNoAi(false);
         setMaxUpStep(1f);
         setPersistenceRequired();
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_skillp, 0);
-        this.entityData.define(DATA_time_left, 1800);
     }
 
     @Override
@@ -127,28 +123,59 @@ public class PathshaperFractalEntity extends SeaMonster {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putInt("Dataskillp", this.entityData.get(DATA_skillp));
-        compound.putInt("Datatime_left", this.entityData.get(DATA_time_left));
+        compound.putInt("SkillCooldown", this.attackCount);
+        compound.putInt("Life", this.life);
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Dataskillp"))
-            this.entityData.set(DATA_skillp, compound.getInt("Dataskillp"));
-        if (compound.contains("Datatime_left"))
-            this.entityData.set(DATA_time_left, compound.getInt("Datatime_left"));
+        if (compound.contains("SkillCooldown")) {
+            this.attackCount = compound.getInt("SkillCooldown");
+        }
+        if (compound.contains("Life")) {
+            this.life = compound.getInt("Life");
+        }
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
 
-        if (this.getEntityData().get(DATA_time_left) <= 0) {
-            this.hurt(new DamageSource(this.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD)), 999999);
+        if (this.life > 0) {
+            this.life--;
+        } else {
+            this.kill();
         }
-        this.getEntityData().set(DATA_time_left, (int) ((double) this.getEntityData().get(DATA_time_left) - 1));
+
         this.refreshDimensions();
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        if (this.attackCount >= 2) {
+            this.attackCount = 0;
+            this.summonFractals();
+        } else {
+            this.attackCount++;
+        }
+        return super.doHurtTarget(pEntity);
+    }
+
+    private void summonFractals() {
+        var num = this.level().getEntitiesOfClass(PathshaperFractalEntity.class, this.getBoundingBox().inflate(32), e -> true).size();
+        if (num >= 12) return;
+        var dx = Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+        var dz = Mth.nextDouble(RandomSource.create(), -0.5, 0.5);
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            var entity = new PathshaperFractalEntity(serverLevel);
+            entity.setPos(this.getX() + dx, this.getY(), this.getZ() + dz);
+            entity.setYRot(this.level().random.nextFloat() * 360F);
+            entity.setHealth(entity.getMaxHealth() * (this.getHealth() / this.getMaxHealth()));
+            serverLevel.addFreshEntity(entity);
+            serverLevel.sendParticles(ParticleTypes.CLOUD, this.getX() + dx, this.getY(), this.getZ() + dz, 24, 0.5, 1, 0.5, 0.1);
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {

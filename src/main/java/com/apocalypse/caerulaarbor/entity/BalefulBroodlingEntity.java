@@ -120,10 +120,6 @@ public class BalefulBroodlingEntity extends SeaMonster {
     @Override
     @ParametersAreNonnullByDefault
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-        if (!this.level().isClientSide()) {
-            this.addEffect(new MobEffectInstance(ModMobEffects.SELF_KILL.get(), 9999, 0, false, false));
-        }
-
         this.getEntityData().set(DATA_dx, Mth.nextInt(RandomSource.create(), -50, 50));
         this.getEntityData().set(DATA_dz, Mth.nextInt(RandomSource.create(), -50, 50));
 
@@ -149,6 +145,15 @@ public class BalefulBroodlingEntity extends SeaMonster {
     @Override
     public void baseTick() {
         super.baseTick();
+
+        if (this.tickCount % 20 == 0) {
+            float damage = this.getMaxHealth() / 8f;
+            if (this.getHealth() > damage) {
+                this.setHealth(this.getHealth() - damage);
+            } else {
+                this.kill();
+            }
+        }
 
         if (this.isAggressive()) {
             var target = this.getTarget();
@@ -226,5 +231,14 @@ public class BalefulBroodlingEntity extends SeaMonster {
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         data.add(new AnimationController<>(this, "movement", 4, this::movementPredicate));
         data.add(new AnimationController<>(this, "attacking", 4, this::attackingPredicate));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        boolean flag = super.doHurtTarget(pEntity);
+        if (flag && pEntity instanceof LivingEntity living && !living.level().isClientSide) {
+            living.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_BREAKING.get(), 300, 2), this);
+        }
+        return flag;
     }
 }

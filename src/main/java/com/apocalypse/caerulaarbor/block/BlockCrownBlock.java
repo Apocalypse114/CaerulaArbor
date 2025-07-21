@@ -64,12 +64,8 @@ public class BlockCrownBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     @ParametersAreNonnullByDefault
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return switch (state.getValue(FACING)) {
-            default -> box(0, 0, 0, 16, 6, 16);
-            case NORTH -> box(0, 0, 0, 16, 6, 16);
-            case EAST -> box(0, 0, 0, 16, 6, 16);
-            case WEST -> box(0, 0, 0, 16, 6, 16);
-        };
+        state.getValue(FACING);
+        return box(0, 0, 0, 16, 6, 16);
     }
 
     @Override
@@ -108,7 +104,7 @@ public class BlockCrownBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     @ParametersAreNonnullByDefault
-    public InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(BlockState blockstate, Level world, BlockPos pos, Player entity, InteractionHand hand, BlockHitResult hit) {
         super.use(blockstate, world, pos, entity, hand, hit);
         int x = pos.getX();
         int y = pos.getY();

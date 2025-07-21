@@ -2,12 +2,13 @@
 package com.apocalypse.caerulaarbor.entity;
 
 import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.procedures.GiveLessArmorProcedure;
+import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -72,8 +73,8 @@ public class FleefishBulletEntity extends AbstractArrow implements ItemSupplier 
         Entity sourceentity = this.getOwner();
         if (sourceentity == null) return;
 
-        if (entity != sourceentity) {
-            GiveLessArmorProcedure.execute(entity, 3);
+        if (entity != sourceentity && entity instanceof LivingEntity living && !living.level().isClientSide) {
+            living.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_BREAKING.get(), 300, 3), this);
         }
     }
 

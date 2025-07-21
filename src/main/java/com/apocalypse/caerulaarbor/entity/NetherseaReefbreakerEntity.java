@@ -6,23 +6,24 @@ import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.init.ModMobEffects;
+import com.apocalypse.caerulaarbor.init.ModParticleTypes;
 import com.apocalypse.caerulaarbor.init.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreakDoorGoal;
@@ -42,8 +43,6 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -52,7 +51,15 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
+import java.util.UUID;
+
 public class NetherseaReefbreakerEntity extends SeaMonster {
+
+    public static final String MODIFIER_UUID = "4bf1ea4a-c7f0-37b3-8940-7ab10737ff32";
+
+    private int skillCooldown = 0;
+    private int bonusTime = 0;
+    private int bonusCount = 0;
 
     public NetherseaReefbreakerEntity(PlayMessages.SpawnEntity packet, Level world) {
         this(ModEntities.NETHERSEA_REEFBREAKER.get(), world);
@@ -63,6 +70,20 @@ public class NetherseaReefbreakerEntity extends SeaMonster {
         xpReward = 0;
         setNoAi(false);
         setMaxUpStep(1.2f);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        pCompound.putInt("SkillCooldown", this.skillCooldown);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (pCompound.contains("SkillCooldown")) {
+            this.skillCooldown = pCompound.getInt("SkillCooldown");
+        }
     }
 
     @Override
@@ -127,52 +148,86 @@ public class NetherseaReefbreakerEntity extends SeaMonster {
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
-        LevelAccessor world = this.level();
-        double x = this.getX();
-        double y = this.getY();
-        double z = this.getZ();
-        double num;
-        if (!this.hasEffect(ModMobEffects.COOLDOWN_SINAL.get())) {
-            num = 0;
-            {
-                final Vec3 _center = new Vec3(x, y, z);
-                num += world.getEntitiesOfClass(LivingEntity.class, new AABB(_center, _center).inflate(3), e -> e != this && e.getMaxHealth() >= 10)
-                        .size();
-            }
-            if (num >= 2) {
-                if (this instanceof NetherseaReefbreakerEntity) {
-//                    this.setAnimation("animation.nethersea_reefbreaker.spin");
-                }
-                if (!this.level().isClientSide())
-                    this.addEffect(new MobEffectInstance(ModMobEffects.COOLDOWN_SINAL.get(), 40, 0, false, false));
-                CaerulaArborMod.queueServerWork(10, () -> {
-                    if (world instanceof Level _level) {
-                        if (!_level.isClientSide()) {
-                            _level.playSound(null, BlockPos.containing(x, y, z), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 2, 1);
-                        } else {
-                            _level.playLocalSound(x, y, z, SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 2, 1, false);
-                        }
-                    }
-                    {
-                        final Vec3 _center = new Vec3(x, y, z);
-                        for (Entity entityiterator : world.getEntitiesOfClass(Entity.class, new AABB(_center, _center).inflate(3), e -> !e.getType().is(ModTags.EntityTypes.SEA_BORN) || this.getTarget() == e)) {
-                            entityiterator.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MOB_ATTACK), this),
-                                    (float) ((this.getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) ? this.getAttribute(Attributes.ATTACK_DAMAGE).getValue() : 0) * 1.5));
+        boolean flag = super.hurt(source, amount);
+        if (flag && this.skillCooldown <= 0) {
+            var attr = this.getAttribute(Attributes.ATTACK_DAMAGE);
+            if (attr == null) return true;
 
-                        }
-                    }
-                });
+            int count = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3), e -> e != this && e.getMaxHealth() >= 10).size();
+            if (count >= 2) {
+                this.triggerAnim("spin", "spin");
+                if (!this.level().isClientSide()) {
+                    this.level().playSound(null, this.getOnPos(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 1, 1);
+                } else {
+                    this.level().playLocalSound(this.getOnPos(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.HOSTILE, 1, 1, false);
+                }
+                var list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(3), e -> e != this && !e.getType().is(ModTags.EntityTypes.SEA_BORN));
+                list.forEach(e -> e.hurt(this.level().damageSources().mobAttack(this), (float) (attr.getValue() * 1.5)));
+                this.skillCooldown = 40;
             }
         }
+        return flag;
+    }
 
-        if (source.is(DamageTypes.DROWN))
-            return false;
-        return super.hurt(source, amount);
+    @Override
+    public boolean doHurtTarget(Entity pEntity) {
+        boolean flag = super.doHurtTarget(pEntity);
+        if (flag) {
+            this.bonusTime = 70;
+            if (this.bonusCount < 15) {
+                this.bonusCount++;
+            }
+            this.addBonusAttackModifier(this.bonusCount);
+        }
+        return flag;
+    }
+
+    private void addBonusAttackModifier(int level) {
+        if (level <= 0) return;
+        AttributeInstance attributeinstance = this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
+        if (attributeinstance != null) {
+            attributeinstance.removeModifier(UUID.fromString(MODIFIER_UUID));
+            attributeinstance.addPermanentModifier(new AttributeModifier(
+                    UUID.fromString(MODIFIER_UUID),
+                    CaerulaArborMod.ATTRIBUTE_MODIFIER,
+                    this.bonusCount * 0.15,
+                    AttributeModifier.Operation.MULTIPLY_BASE
+            ));
+        }
+    }
+
+    private void removeBonusAttackModifier() {
+        AttributeInstance attributeinstance = this.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
+        if (attributeinstance != null) {
+            attributeinstance.removeModifier(UUID.fromString(MODIFIER_UUID));
+        }
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
+
+        if (this.skillCooldown > 0) {
+            this.skillCooldown--;
+        }
+        if (this.bonusTime > 0) {
+            this.bonusTime--;
+        } else {
+            this.removeBonusAttackModifier();
+            this.bonusCount = 0;
+        }
+
+        if (this.level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ModParticleTypes.CRACKER_BUFF_0.get(),
+                    this.getX(), this.getY() + this.getBbHeight() * 0.5, this.getZ(),
+                    this.bonusCount + 1, 0.8, 1.5, 0.8, 0.3);
+            if (this.bonusCount > 6) {
+                serverLevel.sendParticles(ModParticleTypes.CRACKER_BUFF_1.get(),
+                        this.getX(), this.getY(), this.getZ(),
+                        3, 1, 0.5, 1, 0.3);
+            }
+        }
+
         LevelAccessor world = this.level();
         double x = this.getX();
         double y = this.getY();
@@ -234,5 +289,7 @@ public class NetherseaReefbreakerEntity extends SeaMonster {
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
         data.add(new AnimationController<>(this, "movement", 0, this::movementPredicate));
         data.add(new AnimationController<>(this, "attacking", 0, this::attackingPredicate));
+        data.add(new AnimationController<>(this, "spin", 0, event -> PlayState.STOP)
+                .triggerableAnim("spin", RawAnimation.begin().thenPlay("animation.nethersea_reefbreaker.spin").thenLoop("animation.nethersea_reefbreaker.idle")));
     }
 }

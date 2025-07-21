@@ -123,6 +123,9 @@ public class LivingEventHandler {
         handleSeaBornSpawn(entity);
     }
 
+    /**
+     * 在生物刷新时，提供一定的损伤减免
+     */
     private static void handleSanityInjuryResistance(LivingEntity entity) {
         var attribute = entity.getAttribute(ModAttributes.SANITY_INJURY_RESISTANCE.get());
         if (attribute == null) return;
@@ -142,6 +145,9 @@ public class LivingEventHandler {
         }
     }
 
+    /**
+     * 在海嗣刷新时，根据当前的策略，给予不同的属性加成
+     */
     private static void handleSeaBornSpawn(LivingEntity entity) {
         if (!entity.getType().is(ModTags.EntityTypes.SEA_BORN)) return;
         var level = entity.level();
@@ -153,6 +159,8 @@ public class LivingEventHandler {
         if (swimSpeed != null) {
             swimSpeed.addPermanentModifier(new AttributeModifier(CaerulaArborMod.ATTRIBUTE_MODIFIER, 2, AttributeModifier.Operation.MULTIPLY_BASE));
         }
+
+        // 策略-存续
         var maxHealth = entity.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null) {
             maxHealth.addPermanentModifier(new AttributeModifier(CaerulaArborMod.ATTRIBUTE_MODIFIER, 0.3 * subsisting, AttributeModifier.Operation.MULTIPLY_BASE));
@@ -166,11 +174,13 @@ public class LivingEventHandler {
             armorToughness.addPermanentModifier(new AttributeModifier(CaerulaArborMod.ATTRIBUTE_MODIFIER, 2 * subsisting, AttributeModifier.Operation.ADDITION));
         }
 
+        // 策略-生长
         var attackDamage = entity.getAttribute(Attributes.ATTACK_DAMAGE);
         if (attackDamage != null) {
             attackDamage.addPermanentModifier(new AttributeModifier(CaerulaArborMod.ATTRIBUTE_MODIFIER, 0.25 * grow, AttributeModifier.Operation.MULTIPLY_BASE));
         }
 
+        // 策略-繁育
         if (breed > 0 && !entity.getType().is(ModTags.EntityTypes.SEA_BORN_CREATURE) && !entity.getType().is(ModTags.EntityTypes.SEA_BORN_BOSS)) {
             double random = Math.random();
             if (random < 0.05 + 0.05 * breed) {

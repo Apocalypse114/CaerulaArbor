@@ -3,6 +3,7 @@ package com.apocalypse.caerulaarbor.item.relic.normal;
 
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.init.ModSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -30,8 +31,8 @@ public class AntiquatedSheetMusicItem extends RecordItem {
 	@Override
 	public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
 		super.appendHoverText(itemstack, level, list, flag);
-		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_0"));
-		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_1"));
+		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_0").withStyle(ChatFormatting.AQUA));
+		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_1").withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override

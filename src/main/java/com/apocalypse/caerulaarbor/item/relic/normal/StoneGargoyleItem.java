@@ -6,6 +6,7 @@ import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.item.relic.RelicItem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,8 +36,8 @@ public class StoneGargoyleItem extends RelicItem {
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
-        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_0"));
-        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_1"));
+        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_0").withStyle(ChatFormatting.AQUA));
+        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_1").withStyle(ChatFormatting.GRAY));
     }
 
     @Override
