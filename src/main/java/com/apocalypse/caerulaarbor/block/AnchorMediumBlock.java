@@ -1,7 +1,7 @@
 
 package com.apocalypse.caerulaarbor.block;
 
-import com.apocalypse.caerulaarbor.procedures.ActivateAnchorProcedure;
+///import com.apocalypse.caerulaarbor.procedures.ActivateAnchorProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -109,7 +109,7 @@ public class AnchorMediumBlock extends Block {
 		double hitY = hit.getLocation().y;
 		double hitZ = hit.getLocation().z;
 		Direction direction = hit.getDirection();
-		InteractionResult result = ActivateAnchorProcedure.execute(world, x, y, z, blockstate, direction, entity);
+		InteractionResult result = InteractionResult.SUCCESS;
 		return result;
 	}
 }

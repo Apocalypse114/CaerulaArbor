@@ -2,12 +2,13 @@ package com.apocalypse.caerulaarbor.init;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.item.*;
+import com.apocalypse.caerulaarbor.item.CaerulaAnimusItem;
+import com.apocalypse.caerulaarbor.item.HandOfBrandingItem;
 import com.apocalypse.caerulaarbor.item.equipment.*;
 import com.apocalypse.caerulaarbor.item.relic.epic.*;
-import com.apocalypse.caerulaarbor.item.relic.normal.FeaturedCannedMeatItem;
-import com.apocalypse.caerulaarbor.item.relic.normal.HotWaterKettleItem;
-import com.apocalypse.caerulaarbor.item.relic.normal.SeaweedSaladItem;
 import com.apocalypse.caerulaarbor.item.relic.rare.*;
+import com.apocalypse.caerulaarbor.item.relic.normal.*;
+import com.apocalypse.caerulaarbor.item.relic.cursed.*;
 import com.apocalypse.caerulaarbor.tiers.ModArmorMaterial;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -36,15 +37,15 @@ public class ModItems {
     public static final RegistryObject<Item> CAERULA_RECORDER = ITEMS.register("caerula_recorder", CaerulaRecorderItem::new);
     public static final RegistryObject<Item> RELIC_CURSE_EMELIGHT = ITEMS.register("relic_curse_emelight", RelicCurseEMELIGHTItem::new);
     public static final RegistryObject<Item> EMERGENCY_LIGHT = block(ModBlocks.EMERGENCY_LIGHT);
-    public static final RegistryObject<Item> RELIC_CURSED_GLOWBODY = ITEMS.register("relic_cursed_glowbody", RelicCursedGLOWBODYItem::new);
+    public static final RegistryObject<Item> LUMINOUS_CORPSE = ITEMS.register("luminous_cprpse", LuminousCorpseItem::new);
     public static final RegistryObject<Item> RELIC_CURSED_RESEARCH = ITEMS.register("relic_cursed_research", RelicCursedRESEARCHItem::new);
-    public static final RegistryObject<Item> RELIC_CROWN = ITEMS.register("relic_crown", RelicCROWNItem::new);
+    public static final RegistryObject<Item> KINGS_CROWN = ITEMS.register("kings_crown", KingsCrownItem::new);
     public static final RegistryObject<Item> KINGS_ARMOUR = ITEMS.register("kings_armour", KingsArmourItem::new);
     public static final RegistryObject<Item> KINGS_ARMOR = block(ModBlocks.KINGS_ARMOR);
     public static final RegistryObject<Item> BLOCK_CROWN = block(ModBlocks.BLOCK_CROWN);
-    public static final RegistryObject<Item> KINGS_SPEAR = ITEMS.register("kings_spear", KingsSpearItem::new);
+    public static final RegistryObject<Item> KINGS_NEW_LANCE = ITEMS.register("kings_new_lance", KingsNewLance::new);
     public static final RegistryObject<Item> BLOCK_SPEAR = block(ModBlocks.BLOCK_SPEAR);
-    public static final RegistryObject<Item> KINGS_EXTENSION = ITEMS.register("kings_extension", KingsExtensionItem::new);
+    public static final RegistryObject<Item> KINGS_LEGACY = ITEMS.register("kings_legacy", KingsLegacyItem::new);
     public static final RegistryObject<Item> BLOCK_EXTENSION = block(ModBlocks.BLOCK_EXTENSION);
     public static final RegistryObject<Item> KINGS_CRYSTAL = ITEMS.register("kings_crystal", KingsCrystalItem::new);
     public static final RegistryObject<Item> BLOCK_CRYSTAL = block(ModBlocks.BLOCK_CRYSTAL);
@@ -54,9 +55,9 @@ public class ModItems {
     public static final RegistryObject<WearableCrownItem> WEARABLE_CROWN_HELMET = ITEMS.register("wearable_crown_helmet", () -> new WearableCrownItem(ArmorItem.Type.HELMET, new Item.Properties().fireResistant()));
     public static final RegistryObject<Item> FLUORE_BERRIES = ITEMS.register("fluore_berries", FluoreBerriesItem::new);
     public static final RegistryObject<Item> RADIANT_BERRIES = ITEMS.register("radiant_berries", RadiantBerriesItem::new);
-    public static final RegistryObject<Item> ARCHFIENDS_ARTIFACT = ITEMS.register("archfiends_artifact", ArchfiendsArtifactItem::new);
-    public static final RegistryObject<Item> ARCHFIENDS_FLAG = ITEMS.register("archfiends_flag", ArchfiendsFlagItem::new);
-    public static final RegistryObject<Item> ARCHFIENDS_BED = ITEMS.register("archfiends_bed", ArchfiendsBedItem::new);
+    public static final RegistryObject<Item> KING_OF_SARKAZ_VESSEL = ITEMS.register("king_of_sarkaz_vessel", KingOfSarkazVesselItem::new);
+    public static final RegistryObject<Item> SARKAZ_KINGS_TORN_BANNER = ITEMS.register("sarkaz_kings_torn_banner", SarkazKingsTornBannerItem::new);
+    public static final RegistryObject<Item> SARKAZ_KINGS_REGAL_REST = ITEMS.register("sarkaz_kings_regal_rest", SarkazKingsRegalRestItem::new);
     public static final RegistryObject<Item> ROYAL_FATE = ITEMS.register("royal_fate", RoyalFateItem::new);
     public static final RegistryObject<Item> BLOCK_FATE = block(ModBlocks.BLOCK_FATE);
     public static final RegistryObject<Item> CRIMSON_TREATY = ITEMS.register("crimson_treaty", CrimsonTreatyItem::new);
@@ -67,10 +68,10 @@ public class ModItems {
     public static final RegistryObject<Item> SOLO_MUSIC_BOX = ITEMS.register("solo_music_box", SoloMusicBoxItem::new);
     public static final RegistryObject<Item> MUSIC_BOX_FIXED = ITEMS.register("music_box_fixed", MusicBoxFixedItem::new);
     public static final RegistryObject<Item> REDSTONE_IRIS = block(ModBlocks.REDSTONE_IRIS);
-    public static final RegistryObject<Item> REDSTONE_IRIS_FLOWER = ITEMS.register("redstone_iris_flower", RedstoneIrisFlowerItem::new);
+    public static final RegistryObject<Item> ORIGINIUM_IRIS = ITEMS.register("originium_iris", OriginiumIrisItem::new);
     public static final RegistryObject<Item> REDSTONEIRIS_SEEDING = block(ModBlocks.REDSTONE_IRIS_SEEDING);
     public static final RegistryObject<Item> THERMOGRAPH = ITEMS.register("thermograph", ThermographItem::new);
-    public static final RegistryObject<Item> TOPONYM_TEXTOLOGY = ITEMS.register("toponym_textology", ToponymTextologyItem::new);
+    public static final RegistryObject<Item> GAULISH_TOPONYM_ORIGINS = ITEMS.register("gaulish_toponym_origins", GaulishToponymOriginsItem::new);
 
     public static final RegistryObject<Item> SEA_TRAIL_INIT = block(ModBlocks.SEA_TRAIL_INIT);
     public static final RegistryObject<Item> SEA_TRAIL_GROWING = block(ModBlocks.SEA_TRAIL_GROWING);
@@ -111,7 +112,7 @@ public class ModItems {
     public static final RegistryObject<Item> CANNED_NOODLE = ITEMS.register("canned_noodle", CannedNoodleItem::new);
     public static final RegistryObject<Item> CANNED_BOILED_WATER = ITEMS.register("canned_boiled_water", CannedBoiledWaterItem::new);
     public static final RegistryObject<Item> OBSIDIAN_BALL = ITEMS.register("obsidian_ball", () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> CHITIN_KNIFE = ITEMS.register("chitin_knife", ChitinKnifeItem::new);
+    public static final RegistryObject<Item> CHITINOUS_RIPPER = ITEMS.register("chitin_knife", ChitinousRipperItem::new);
     public static final RegistryObject<Item> COMPLEX_CHITIN = ITEMS.register("complex_chitin", () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> COMPLEX_CHITIN_SWORD = ITEMS.register("complex_chitin_sword", ComplexChitinSwordItem::new);
     public static final RegistryObject<Item> OCEAN_TRIM_TEMPLATE = ITEMS.register("ocean_trim_template", OceanTrimTemplateItem::new);
@@ -126,13 +127,13 @@ public class ModItems {
     public static final RegistryObject<Item> OCEAN_FARMLAND = block(ModBlocks.OCEAN_FARMLAND);
     public static final RegistryObject<Item> PHLOEM_BOW = ITEMS.register("phloem_bow", PhloemBowItem::new);
     public static final RegistryObject<Item> LEGENDARY_SPEAR = ITEMS.register("legendary_spear", LegendarySpearItem::new);
-    public static final RegistryObject<Item> ALLAY_SCULPTURE = ITEMS.register("allay_sculpture", AlleySculptureItem::new);
+    public static final RegistryObject<Item> ALLAY_SCULPTURE = ITEMS.register("allay_sculpture", StoneGargoyleItem::new);
     public static final RegistryObject<Item> ALLAY_BLOCK = block(ModBlocks.ALLAY_BLOCK);
     public static final RegistryObject<Item> BLOCK_BATBED = block(ModBlocks.BLOCK_BATBED);
     public static final RegistryObject<Item> BATBED_UPPER = block(ModBlocks.BATBED_UPPER);
-    public static final RegistryObject<Item> OMNI_KEY = ITEMS.register("omni_key", OmniKeyItem::new);
-    public static final RegistryObject<Item> SCORE = ITEMS.register("score", ScoreItem::new);
-    public static final RegistryObject<Item> RESCISSION = ITEMS.register("rescission", RescissionItem::new);
+    public static final RegistryObject<Item> UNIVERSAL_KEY = ITEMS.register("universal_key", UniversalKeyItem::new);
+    public static final RegistryObject<Item> SCORE = ITEMS.register("score", AntiquatedSheetMusicItem::new);
+    public static final RegistryObject<Item> LETTER_TERMINATION_CONTRACT = ITEMS.register("rescission", RescissionItem::new);
     public static final RegistryObject<Item> LANGUAGE_KEY = ITEMS.register("language_key", LanguageKeyItem::new);
     public static final RegistryObject<Item> TRAIL_CAKE = block(ModBlocks.TRAIL_CAKE);
     public static final RegistryObject<Item> TRAIL_CAKE_PIECE = ITEMS.register("trail_cake_piece", TrailCakePieceItem::new);
@@ -145,7 +146,7 @@ public class ModItems {
     public static final RegistryObject<Item> OCEAN_MACHINE = ITEMS.register("ocean_machine", OceanMachineItem::new);
     public static final RegistryObject<Item> OCEAN_CRYSTAL_BLOCK = block(ModBlocks.OCEAN_CRYSTAL_BLOCK);
     public static final RegistryObject<Item> COMPLEX_CHITIN_BLOCK = block(ModBlocks.COMPLEX_CHITIN_BLOCK);
-    public static final RegistryObject<Item> GUARDIAN_STARE = ITEMS.register("guardian_stare", GuardianStareItem::new);
+    public static final RegistryObject<Item> BANSHEE_KISS = ITEMS.register("banshee_kiss", BansheeKissItem::new);
     public static final RegistryObject<Item> HAND_SWORD = ITEMS.register("hand_sword", HandSwordItem::new);
     public static final RegistryObject<Item> TIDE_OBSERVATION = block(ModBlocks.TIDE_OBSERVATION);
     public static final RegistryObject<Item> SAMPLE_SUBSISTING = ITEMS.register("sample_subsisting", SampleSubsistingItem::new);
@@ -178,7 +179,7 @@ public class ModItems {
     public static final RegistryObject<Item> TRAIL_BUTTON = block(ModBlocks.TRAIL_BUTTON);
     public static final RegistryObject<Item> TRAIL_PRESSURE_PLATE = block(ModBlocks.TRAIL_PRESSURE_PLATE);
     public static final RegistryObject<Item> TRAIL_TILE = block(ModBlocks.TRAIL_TILE);
-    public static final RegistryObject<Item> CAERULA_HEART = ITEMS.register("caerula_heart", CaerulaHeartItem::new);
+    public static final RegistryObject<Item> CAERULA_ANIMUS = ITEMS.register("caerula_animus", CaerulaAnimusItem::new);
     public static final RegistryObject<Item> COIN_OF_TRADE = ITEMS.register("coin_of_trade", CoinOfTradeItem::new);
     public static final RegistryObject<Item> OCEAN_PEDUNCLE = ITEMS.register("ocean_peduncle", OceanPeduncleItem::new);
     public static final RegistryObject<Item> ELITE_PEDUNCLE = ITEMS.register("elite_peduncle", ElitePeduncleItem::new);
@@ -208,11 +209,11 @@ public class ModItems {
 
     public static final RegistryObject<Item> HAND_OF_SPOTLESS = RELICS.register("hand_of_spotless", HandOfSwipeItem::new);
     public static final RegistryObject<Item> HAND_OF_FIREWORK = RELICS.register("hand_of_firework", HandOfFireworkItem::new);
-    public static final RegistryObject<Item> HAND_OF_ENGRAVE = RELICS.register("hand_of_engrave", HandOfEngraveItem::new);
-    public static final RegistryObject<Item> HAND_OF_THORNS = RELICS.register("hand_of_thorns", HandOfThornsItem::new);
-    public static final RegistryObject<Item> HAND_OF_STRANGLE = RELICS.register("hand_of_strangle", HandOfStrangleItem::new);
+    public static final RegistryObject<Item> HAND_OF_BRANDING = RELICS.register("hand_of_branding", HandOfBrandingItem::new);
+    public static final RegistryObject<Item> HAND_OF_SPIKES = RELICS.register("hand_of_spikes", HandOfSpikesItem::new);
+    public static final RegistryObject<Item> HAND_OF_CHOKER = RELICS.register("hand_of_choker", HandOfChokerItem::new);
     public static final RegistryObject<Item> HAND_OF_FERTILIY = RELICS.register("hand_of_fertiliy", HandOfFertiliyItem::new);
-    public static final RegistryObject<Item> HAND_OF_SPEED = RELICS.register("hand_of_speed", HandOfSpeedItem::new);
+    public static final RegistryObject<Item> HAND_OF_SUPERSPEED = RELICS.register("hand_of_superspeed", HandOfSuperspeedItem::new);
     public static final RegistryObject<Item> HAND_OF_PULVERIZATION = RELICS.register("hand_of_pulverization", HandOfPulverizationItem::new);
 
     public static final RegistryObject<Item> SURVIVOR_CONTRACT = RELICS.register("survivor_contract", SurvivorContractItem::new);

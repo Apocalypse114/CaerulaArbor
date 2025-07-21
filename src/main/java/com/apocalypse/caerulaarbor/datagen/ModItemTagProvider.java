@@ -38,7 +38,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
         this.tag(ModTags.Items.KING_RELICS).add(ModItems.KINGS_ARMOR.get(), ModItems.KINGS_NEW_LANCE.get(), ModItems.KINGS_CRYSTAL.get(),
                 ModItems.KINGS_LEGACY.get(), ModItems.KINGS_CROWN.get());
         this.tag(ModTags.Items.ARCHFIEND_RELICS).add(ModItems.SARKAZ_KINGS_TORN_BANNER.get(), ModItems.KING_OF_SARKAZ_VESSEL.get(),
-                ModItems.SARKARZ_KINGS_REGAL_REST.get(), ModItems.ROYAL_FATE.get());
+                ModItems.SARKAZ_KINGS_REGAL_REST.get(), ModItems.ROYAL_FATE.get());
         this.tag(ModTags.Items.SELF_MENDABLE).add(ModItems.COMPLEX_CHITIN_AXE.get(), ModItems.COMPLEX_CHITIN_HOE.get(), ModItems.COMPLEX_CHITIN_PICKAXE.get(),
                 ModItems.COMPLEX_CHITIN_SHOVEL.get(), ModItems.COMPLEX_CHITIN_SWORD.get(), ModItems.LEGENDARY_SPEAR.get(), ModItems.TRAILED_WOODEN_SWORD.get(),
                 ModItems.TRAILED_STONE_SWORD.get(), ModItems.TRAILED_IRON_SWORD.get(), ModItems.TRAILED_DIAMOND_SWORD.get(), ModItems.TRAILED_NETHERITE_SWORD.get(),

@@ -146,7 +146,7 @@ public class ModTabs {
 
     // 这一堆是藏品，放这看一下
 //    tabData.accept(CaerulaArborModItems.RELIC_CURSE_EMELIGHT.get());
-//				tabData.accept(CaerulaArborModItems.RELIC_CURSED_GLOWBODY.get());
+//				tabData.accept(CaerulaArborModItems.LUMINOUS_CORPSE.get());
 //				tabData.accept(CaerulaArborModItems.RELIC_CURSED_RESEARCH.get());
 //				tabData.accept(CaerulaArborModItems.CAERULA_HEART.get());
 //				tabData.accept(CaerulaArborModItems.RELIC_CROWN.get());
@@ -154,12 +154,12 @@ public class ModTabs {
 //				tabData.accept(CaerulaArborModItems.KINGS_SPEAR.get());
 //				tabData.accept(CaerulaArborModItems.KINGS_EXTENSION.get());
 //				tabData.accept(CaerulaArborModItems.KINGS_CRYSTAL.get());
-//				tabData.accept(CaerulaArborModItems.ARCHFIENDS_ARTIFACT.get());
+//				tabData.accept(CaerulaArborModItems.SARKARZ_KINGS_REGAL_REST_ARTIFACT.get());
 //				tabData.accept(CaerulaArborModItems.ARCHFIENDS_FLAG.get());
 //				tabData.accept(CaerulaArborModItems.ARCHFIENDS_BED.get());
 //				tabData.accept(CaerulaArborModItems.ROYAL_FATE.get());
 //				tabData.accept(CaerulaArborModItems.CRIMSON_TREATY.get());
-//				tabData.accept(CaerulaArborModItems.CHITIN_KNIFE.get());
+//				tabData.accept(CaerulaArborModItems.CHITINOUS_RIPPER.get());
 //				tabData.accept(CaerulaArborModItems.HAND_OF_THORNS.get());
 //				tabData.accept(CaerulaArborModItems.HAND_OF_STRANGLE.get());
 //				tabData.accept(CaerulaArborModItems.HAND_OF_FERTILIY.get());
@@ -173,17 +173,17 @@ public class ModTabs {
 //				tabData.accept(CaerulaArborModItems.GOLDEN_STORM.get());
 //				tabData.accept(CaerulaArborModItems.AROMATIC_COFFEE.get());
 //				tabData.accept(CaerulaArborModItems.SOLO_MUSIC_BOX.get());
-//				tabData.accept(CaerulaArborModItems.REDSTONE_IRIS_FLOWER.get());
-//				tabData.accept(CaerulaArborModItems.RESCISSION.get());
+//				tabData.accept(CaerulaArborModItems.ORIGINIUM_IRIS.get());
+//				tabData.accept(CaerulaArborModItems.LETTER_TERMINATION_CONTRACT.get());
 //				tabData.accept(CaerulaArborModItems.SCORE.get());
-//				tabData.accept(CaerulaArborModItems.OMNI_KEY.get());
+//				tabData.accept(CaerulaArborModItems.UNIVERSAL_KEY.get());
 //				tabData.accept(CaerulaArborModItems.GUARDIAN_STARE.get());
 //				tabData.accept(CaerulaArborModItems.TOPONYM_TEXTOLOGY.get());
 //				tabData.accept(CaerulaArborModItems.ALLAY_SCULPTURE.get());
 //				tabData.accept(CaerulaArborModItems.PROOF_OF_LONGEVITY.get());
 
     public static final RegistryObject<CreativeModeTab> CAERULA_LIVINGS = REGISTRY.register("caerula_livings",
-            () -> CreativeModeTab.builder().title(Component.translatable("item_group.caerula_arbor.caerula_livings")).icon(() -> new ItemStack(ModItems.RELIC_CURSED_GLOWBODY.get()))
+            () -> CreativeModeTab.builder().title(Component.translatable("item_group.caerula_arbor.caerula_livings")).icon(() -> new ItemStack(ModItems.LUMINOUS_CORPSE.get()))
                     .displayItems((param, output) -> ModItems.SPAWN_EGGS.getEntries().forEach(registryObject -> output.accept(registryObject.get())))
                     .withTabsBefore(CAERULA_RELICS.getId()).build());
 

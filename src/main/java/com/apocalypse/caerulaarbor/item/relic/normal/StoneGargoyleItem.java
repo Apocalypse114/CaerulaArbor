@@ -1,5 +1,5 @@
 
-package com.apocalypse.caerulaarbor.item;
+package com.apocalypse.caerulaarbor.item.relic.normal;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
@@ -27,16 +27,16 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class AlleySculptureItem extends RelicItem {
-    public AlleySculptureItem() {
+public class StoneGargoyleItem extends RelicItem {
+    public StoneGargoyleItem() {
         super(new Item.Properties().stacksTo(1).rarity(Rarity.COMMON));
     }
 
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
-        list.add(Component.translatable("item.caerula_arbor.allay_sculpture.description_0"));
-        list.add(Component.translatable("item.caerula_arbor.allay_sculpture.description_1"));
+        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_0"));
+        list.add(Component.translatable("item.caerula_arbor.stone_gargoyle.description_1"));
     }
 
     @Override

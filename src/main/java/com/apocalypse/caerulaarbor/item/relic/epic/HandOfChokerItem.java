@@ -1,5 +1,5 @@
 
-package com.apocalypse.caerulaarbor.item;
+package com.apocalypse.caerulaarbor.item.relic.epic;
 
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.item.relic.RelicItem;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class HandOfChkoerItem extends RelicItem {
-    public HandOfChkoerItem() {
+public class HandOfChokerItem extends RelicItem {
+    public HandOfChokerItem() {
         super(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     }
 

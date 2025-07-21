@@ -26,16 +26,16 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class HandOfEngraveItem extends RelicItem {
-    public HandOfEngraveItem() {
+public class HandOfBrandingItem extends RelicItem {
+    public HandOfBrandingItem() {
         super(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     }
 
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
-        list.add(Component.translatable("item.caerula_arbor.hand_of_engrave.description_0"));
-        list.add(Component.translatable("item.caerula_arbor.hand_of_engrave.description_1"));
+        list.add(Component.translatable("item.caerula_arbor.hand_of_branding.description_0"));
+        list.add(Component.translatable("item.caerula_arbor.hand_of_branding.description_1"));
     }
 
     @Override

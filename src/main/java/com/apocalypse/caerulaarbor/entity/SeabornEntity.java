@@ -3,8 +3,8 @@ package com.apocalypse.caerulaarbor.entity;
 //孩子不懂事复制写着玩的
 
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
-import com.apocalypse.caerulaarbor.procedures.OceanizedPlayerProcedure;
+//import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
+//import com.apocalypse.caerulaarbor.procedures.OceanizedPlayerProcedure;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;

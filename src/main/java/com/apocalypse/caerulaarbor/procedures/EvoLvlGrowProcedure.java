@@ -12,7 +12,7 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class EvoLvlGrowProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, CommandContext<CommandSourceStack> arguments) {
-		CaerulaArborModVariables.MapVariables.get(world).strategyGrow = DoubleArgumentType.getDouble(arguments, "lvl");
+		CaerulaArborModVariables.MapVariables.get(world).strategyGrow = (int) DoubleArgumentType.getDouble(arguments, "lvl");
 		CaerulaArborModVariables.MapVariables.get(world).syncData(world);
 		if (DoubleArgumentType.getDouble(arguments, "lvl") >= 3) {
 			if (world instanceof Level _level) {

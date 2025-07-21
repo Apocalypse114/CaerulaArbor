@@ -171,4 +171,9 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
-
+processResources {
+    duplicatesStrategy = 'exclude' // 排除重复文件，保留第一个
+    // 或者使用 'fail' 来严格检查重复 (默认行为)
+    // 或者使用 'warn' 来警告但继续构建
+    // 或者使用 'include' 来包含所有重复文件 (可能导致运行时错误)
+}

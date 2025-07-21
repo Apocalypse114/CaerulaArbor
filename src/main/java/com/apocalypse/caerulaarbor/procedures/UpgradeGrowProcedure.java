@@ -16,12 +16,12 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class UpgradeGrowProcedure {
 	public static void execute(LevelAccessor world) {
-		double stra = 0;
 		String num = "";
 		String prefix = "";
-		stra = CaerulaArborModVariables.MapVariables.get(world).strategyGrow;
+		var mapVar = CaerulaArborModVariables.MapVariables.get(world);
+		int stra = mapVar.strategyGrow;
 		if (stra < 4) {
-			if (CaerulaArborModVariables.MapVariables.get(world).evo_point_grow >= Math.pow(stra + 1, 3) * (double) GameplayConfig.EVOLUTION_POINT_COEFFICIENT.get()) {
+			if (mapVar.evo_point_grow >= Math.pow(stra + 1, 3) * (double) GameplayConfig.EVOLUTION_POINT_COEFFICIENT.get()) {
 				for (Entity entityiterator : world.players()) {
 					if (entityiterator instanceof ServerPlayer _player) {
 						Advancement _adv = _player.server.getAdvancements().getAdvancement(new ResourceLocation("caerula_arbor:to_experience_evolution"));
@@ -32,24 +32,30 @@ public class UpgradeGrowProcedure {
 						}
 					}
 				}
-				CaerulaArborModVariables.MapVariables.get(world).strategyGrow = stra + 1;
-				CaerulaArborModVariables.MapVariables.get(world).syncData(world);
-				stra = CaerulaArborModVariables.MapVariables.get(world).strategyGrow;
-				CaerulaArborModVariables.MapVariables.get(world).evo_point_grow = 0;
-				CaerulaArborModVariables.MapVariables.get(world).syncData(world);
-				if (stra == 1) {
-					num = "I";
-					prefix = "§p";
-				} else if (stra == 2) {
-					num = "II";
-					prefix = "§b";
-				} else if (stra == 3) {
-					num = "III";
-					prefix = "§9";
-				} else if (stra == 4) {
-					num = "IV";
-					prefix = "§1";
-				}
+				mapVar.strategyGrow = stra + 1;
+				mapVar.syncData(world);
+				stra ++;
+				mapVar.evo_point_grow = 0;
+				mapVar.syncData(world);
+                prefix = switch (stra) {
+                    case 1 -> {
+                        num = "I";
+                        yield "§p";
+                    }
+                    case 2 -> {
+                        num = "II";
+                        yield "§b";
+                    }
+                    case 3 -> {
+                        num = "III";
+                        yield "§9";
+                    }
+                    case 4 -> {
+                        num = "IV";
+                        yield "§1";
+                    }
+                    default -> prefix;
+                };
 				if (GameplayConfig.ENABLE_EVOLUTION_SOUND.get()) {
 					for (Entity entityiterator : world.players()) {
 						if (stra >= 3) {
@@ -89,8 +95,8 @@ public class UpgradeGrowProcedure {
 					}
 				}
 			}
-			CaerulaArborModVariables.MapVariables.get(world).evo_point_grow = 1;
-			CaerulaArborModVariables.MapVariables.get(world).syncData(world);
+			mapVar.evo_point_grow = 1;
+			mapVar.syncData(world);
 		}
 	}
 }

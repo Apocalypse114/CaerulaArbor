@@ -147,7 +147,7 @@ public class EvolutionCommand {
 
 			if (entity != null) {
 				if (IfCanSilenceProcedure.execute(world)) {
-					CaerulaArborModVariables.MapVariables.get(world).strategy_silence = DoubleArgumentType.getDouble(arguments, "lvl");
+					CaerulaArborModVariables.MapVariables.get(world).strategy_silence = (int) DoubleArgumentType.getDouble(arguments, "lvl");
 					CaerulaArborModVariables.MapVariables.get(world).syncData(world);
 					if (DoubleArgumentType.getDouble(arguments, "lvl") == 1) {
 						if ((LevelAccessor) world instanceof Level _level) {

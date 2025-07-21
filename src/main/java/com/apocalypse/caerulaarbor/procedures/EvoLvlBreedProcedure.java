@@ -12,7 +12,7 @@ import net.minecraft.world.level.LevelAccessor;
 
 public class EvoLvlBreedProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, CommandContext<CommandSourceStack> arguments) {
-		CaerulaArborModVariables.MapVariables.get(world).strategyBreed = DoubleArgumentType.getDouble(arguments, "lvl");
+		CaerulaArborModVariables.MapVariables.get(world).strategyBreed = (int) DoubleArgumentType.getDouble(arguments, "lvl");
 		CaerulaArborModVariables.MapVariables.get(world).syncData(world);
 		if (DoubleArgumentType.getDouble(arguments, "lvl") >= 3) {
 			if (world instanceof Level _level) {

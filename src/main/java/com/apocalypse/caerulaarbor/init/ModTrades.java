@@ -22,7 +22,7 @@ public class ModTrades {
         }
         if (event.getType() == ModVillagers.CANNOT_GOODENOUGH.get()) {
             event.getTrades().get(5).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 24), new ItemStack(Blocks.RED_WOOL, 16), new ItemStack(ModItems.SARKAZ_KINGS_TORN_BANNER.get()), 1, 12, 0.04f));
-            event.getTrades().get(4).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 16), new ItemStack(Items.WHITE_BED), new ItemStack(ModItems.SARKARZ_KINGS_REGAL_REST.get()), 1, 8, 0.04f));
+            event.getTrades().get(4).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 16), new ItemStack(Items.WHITE_BED), new ItemStack(ModItems.SARKAZ_KINGS_REGAL_REST.get()), 1, 8, 0.04f));
             event.getTrades().get(4).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 16), new ItemStack(Items.GOLD_INGOT, 8), new ItemStack(ModItems.KINGS_LEGACY.get()), 1, 8, 0.04f));
             event.getTrades().get(5).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 24), new ItemStack(Items.NETHERITE_SCRAP), new ItemStack(ModItems.KINGS_NEW_LANCE.get()), 10, 5, 0.04f));
             event.getTrades().get(1).add(new BasicItemListing(new ItemStack(ModItems.REDSTONE_INGOT.get(), 12), new ItemStack(Items.PRISMARINE_SHARD, 16), new ItemStack(ModItems.WEIRD_FLUTE.get()), 10, 5, 0.04f));

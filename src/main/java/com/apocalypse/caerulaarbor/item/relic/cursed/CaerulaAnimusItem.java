@@ -26,8 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class CaerulaHeartItem extends Item {
-    public CaerulaHeartItem() {
+public class CaerulaAnimusItem extends Item {
+    public CaerulaAnimusItem() {
         super(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC));
     }
 
@@ -44,7 +44,7 @@ public class CaerulaHeartItem extends Item {
     @Override
     public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
-        list.add(Component.translatable("item.caerula_arbor.caerula_heart.description_0"));
+        list.add(Component.translatable("item.caerula_arbor.caerula_animus.description_0"));
     }
 
     @Override

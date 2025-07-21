@@ -11,11 +11,11 @@ import net.minecraft.world.level.Level;
 
 public class UpgradeBreedProcedure {
     public static void execute(Level world) {
-        double stra;
+        int stra;
         String num = "";
         String prefix = "";
         var mapVar = CaerulaArborModVariables.MapVariables.get(world);
-        stra = mapVar.strategyBreed;
+        stra = (int) mapVar.strategyBreed;
         if (stra < 4) {
             if (mapVar.evo_point_breed >= Math.pow(stra + 1, 3) * GameplayConfig.EVOLUTION_POINT_COEFFICIENT.get()) {
                 for (var player : world.players()) {
@@ -31,20 +31,26 @@ public class UpgradeBreedProcedure {
                 mapVar.strategyBreed = stra + 1;
                 mapVar.evo_point_breed = 0;
 
-                stra = mapVar.strategyBreed;
-                if (stra == 1) {
-                    num = "I";
-                    prefix = "§p";
-                } else if (stra == 2) {
-                    num = "II";
-                    prefix = "§b";
-                } else if (stra == 3) {
-                    num = "III";
-                    prefix = "§9";
-                } else if (stra == 4) {
-                    num = "IV";
-                    prefix = "§1";
-                }
+                stra ++;
+                prefix = switch (stra) {
+                    case 1 -> {
+                        num = "I";
+                        yield "§p";
+                    }
+                    case 2 -> {
+                        num = "II";
+                        yield "§b";
+                    }
+                    case 3 -> {
+                        num = "III";
+                        yield "§9";
+                    }
+                    case 4 -> {
+                        num = "IV";
+                        yield "§1";
+                    }
+                    default -> prefix;
+                };
                 if (GameplayConfig.ENABLE_EVOLUTION_SOUND.get()) {
                     for (var player : world.players()) {
                         if (stra >= 3) {

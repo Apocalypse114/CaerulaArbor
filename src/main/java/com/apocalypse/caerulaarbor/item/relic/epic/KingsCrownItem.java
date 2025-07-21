@@ -1,5 +1,5 @@
 
-package com.apocalypse.caerulaarbor.item;
+package com.apocalypse.caerulaarbor.item.relic.epic;
 
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
@@ -24,16 +24,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class RelicCROWNItem extends RelicItem {
-    public RelicCROWNItem() {
+public class KingsCrownItem extends RelicItem {
+    public KingsCrownItem() {
         super(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC));
     }
 
     @Override
     public void appendHoverText(ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
-        list.add(Component.translatable("item.caerula_arbor.relic_crown.description_0"));
-        list.add(Component.translatable("item.caerula_arbor.relic_crown.description_1"));
+        list.add(Component.translatable("item.caerula_arbor.kings_crown.description_0"));
+        list.add(Component.translatable("item.caerula_arbor.kings_crown.description_1"));
     }
 
     @Override

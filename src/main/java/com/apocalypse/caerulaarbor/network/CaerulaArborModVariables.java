@@ -86,11 +86,11 @@ public class CaerulaArborModVariables {
         public double evo_point_subsisting = 0;
         public double evo_point_breed = 0;
         public double evo_point_migration = 0;
-        public double strategyGrow = 0;
-        public double strategySubsisting = 0;
-        public double strategyBreed = 0;
+        public int strategyGrow = 0;
+        public int strategySubsisting = 0;
+        public int strategyBreed = 0;
         public int strategyMigration = 0;
-        public double strategy_silence = 0;
+        public int strategy_silence = 0;
         public double evo_point_silence = 0;
         public boolean silence_enabled = false;
 
@@ -105,11 +105,11 @@ public class CaerulaArborModVariables {
             evo_point_subsisting = nbt.getDouble("evo_point_subsisting");
             evo_point_breed = nbt.getDouble("evo_point_breed");
             evo_point_migration = nbt.getDouble("evo_point_migration");
-            strategyGrow = nbt.getDouble("StrategyGrow");
-            strategySubsisting = nbt.getDouble("StrategySubsisting");
-            strategyBreed = nbt.getDouble("StrategyBreed");
+            strategyGrow = nbt.getInt("StrategyGrow");
+            strategySubsisting = nbt.getInt("StrategySubsisting");
+            strategyBreed = nbt.getInt("StrategyBreed");
             strategyMigration = nbt.getInt("StrategyMigration");
-            strategy_silence = nbt.getDouble("strategy_silence");
+            strategy_silence = nbt.getInt("strategy_silence");
             evo_point_silence = nbt.getDouble("evo_point_silence");
             silence_enabled = nbt.getBoolean("silence_enabled");
         }

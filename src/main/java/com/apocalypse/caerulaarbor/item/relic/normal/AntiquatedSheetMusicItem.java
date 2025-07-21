@@ -1,5 +1,5 @@
 
-package com.apocalypse.caerulaarbor.item;
+package com.apocalypse.caerulaarbor.item.relic.normal;
 
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.init.ModSounds;
@@ -21,17 +21,17 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-public class ScoreItem extends RecordItem {
+public class AntiquatedSheetMusicItem extends RecordItem {
 	// TODO 这玩意怎么整成RelicItem
-	public ScoreItem() {
+	public AntiquatedSheetMusicItem() {
 		super(8, ModSounds.BLOODYWOLF_OPENMOUTH, new Item.Properties().stacksTo(1).rarity(Rarity.COMMON), 1180);
 	}
 
 	@Override
 	public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
 		super.appendHoverText(itemstack, level, list, flag);
-		list.add(Component.translatable("item.caerula_arbor.score.description_0"));
-		list.add(Component.translatable("item.caerula_arbor.score.description_1"));
+		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_0"));
+		list.add(Component.translatable("item.caerula_arbor.antiquated_sheet_music.description_1"));
 	}
 
 	@Override
