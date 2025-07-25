@@ -1,15 +1,13 @@
-
 package com.apocalypse.caerulaarbor.potion;
 
+import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
-import com.apocalypse.caerulaarbor.procedures.ReviveSanityLightProcedure;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,26 +26,13 @@ public class PowerOfAnchorMobEffect extends MobEffect {
 
 	@Override
 	public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
-		ReviveSanityLightProcedure.execute(entity);
+		ModCapabilities.getPlayerVariables(entity).light = Mth.clamp(ModCapabilities.getPlayerVariables(entity).light + 0.5, 0, 100);
+		ModCapabilities.getPlayerVariables(entity).syncPlayerVariables(entity);
+		ModCapabilities.getSanityInjury(entity).heal(40);
 	}
 
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
 		return duration % 40 == 0;
-	}
-
-	@Override
-	public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-		consumer.accept(new IClientMobEffectExtensions() {
-			@Override
-			public boolean isVisibleInInventory(MobEffectInstance effect) {
-				return false;
-			}
-
-			@Override
-			public boolean isVisibleInGui(MobEffectInstance effect) {
-				return false;
-			}
-		});
 	}
 }

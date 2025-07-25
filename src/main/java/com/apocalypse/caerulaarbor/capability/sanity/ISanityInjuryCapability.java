@@ -9,4 +9,6 @@ public interface ISanityInjuryCapability extends INBTSerializable<CompoundTag> {
     boolean hurt(double amount);
 
     void heal(double amount);
+
+    void tick();
 }

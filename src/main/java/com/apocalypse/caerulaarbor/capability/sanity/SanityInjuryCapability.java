@@ -83,6 +83,7 @@ public class SanityInjuryCapability implements ISanityInjuryCapability {
     }
 
     // 不要用requireNonNull，一旦后面是空的直接崩游戏
+    @Override
     public void tick() {
         var attr = this.owner.getAttribute(ModAttributes.SANITY_REGENERATE.get());
         if (attr == null) return;

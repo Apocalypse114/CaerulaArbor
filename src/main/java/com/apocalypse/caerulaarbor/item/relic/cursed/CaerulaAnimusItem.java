@@ -3,8 +3,8 @@ package com.apocalypse.caerulaarbor.item.relic.cursed;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -64,9 +64,9 @@ public class CaerulaAnimusItem extends Item {
         double y = entity.getY();
         double z = entity.getZ();
 
-        if (!CaerulaArborModVariables.MapVariables.get(world).silence_enabled) {
-            CaerulaArborModVariables.MapVariables.get(world).silence_enabled = true;
-            CaerulaArborModVariables.MapVariables.get(world).syncData(world);
+        if (!MapVariables.get(world).enabledStrategySilence) {
+            MapVariables.get(world).enabledStrategySilence = true;
+            MapVariables.get(world).syncData(world);
             if (world instanceof ServerLevel) {
                 world.playSound(null, BlockPos.containing(x, y, z), SoundEvents.END_PORTAL_SPAWN, SoundSource.MASTER, 4, 0.85F);
                 world.getServer().getPlayerList().broadcastSystemMessage(Component.literal((Component.translatable("item.caerula_arbor.language_key.description_14").getString())), false);

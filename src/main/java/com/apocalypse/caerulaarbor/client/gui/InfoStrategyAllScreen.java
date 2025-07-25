@@ -1,11 +1,9 @@
 package com.apocalypse.caerulaarbor.client.gui;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
-import com.apocalypse.caerulaarbor.network.InfoStrategyAllButtonMessage;
-import com.apocalypse.caerulaarbor.procedures.GetPointSilenceProcedure;
-import com.apocalypse.caerulaarbor.procedures.IfCanSilenceProcedure;
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.menu.InfoStrategyAllMenu;
+import com.apocalypse.caerulaarbor.network.InfoStrategyAllButtonMessage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -57,9 +55,9 @@ public class InfoStrategyAllScreen extends AbstractContainerScreen<InfoStrategyA
             guiGraphics.renderTooltip(font, Component.translatable("gui.caerula_arbor.info_strategy_all.tooltip_breed"), mouseX, mouseY);
         if (mouseX > leftPos + 179 && mouseX < leftPos + 234 && mouseY > topPos + 101 && mouseY < topPos + 164)
             guiGraphics.renderTooltip(font, Component.translatable("gui.caerula_arbor.info_strategy_all.tooltip_mig"), mouseX, mouseY);
-        if (IfCanSilenceProcedure.execute(world))
-            if (mouseX > leftPos - 14 && mouseX < leftPos + 10 && mouseY > topPos - 12 && mouseY < topPos + 12)
-                guiGraphics.renderTooltip(font, Component.literal(GetPointSilenceProcedure.execute(world)), mouseX, mouseY);
+//        if (IfCanSilenceProcedure.execute(world))
+//            if (mouseX > leftPos - 14 && mouseX < leftPos + 10 && mouseY > topPos - 12 && mouseY < topPos + 12)
+//                guiGraphics.renderTooltip(font, Component.literal(GetPointSilenceProcedure.execute(world)), mouseX, mouseY);
     }
 
     @Override
@@ -68,7 +66,7 @@ public class InfoStrategyAllScreen extends AbstractContainerScreen<InfoStrategyA
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/wetplayer.png"), this.leftPos, this.topPos, 0, 0, 256, 168, 256, 168);
-        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/silence.png"), this.leftPos - 17, this.topPos - 18, Mth.clamp((int) CaerulaArborModVariables.MapVariables.get(world).strategy_silence * 29, 0, 116), 0, 29, 33, 145, 33);
+        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/silence.png"), this.leftPos - 17, this.topPos - 18, Mth.clamp((int) MapVariables.get(world).strategySilence * 29, 0, 116), 0, 29, 33, 145, 33);
 
         RenderSystem.disableBlend();
     }

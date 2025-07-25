@@ -6,19 +6,17 @@ import com.apocalypse.caerulaarbor.init.ModAttributes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class SIHelper {
-    public static boolean causeSanityInjury(LivingEntity living, double value) {
+    public static void causeSanityInjury(LivingEntity living, double value) {
         var sanRate = living.getAttribute(ModAttributes.SANITY_RATE.get());
         double sanRateValue = sanRate == null ? 0 : sanRate.getValue();
         double damage = value * sanRateValue;
-        return living.getCapability(ModCapabilities.SANITY_INJURY)
-                .map(cap -> cap.hurt(damage)).orElse(false);
+        ModCapabilities.getSanityInjury(living).hurt(damage);
     }
 
     public static void causeSanityInjuryWithParticles(LivingEntity living, double value) {
-        if (!causeSanityInjury(living, value)) return;
+        causeSanityInjury(living, value);
         for (int i = 1; i < 4; i++) {
             CaerulaArborMod.queueServerWork(i * 3, () -> {
                 if (living.level() instanceof ServerLevel server) {

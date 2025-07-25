@@ -1,10 +1,13 @@
 package com.apocalypse.caerulaarbor.capability;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
+import com.apocalypse.caerulaarbor.network.message.s2c.SavedDataSyncMessage;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,11 +20,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = CaerulaArborMod.MODID)
-public class CapabilityHandler {
+public class CapabilityEventHandler {
 
     @SubscribeEvent
     public static void registerCapabilities(AttachCapabilitiesEvent<Entity> event) {
@@ -35,8 +39,12 @@ public class CapabilityHandler {
 
     @SubscribeEvent
     public static void onPlayerLoggedInSyncPlayerVariables(PlayerEvent.PlayerLoggedInEvent event) {
-        if (!event.getEntity().level().isClientSide())
+        if (!event.getEntity().level().isClientSide()) {
             event.getEntity().getCapability(ModCapabilities.PLAYER_VARIABLE, null).orElse(new PlayerVariable()).syncPlayerVariables(event.getEntity());
+
+            var mapVariables = MapVariables.get(event.getEntity().level());
+            CaerulaArborMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SavedDataSyncMessage(mapVariables));
+        }
     }
 
     @SubscribeEvent
@@ -62,14 +70,9 @@ public class CapabilityHandler {
     }
 
     private static void handleSanityCap(Player player, Player oldPlayer) {
-        var oldChaosCap = oldPlayer.getCapability(ModCapabilities.SANITY_INJURY).resolve();
-        var newChaosCap = player.getCapability(ModCapabilities.SANITY_INJURY).resolve();
-
-        if (oldChaosCap.isEmpty() || newChaosCap.isEmpty()) return;
-
-        var newCap = newChaosCap.get();
-        var oldCap = oldChaosCap.get();
-        newCap.deserializeNBT(oldCap.serializeNBT());
+        var oldInjury = ModCapabilities.getSanityInjury(oldPlayer);
+        var newInjury = ModCapabilities.getSanityInjury(player);
+        newInjury.deserializeNBT(oldInjury.serializeNBT());
     }
 
     private static void handlePlayerVariables(Player player, Player oldPlayer, boolean isWasDeath) {
@@ -98,7 +101,7 @@ public class CapabilityHandler {
     }
 
     public static <S extends Tag, T extends INBTSerializable<S>> ICapabilitySerializable<S> createProvider(LazyOptional<T> instance, Capability<T> capability) {
-        return new ICapabilitySerializable<S>() {
+        return new ICapabilitySerializable<>() {
             @Override
             public @NotNull <C> LazyOptional<C> getCapability(@NotNull Capability<C> cap, @Nullable Direction side) {
                 return capability.orEmpty(cap, instance.cast());

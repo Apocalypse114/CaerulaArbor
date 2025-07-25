@@ -1,11 +1,11 @@
 package com.apocalypse.caerulaarbor.entity;
 
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
 import com.apocalypse.caerulaarbor.init.ModEntities;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -125,7 +125,7 @@ public class BasinSeaReaperEntity extends SeaMonster {
         double hardness;
 
         limithard = -1;
-        double migrationStrategy = CaerulaArborModVariables.MapVariables.get(world).strategyMigration;
+        double migrationStrategy = MapVariables.get(world).strategyMigration;
 
         if (migrationStrategy >= 2) {
             limithard = 3.5;

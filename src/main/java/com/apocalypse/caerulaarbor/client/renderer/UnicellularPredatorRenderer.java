@@ -1,8 +1,8 @@
 package com.apocalypse.caerulaarbor.client.renderer;
 
-import com.apocalypse.caerulaarbor.entity.UnicellularPredatorEntity;
-import com.apocalypse.caerulaarbor.client.layer.CollectorProkaryoteLayer;
+import com.apocalypse.caerulaarbor.client.layer.UnicellularPredatorLayer;
 import com.apocalypse.caerulaarbor.client.model.entity.UnicellularPredatorModel;
+import com.apocalypse.caerulaarbor.entity.UnicellularPredatorEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,7 +17,7 @@ public class UnicellularPredatorRenderer extends GeoEntityRenderer<UnicellularPr
     public UnicellularPredatorRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new UnicellularPredatorModel());
         this.shadowRadius = 0.3f;
-        this.addRenderLayer(new CollectorProkaryoteLayer(this));
+        this.addRenderLayer(new UnicellularPredatorLayer(this));
     }
 
     @Override

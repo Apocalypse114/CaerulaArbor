@@ -134,6 +134,18 @@
   "item.caerula_arbor.path_shaper_spawn_egg": "塑路者刷怪蛋",
   "item.caerula_arbor.pathshaper_fractal_spawn_egg": "塑路者分形刷怪蛋",
 
+  "caerula_arbor.strategy.subsisting": "存续",
+  "caerula_arbor.strategy.grow": "生长",
+  "caerula_arbor.strategy.breed": "繁育",
+  "caerula_arbor.strategy.migration": "迁徙",
+  "caerula_arbor.strategy.silence": "静谧",
+  "des.caerula_arbor.strategy.upgrade": "大群的进化策略[%1$s]已进入阶段%2$s",
+
+  "command.caerula_arbor.evolution.upgrade.success": "大群的进化策略[%1$s]已进入新的阶段",
+  "command.caerula_arbor.evolution.upgrade.failure": "升级大群的进化策略[%1$s]失败",
+  "command.caerula_arbor.evolution.set.success": "大群的进化策略[%1$s]已设置为阶段%2$s",
+  "command.caerula_arbor.evolution.set.failure": "调整大群的进化策略[%1$s]失败",
+
   "subtitles.grow1": "拥纳愈广",
   "item.caerula_arbor.fluore_berries": "荧光浆果",
   "item.caerula_arbor.complex_chitin": "复合几丁质",

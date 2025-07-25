@@ -89,6 +89,18 @@
 
   "attribute.caerula_arbor.sanity_injury_resistance": "Sanity Injury Resistance",
 
+  "caerula_arbor.strategy.subsisting": "Subsisting",
+  "caerula_arbor.strategy.grow": "Grow",
+  "caerula_arbor.strategy.breed": "Breed",
+  "caerula_arbor.strategy.migration": "Migration",
+  "caerula_arbor.strategy.silence": "Silence",
+  "des.caerula_arbor.strategy.upgrade": "Calls of We Many's Strategy of [%1$s] has evolved into phase %2$s",
+
+  "command.caerula_arbor.evolution.upgrade.success": "Calls of We Many's Strategy of [%1$s] has evolved into a new phase",
+  "command.caerula_arbor.evolution.upgrade.failure": "Failed to upgrade Calls of We Many's Strategy of [%1$s]",
+  "command.caerula_arbor.evolution.set.success": "Calls of We Many's Strategy of [%1$s] has been set to phase %2$s",
+  "command.caerula_arbor.evolution.set.failure": "Failed to set Calls of We Many's Strategy of [%1$s]",
+
   "entity.caerula_arbor.shell_sea_runner": "Shell Sea Runner",
   "entity.caerula_arbor.deep_sea_slider": "Deep Sea Slider",
   "entity.caerula_arbor.super_slider": "Super Slider",

@@ -1,7 +1,7 @@
 
 package com.apocalypse.caerulaarbor.block;
 
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.procedures.OpenStraGUIProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -84,7 +84,7 @@ public class TideObservationBlock extends Block {
     public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
         super.tick(blockstate, world, pos, random);
 
-        if (CaerulaArborModVariables.MapVariables.get(world).strategy_silence > 0) {
+        if (MapVariables.get(world).strategySilence > 0) {
             world.setBlock(pos, blockstate.setValue(BLOCKSTATE, 1), 3);
         } else {
             world.setBlock(pos, blockstate.setValue(BLOCKSTATE, 0), 3);

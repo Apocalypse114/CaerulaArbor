@@ -1,10 +1,10 @@
 package com.apocalypse.caerulaarbor.entity;
 
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModEntities;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +33,6 @@ import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
@@ -104,7 +103,7 @@ public class NetherseaSwarmcallerEntity extends SeaMonster {
     @Override
     public void baseTick() {
         super.baseTick();
-        LevelAccessor world = this.level();
+        var world = this.level();
         double x = this.getX();
         double y = this.getY();
         double z = this.getZ();
@@ -120,7 +119,7 @@ public class NetherseaSwarmcallerEntity extends SeaMonster {
                 server.sendParticles(ParticleTypes.ELECTRIC_SPARK, x + 3.9 * Math.sin(angle), y + 0.4, z + 3.9 * Math.cos(angle), 2, 0.1, 0.1, 0.1, 0.1);
             }
 
-            if (CaerulaArborModVariables.MapVariables.get(world).strategyGrow >= 3) {
+            if (MapVariables.get(world).strategyGrow >= 3) {
                 for (int index1 = 0; index1 < 14; index1++) {
                     angle = Mth.nextDouble(RandomSource.create(), 0, 6.283);
                     server.sendParticles(ParticleTypes.BUBBLE_COLUMN_UP, x + 6.9 * Math.sin(angle), y + 0.4, z + 6.9 * Math.cos(angle), 2, 0.15, 0.15, 0.15, 0.1);

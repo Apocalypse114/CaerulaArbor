@@ -2,10 +2,11 @@ package com.apocalypse.caerulaarbor;
 
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.config.CommonConfig;
+import com.apocalypse.caerulaarbor.config.ServerConfig;
 import com.apocalypse.caerulaarbor.init.*;
-import com.apocalypse.caerulaarbor.network.CaerulaArborModVariables;
 import com.apocalypse.caerulaarbor.network.message.CaerulaRecordGUIButtonMessage;
 import com.apocalypse.caerulaarbor.network.message.PlayerVariablesSyncMessage;
+import com.apocalypse.caerulaarbor.network.message.s2c.SavedDataSyncMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -48,6 +49,7 @@ public class CaerulaArborMod {
 
     public CaerulaArborMod() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.init());
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.init());
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -67,6 +69,7 @@ public class CaerulaArborMod {
         ModMenus.REGISTRY.register(bus);
         ModAttributes.REGISTRY.register(bus);
 
+        ModCommandArguments.COMMAND_ARGUMENT_TYPES.register(bus);
         ModLootModifier.LOOT_MODIFIERS.register(bus);
 
         bus.addListener(this::onCommonSetup);
@@ -121,7 +124,7 @@ public class CaerulaArborMod {
                 Ingredient.of(Items.GLOWSTONE_DUST), PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.SANITY_CURE_II.get())));
         event.enqueueWork(Relic::onRegisterItem);
 
-        CaerulaArborMod.addNetworkMessage(CaerulaArborModVariables.SavedDataSyncMessage.class, CaerulaArborModVariables.SavedDataSyncMessage::buffer, CaerulaArborModVariables.SavedDataSyncMessage::new, CaerulaArborModVariables.SavedDataSyncMessage::handler);
+        CaerulaArborMod.addNetworkMessage(SavedDataSyncMessage.class, SavedDataSyncMessage::encode, SavedDataSyncMessage::decode, SavedDataSyncMessage::handler);
         CaerulaArborMod.addNetworkMessage(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::buffer, PlayerVariablesSyncMessage::new, PlayerVariablesSyncMessage::handler);
         CaerulaArborMod.addNetworkMessage(CaerulaRecordGUIButtonMessage.class, CaerulaRecordGUIButtonMessage::encode, CaerulaRecordGUIButtonMessage::decode, CaerulaRecordGUIButtonMessage::handler);
     }
