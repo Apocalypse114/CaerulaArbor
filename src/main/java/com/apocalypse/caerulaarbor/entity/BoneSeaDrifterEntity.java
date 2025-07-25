@@ -188,7 +188,7 @@ public class BoneSeaDrifterEntity extends SeaMonster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         boolean flag = super.doHurtTarget(pEntity);
         if (flag && pEntity instanceof LivingEntity living && !living.level().isClientSide) {
             living.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_BREAKING.get(), 300, 1), this);

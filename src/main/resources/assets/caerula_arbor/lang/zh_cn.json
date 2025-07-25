@@ -108,6 +108,8 @@
   "entity.caerula_arbor.skimming_sea_drifter": "掠海漂移体",
   "entity.caerula_arbor.path_shaper": "塑路者",
   "entity.caerula_arbor.pathshaper_fractal": "塑路者分形",
+  "entity.caerula_arbor.divicellular_hoarder": "诡核集养者",
+  "entity.caerula_arbor.exocellular_depositer": "微核沉积者",
 
   "item.caerula_arbor.shell_sea_runner_spawn_egg": "壳海狂奔者刷怪蛋",
   "item.caerula_arbor.deep_sea_slider_spawn_egg": "底海滑动者刷怪蛋",

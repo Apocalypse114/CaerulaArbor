@@ -15,7 +15,7 @@
 //import com.mojang.blaze3d.vertex.PoseStack;
 //
 //public class FeederProkaryoteLayer extends GeoRenderLayer<FeederProkaryoteEntity> {
-//	private static final ResourceLocation LAYER = new ResourceLocation("caerula_arbor", "textures/entities/feederlit.png");
+//	private static final ResourceLocation LAYER = new ResourceLocation("caerula_arbor", "textures/entity/feederlit.png");
 //
 //	public FeederProkaryoteLayer(GeoRenderer<FeederProkaryoteEntity> entityRenderer) {
 //		super(entityRenderer);

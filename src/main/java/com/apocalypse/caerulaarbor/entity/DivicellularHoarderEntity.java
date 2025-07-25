@@ -1,11 +1,15 @@
 
 package com.apocalypse.caerulaarbor.entity;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import com.apocalypse.caerulaarbor.CaerulaArborMod;
+import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
+import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
+import com.apocalypse.caerulaarbor.init.ModEntities;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -20,6 +24,8 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.common.ForgeMod;
 
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
@@ -37,13 +43,16 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
@@ -52,67 +61,64 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
 
-import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
-import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
-import com.apocalypse.caerulaarbor.init.ModEntities;
-
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nullable;
 
 //TODO 我的行数怎么是你们的两倍！？
 
-public class ExocellularDepositerEntity extends SeaMonster {
-	public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(ExocellularDepositerEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(ExocellularDepositerEntity.class, EntityDataSerializers.STRING);
-	public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(ExocellularDepositerEntity.class, EntityDataSerializers.STRING);
+public class DivicellularHoarderEntity extends SeaMonster {
+	public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.STRING);
+	public boolean split = true;
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private boolean swinging;
 	private boolean lastloop;
 	private long lastSwing;
 	public String animationprocedure = "empty";
 
-	public ExocellularDepositerEntity(PlayMessages.SpawnEntity packet, Level world) {
-		this(ModEntities.EXOCELLULAR_DEPOSITER.get(), world);
+	public DivicellularHoarderEntity(PlayMessages.SpawnEntity packet, Level world) {
+		this(ModEntities.DIVICELLULAR_HOARDER.get(), world);
 	}
 
-	public ExocellularDepositerEntity(EntityType<ExocellularDepositerEntity> type, Level world) {
+	public DivicellularHoarderEntity(EntityType<DivicellularHoarderEntity> type, Level world) {
 		super(type, world);
-		xpReward = 4;
+		xpReward = 0;
 		setNoAi(false);
 		setMaxUpStep(0.6f);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0);
 		this.moveControl = new MoveControl(this) {
 			@Override
 			public void tick() {
-				if (ExocellularDepositerEntity.this.isInWater())
-					ExocellularDepositerEntity.this.setDeltaMovement(ExocellularDepositerEntity.this.getDeltaMovement().add(0, 0.005, 0));
-				if (this.operation == Operation.MOVE_TO && !ExocellularDepositerEntity.this.getNavigation().isDone()) {
-					double dx = this.wantedX - ExocellularDepositerEntity.this.getX();
-					double dy = this.wantedY - ExocellularDepositerEntity.this.getY();
-					double dz = this.wantedZ - ExocellularDepositerEntity.this.getZ();
+				if (DivicellularHoarderEntity.this.isInWater())
+					DivicellularHoarderEntity.this.setDeltaMovement(DivicellularHoarderEntity.this.getDeltaMovement().add(0, 0.005, 0));
+				if (this.operation == Operation.MOVE_TO && !DivicellularHoarderEntity.this.getNavigation().isDone()) {
+					double dx = this.wantedX - DivicellularHoarderEntity.this.getX();
+					double dy = this.wantedY - DivicellularHoarderEntity.this.getY();
+					double dz = this.wantedZ - DivicellularHoarderEntity.this.getZ();
 					float f = (float) (Mth.atan2(dz, dx) * (double) (180 / Math.PI)) - 90;
-					float f1 = (float) (this.speedModifier * ExocellularDepositerEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-					ExocellularDepositerEntity.this.setYRot(this.rotlerp(ExocellularDepositerEntity.this.getYRot(), f, 10));
-					ExocellularDepositerEntity.this.yBodyRot = ExocellularDepositerEntity.this.getYRot();
-					ExocellularDepositerEntity.this.yHeadRot = ExocellularDepositerEntity.this.getYRot();
-					if (ExocellularDepositerEntity.this.isInWater()) {
-						ExocellularDepositerEntity.this.setSpeed((float) ExocellularDepositerEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+					float f1 = (float) (this.speedModifier * DivicellularHoarderEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+					DivicellularHoarderEntity.this.setYRot(this.rotlerp(DivicellularHoarderEntity.this.getYRot(), f, 10));
+					DivicellularHoarderEntity.this.yBodyRot = DivicellularHoarderEntity.this.getYRot();
+					DivicellularHoarderEntity.this.yHeadRot = DivicellularHoarderEntity.this.getYRot();
+					if (DivicellularHoarderEntity.this.isInWater()) {
+						DivicellularHoarderEntity.this.setSpeed((float) DivicellularHoarderEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
 						float f2 = -(float) (Mth.atan2(dy, (float) Math.sqrt(dx * dx + dz * dz)) * (180 / Math.PI));
 						f2 = Mth.clamp(Mth.wrapDegrees(f2), -85, 85);
-						ExocellularDepositerEntity.this.setXRot(this.rotlerp(ExocellularDepositerEntity.this.getXRot(), f2, 5));
-						float f3 = Mth.cos(ExocellularDepositerEntity.this.getXRot() * (float) (Math.PI / 180.0));
-						ExocellularDepositerEntity.this.setZza(f3 * f1);
-						ExocellularDepositerEntity.this.setYya((float) (f1 * dy));
+						DivicellularHoarderEntity.this.setXRot(this.rotlerp(DivicellularHoarderEntity.this.getXRot(), f2, 5));
+						float f3 = Mth.cos(DivicellularHoarderEntity.this.getXRot() * (float) (Math.PI / 180.0));
+						DivicellularHoarderEntity.this.setZza(f3 * f1);
+						DivicellularHoarderEntity.this.setYya((float) (f1 * dy));
 					} else {
-						ExocellularDepositerEntity.this.setSpeed(f1 * 0.05F);
+						DivicellularHoarderEntity.this.setSpeed(f1 * 0.05F);
 					}
 				} else {
-					ExocellularDepositerEntity.this.setSpeed(0);
-					ExocellularDepositerEntity.this.setYya(0);
-					ExocellularDepositerEntity.this.setZza(0);
+					DivicellularHoarderEntity.this.setSpeed(0);
+					DivicellularHoarderEntity.this.setYya(0);
+					DivicellularHoarderEntity.this.setZza(0);
 				}
 			}
 		};
@@ -123,7 +129,8 @@ public class ExocellularDepositerEntity extends SeaMonster {
 		super.defineSynchedData();
 		this.entityData.define(SHOOT, false);
 		this.entityData.define(ANIMATION, "undefined");
-		this.entityData.define(TEXTURE, "exocellular_depositer");
+		this.entityData.define(TEXTURE, "divicellular_hoarder");
+		//this.entityData.define(split, true);
 	}
 
 	public void setTexture(String texture) {
@@ -169,6 +176,11 @@ public class ExocellularDepositerEntity extends SeaMonster {
 	}
 
 	@Override
+	public void playStepSound(BlockPos pos, BlockState blockIn) {
+		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.flop")), 0.15f, 1);
+	}
+
+	@Override
 	public SoundEvent getHurtSound(DamageSource ds) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.hurt"));
 	}
@@ -186,7 +198,7 @@ public class ExocellularDepositerEntity extends SeaMonster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) {
+	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putString("Texture", this.getTexture());
 	}
@@ -200,6 +212,8 @@ public class ExocellularDepositerEntity extends SeaMonster {
 
 	@Override
 	public void baseTick() {
+		if (this.level() instanceof ServerLevel _slvl)
+			self_split(_slvl,this,this.getX(),this.getY(),this.getZ());
 		super.baseTick();
 		this.refreshDimensions();
 	}
@@ -224,14 +238,19 @@ public class ExocellularDepositerEntity extends SeaMonster {
 		return false;
 	}
 
+	public static void init() {
+		SpawnPlacements.register(ModEntities.DIVICELLULAR_HOARDER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+				(entityType, world, reason, pos, random) -> (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER)));
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
-		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.6);
-		builder = builder.add(Attributes.MAX_HEALTH, 18);
-		builder = builder.add(Attributes.ARMOR, 3);
-		builder = builder.add(Attributes.ATTACK_DAMAGE, 4);
-		builder = builder.add(Attributes.FOLLOW_RANGE, 22);
-		builder = builder.add(ForgeMod.SWIM_SPEED.get(), 0.6);
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5);
+		builder = builder.add(Attributes.MAX_HEALTH, 32);
+		builder = builder.add(Attributes.ARMOR, 0);
+		builder = builder.add(Attributes.ATTACK_DAMAGE, 3);
+		builder = builder.add(Attributes.FOLLOW_RANGE, 16);
+		builder = builder.add(ForgeMod.SWIM_SPEED.get(), 0.5);
 		return builder;
 	}
 
@@ -240,15 +259,9 @@ public class ExocellularDepositerEntity extends SeaMonster {
 			if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F))
 
 			) {
-				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.exocellular_depsoiter.move"));
+				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.divicellular_hoarder.move"));
 			}
-			if (this.isDeadOrDying()) {
-				return event.setAndContinue(RawAnimation.begin().thenPlay("animation.exocellular_depsoiter.die"));
-			}
-			if (this.isInWaterOrBubble()) {
-				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.exocellular_depsoiter.move"));
-			}
-			return event.setAndContinue(RawAnimation.begin().thenLoop("animation.exocellular_depsoiter.idle"));
+			return event.setAndContinue(RawAnimation.begin().thenLoop("animation.divicellular_hoarder.idle"));
 		}
 		return PlayState.STOP;
 	}
@@ -261,12 +274,12 @@ public class ExocellularDepositerEntity extends SeaMonster {
 			this.swinging = true;
 			this.lastSwing = level().getGameTime();
 		}
-		if (this.swinging && this.lastSwing + 20L <= level().getGameTime()) {
+		if (this.swinging && this.lastSwing + 10L <= level().getGameTime()) {
 			this.swinging = false;
 		}
 		if (this.swinging && event.getController().getAnimationState() == AnimationController.State.STOPPED) {
 			event.getController().forceAnimationReset();
-			return event.setAndContinue(RawAnimation.begin().thenPlay("animation.exocellular_depsoiter.attack"));
+			return event.setAndContinue(RawAnimation.begin().thenPlay("animation.divicellular_hoarder.attack"));
 		}
 		return PlayState.CONTINUE;
 	}
@@ -296,7 +309,6 @@ public class ExocellularDepositerEntity extends SeaMonster {
 		if (this.deathTime == 20) {
 			this.remove(RemovalReason.KILLED);
 			this.dropExperience();
-		SummonBones(this.level(),this.getX(),this.getY(),this.getZ());
 		}
 	}
 
@@ -310,9 +322,9 @@ public class ExocellularDepositerEntity extends SeaMonster {
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-		data.add(new AnimationController<>(this, "movement", 2, this::movementPredicate));
-		data.add(new AnimationController<>(this, "attacking", 2, this::attackingPredicate));
-		data.add(new AnimationController<>(this, "procedure", 2, this::procedurePredicate));
+		data.add(new AnimationController<>(this, "movement", 4, this::movementPredicate));
+		data.add(new AnimationController<>(this, "attacking", 4, this::attackingPredicate));
+		data.add(new AnimationController<>(this, "procedure", 4, this::procedurePredicate));
 	}
 
 	@Override
@@ -320,24 +332,40 @@ public class ExocellularDepositerEntity extends SeaMonster {
 		return this.cache;
 	}
 
-	private void SummonBones(LevelAccessor world,double x,double y,double z){
-		BlockPos curPos = BlockPos.containing(x, y, z);
-		BlockState curStat = world.getBlockState( curPos);
-		if (curStat.canBeReplaced()) {
-			curStat = Blocks.BONE_BLOCK.defaultBlockState();
-			world.setBlock(curPos,curStat,3);
-			world.levelEvent(2001, curPos, Block.getId(curStat));
-		}
-		for (Direction directioniterator : Direction.values()) {
-			if (Math.random() < 0.5) {
-				curPos = BlockPos.containing(x + directioniterator.getStepX(), y + directioniterator.getStepY(), z + directioniterator.getStepZ());
-				curStat = world.getBlockState(curPos);
-				if (curStat.canBeReplaced()) {
-					curStat = Blocks.BONE_BLOCK.defaultBlockState();
-					world.setBlock(curPos,curStat,3);
-					world.levelEvent(2001, curPos, Block.getId(curStat));
-				}
+	private void self_split(ServerLevel level,Entity entity, double x, double y, double z){
+		if (entity == null)
+			return;
+		if (entity instanceof LivingEntity _ent && _ent.getHealth() < _ent.getMaxHealth() * 0.5 && split){
+			RandomSource source = level.random;
+			Entity toSpawn = ModEntities.DIVICELLULAR_HOARDER.get().create(level);
+			split = false;
+			if(entity instanceof DivicellularHoarderEntity _man){
+				_man.setAnimation("animation.divicellular_hoarder.split");
 			}
+			_ent.setHealth((float) (_ent.getMaxHealth() * 0.5));
+			CaerulaArborMod.queueServerWork(10, ()-> {
+					SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.blow_out"));
+					if (sound != null) {
+						if (!level.isClientSide()) {
+							level.playSound(null, BlockPos.containing(entity.getX(), entity.getY(), entity.getZ()),
+									sound,
+									SoundSource.HOSTILE, 2, 1);
+						} else {
+							level.playLocalSound((entity.getX()), (entity.getY()), (entity.getZ()),
+									sound,
+									SoundSource.HOSTILE, 2, 1, false);
+						}
+					}
+					if (toSpawn instanceof DivicellularHoarderEntity _hoarder) {
+						_hoarder.split = false;
+						_hoarder.setHealth((float) (_ent.getMaxHealth() * 0.5));
+						_hoarder.setPos(x + Mth.nextDouble(source, -1, 1),
+								y,
+								z + Mth.nextDouble(source, -1, 1));
+						level.addFreshEntity(_hoarder);
+					}
+				}
+			);
 		}
 	}
 }

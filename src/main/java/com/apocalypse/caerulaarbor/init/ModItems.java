@@ -208,7 +208,7 @@ public class ModItems {
     public static final RegistryObject<Item> HAND_OF_FIREWORK = RELICS.register("hand_of_firework", HandOfFireworkItem::new);
     public static final RegistryObject<Item> HAND_OF_BRANDING = RELICS.register("hand_of_branding", HandOfBrandingItem::new);
     public static final RegistryObject<Item> HAND_OF_SPIKES = RELICS.register("hand_of_spikes", HandOfSpikesItem::new);
-    public static final RegistryObject<Item> HAND_OF_CHOKER = RELICS.register("hand_of_strangle", HandOfChkoerItem::new);
+    public static final RegistryObject<Item> HAND_OF_CHOKER = RELICS.register("hand_of_strangle", HandOfChokerItem::new);
     public static final RegistryObject<Item> HAND_OF_FERTILIY = RELICS.register("hand_of_fertiliy", HandOfFertiliyItem::new);
     public static final RegistryObject<Item> HAND_OF_SUPERSPEED = RELICS.register("hand_of_superspeed", HandOfSuperspeedItem::new);
     public static final RegistryObject<Item> HAND_OF_PULVERIZATION = RELICS.register("hand_of_pulverization", HandOfPulverizationItem::new);

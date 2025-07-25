@@ -170,7 +170,7 @@ public class NetherseaReefbreakerEntity extends SeaMonster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         boolean flag = super.doHurtTarget(pEntity);
         if (flag) {
             this.bonusTime = 70;

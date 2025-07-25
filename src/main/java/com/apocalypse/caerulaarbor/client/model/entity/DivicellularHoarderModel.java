@@ -1,25 +1,23 @@
 package com.apocalypse.caerulaarbor.client.model.entity;
 
-import com.apocalypse.caerulaarbor.entity.DivicellularCloneEntity;
+import com.apocalypse.caerulaarbor.entity.DivicellularHoarderEntity;
 import software.bernie.geckolib.model.GeoModel;
 
 import net.minecraft.resources.ResourceLocation;
 
-//TODO 这玩意儿能改成某能力参数改成false的Divicellular Hoarder
-
-public class DivicellularCloneModel extends GeoModel<DivicellularCloneEntity> {
+public class DivicellularHoarderModel extends GeoModel<DivicellularHoarderEntity> {
 	@Override
-	public ResourceLocation getAnimationResource(DivicellularCloneEntity entity) {
+	public ResourceLocation getAnimationResource(DivicellularHoarderEntity entity) {
 		return new ResourceLocation("caerula_arbor", "animations/divicellular_hoarder.animation.json");
 	}
 
 	@Override
-	public ResourceLocation getModelResource(DivicellularCloneEntity entity) {
+	public ResourceLocation getModelResource(DivicellularHoarderEntity entity) {
 		return new ResourceLocation("caerula_arbor", "geo/divicellular_hoarder.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(DivicellularCloneEntity entity) {
+	public ResourceLocation getTextureResource(DivicellularHoarderEntity entity) {
 		return new ResourceLocation("caerula_arbor", "textures/entity/" + entity.getTexture() + ".png");
 	}
 

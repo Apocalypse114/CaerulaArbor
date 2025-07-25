@@ -165,7 +165,7 @@ public class PathShaperEntity extends SeaMonster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         if (this.skillCooldown <= 0) {
             this.skillCooldown = 40;
             this.summonFractals();

@@ -111,6 +111,8 @@
   "entity.caerula_arbor.skimming_sea_drifter": "Skimming Sea Drifter",
   "entity.caerula_arbor.path_shaper": "Path Shaper",
   "entity.caerula_arbor.pathshaper_fractal": "Pathshaper Fractal",
+  "entity.caerula_arbor.divicellular_hoarder": "Deivicellular Hoarder",
+  "entity.caerula_arbor.exocellular_depositer": "Exocellular Depositer",
 
   "item.caerula_arbor.shell_sea_runner_spawn_egg": "Shell Sea Runner Spawn Egg",
   "item.caerula_arbor.deep_sea_slider_spawn_egg": "Deep Sea Slider Spawn Egg",

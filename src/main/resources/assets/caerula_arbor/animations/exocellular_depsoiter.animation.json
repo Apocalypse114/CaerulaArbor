@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.depsoiter.move": {
+		"animation.exocellular_depsoiter.move": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -217,7 +217,7 @@
 				}
 			}
 		},
-		"animation.depsoiter.idle": {
+		"animation.exocellular_depsoiter.idle": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -395,7 +395,7 @@
 				}
 			}
 		},
-		"animation.depsoiter.attack": {
+		"animation.exocellular_depsoiter.attack": {
 			"animation_length": 1,
 			"bones": {
 				"whole": {
@@ -556,7 +556,7 @@
 				}
 			}
 		},
-		"animation.depsoiter.die": {
+		"animation.exocellular_depsoiter.die": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {

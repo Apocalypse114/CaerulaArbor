@@ -95,6 +95,12 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ExocellularDepositerEntity>> EXOCELLULAR_DEPOSITER = register("exocellular_depositer",
             EntityType.Builder.<ExocellularDepositerEntity>of(ExocellularDepositerEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(22).setUpdateInterval(3).setCustomClientFactory(ExocellularDepositerEntity::new)
                     .sized(0.625f, 1f));
+    public static final RegistryObject<EntityType<DivicellularHoarderEntity>> DIVICELLULAR_HOARDER = register("divicellular_hoarder",
+            EntityType.Builder.<DivicellularHoarderEntity>of(DivicellularHoarderEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(DivicellularHoarderEntity::new)
+                    .sized(0.5f, 1f));
+    public static final RegistryObject<EntityType<ToxocellularDrifterEntity>> TOXOCELLULAR_DRIFTER = register("toxocellular_drifter",
+            EntityType.Builder.<ToxocellularDrifterEntity>of(ToxocellularDrifterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(ToxocellularDrifterEntity::new)
+                    .sized(0.6f, 1.5f));
 
     // Projectiles
     public static final RegistryObject<EntityType<FishShootEntity>> FISH_SHOOT = register("fish_shoot",
@@ -144,6 +150,8 @@ public class ModEntities {
         registerBasicSeaMonster(ModEntities.PATHSHAPER_FRACTAL.get(), event);
         registerWaterSeaMonster(ModEntities.DIVICELLULAR_CLONE.get(), event);
         registerWaterSeaMonster(ModEntities.EXOCELLULAR_DEPOSITER.get(), event);
+        registerWaterSeaMonster(ModEntities.DIVICELLULAR_HOARDER.get(), event);
+        registerWaterSeaMonster(ModEntities.TOXOCELLULAR_DRIFTER.get(), event);
     }
 
     public static <T extends Mob> void registerBasicSeaMonster(EntityType<T> type, SpawnPlacementRegisterEvent event) {
@@ -189,5 +197,7 @@ public class ModEntities {
         event.put(PATHSHAPER_FRACTAL.get(), PathshaperFractalEntity.createAttributes().build());
         event.put(DIVICELLULAR_CLONE.get(),DivicellularCloneEntity.createAttributes().build());
         event.put(EXOCELLULAR_DEPOSITER.get(),ExocellularDepositerEntity.createAttributes().build());
+        event.put(DIVICELLULAR_HOARDER.get(),DivicellularCloneEntity.createAttributes().build());
+        event.put(TOXOCELLULAR_DRIFTER.get(),ToxocellularDrifterEntity.createAttributes().build());
     }
 }

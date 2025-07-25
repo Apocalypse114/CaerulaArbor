@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.floater.idle": {
+		"animation.toxocellular_drifter.idle": {
 			"loop": true,
 			"animation_length": 4,
 			"bones": {
@@ -285,7 +285,7 @@
 				}
 			}
 		},
-		"animation.floater.attack": {
+		"animation.toxocellular_drifter.attack": {
 			"animation_length": 1,
 			"bones": {
 				"bb_main": {
@@ -485,7 +485,7 @@
 				}
 			}
 		},
-		"animation.floater.swim": {
+		"animation.toxocellular_drifter.swim": {
 			"loop": true,
 			"animation_length": 1.5,
 			"bones": {
@@ -615,7 +615,7 @@
 				}
 			}
 		},
-		"animation.floater.die": {
+		"animation.toxocellular_drifter.die": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {

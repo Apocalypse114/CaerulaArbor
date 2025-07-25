@@ -152,7 +152,7 @@ public class PathshaperFractalEntity extends SeaMonster {
     }
 
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         if (this.attackCount >= 2) {
             this.attackCount = 0;
             this.summonFractals();

@@ -19,7 +19,7 @@
 //
 //	@Override
 //	public ResourceLocation getTextureResource(FeederProkaryoteEntity entity) {
-//		return new ResourceLocation("caerula_arbor", "textures/entities/" + entity.getTexture() + ".png");
+//		return new ResourceLocation("caerula_arbor", "textures/entity/" + entity.getTexture() + ".png");
 //	}
 //
 //}

@@ -15,7 +15,7 @@
 //import com.mojang.blaze3d.vertex.PoseStack;
 //
 //public class ApostleProkaryoteLayer extends GeoRenderLayer<ApostleProkaryoteEntity> {
-//	private static final ResourceLocation LAYER = new ResourceLocation("caerula_arbor", "textures/entities/apostlelit.png");
+//	private static final ResourceLocation LAYER = new ResourceLocation("caerula_arbor", "textures/entity/apostlelit.png");
 //
 //	public ApostleProkaryoteLayer(GeoRenderer<ApostleProkaryoteEntity> entityRenderer) {
 //		super(entityRenderer);

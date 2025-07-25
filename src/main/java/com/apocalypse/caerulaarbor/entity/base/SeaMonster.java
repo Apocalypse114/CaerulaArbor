@@ -56,7 +56,7 @@ public abstract class SeaMonster extends Monster implements GeoEntity {
      * 策略-生长到达3级及以上时，攻击时额外造成魔法伤害
      */
     @Override
-    public boolean doHurtTarget(Entity pEntity) {
+    public boolean doHurtTarget(@NotNull Entity pEntity) {
         float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
         var level = this.level();
         double grow = CaerulaArborModVariables.MapVariables.get(level).strategyGrow;

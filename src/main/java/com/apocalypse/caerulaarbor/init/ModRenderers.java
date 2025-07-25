@@ -37,5 +37,9 @@ public class ModRenderers {
         event.registerEntityRenderer(ModEntities.SKIMMING_SEA_DRIFTER.get(), SkimmingSeaDrifterRenderer::new);
         event.registerEntityRenderer(ModEntities.PATH_SHAPER.get(), PathShaperRenderer::new);
         event.registerEntityRenderer(ModEntities.PATHSHAPER_FRACTAL.get(), PathshaperFractalRenderer::new);
+        event.registerEntityRenderer(ModEntities.DIVICELLULAR_CLONE.get(), DivicellularCloneRenderer::new);
+        event.registerEntityRenderer(ModEntities.DIVICELLULAR_HOARDER.get(), DivicellularHoarderRenderer::new);
+        event.registerEntityRenderer(ModEntities.EXOCELLULAR_DEPOSITER.get(), ExocellularDepositerRenderer::new);
+        event.registerEntityRenderer(ModEntities.TOXOCELLULAR_DRIFTER.get(), ToxocallularDrifterRenderer::new);
     }
 }

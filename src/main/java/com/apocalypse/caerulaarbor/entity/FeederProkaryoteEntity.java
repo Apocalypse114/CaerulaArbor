@@ -60,7 +60,7 @@
 //import net.mcreator.caerulaarbor.procedures.OceanizedPlayerProcedure;
 //import net.mcreator.caerulaarbor.procedures.FeeferSummonProcedure;
 //import net.mcreator.caerulaarbor.procedures.CanAttackAnimalsProcedure;
-//import net.mcreator.caerulaarbor.init.CaerulaArborModEntities;
+//import net.mcreator.caerulaarbor.init.ModEntities;
 //
 //public class FeederProkaryoteEntity extends Monster implements GeoEntity {
 //	public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(FeederProkaryoteEntity.class, EntityDataSerializers.BOOLEAN);
@@ -73,7 +73,7 @@
 //	public String animationprocedure = "empty";
 //
 //	public FeederProkaryoteEntity(PlayMessages.SpawnEntity packet, Level world) {
-//		this(CaerulaArborModEntities.FEEDER_PROKARYOTE.get(), world);
+//		this(ModEntities.FEEDER_PROKARYOTE.get(), world);
 //	}
 //
 //	public FeederProkaryoteEntity(EntityType<FeederProkaryoteEntity> type, Level world) {
@@ -344,7 +344,7 @@
 //	}
 //
 //	public static void init() {
-//		SpawnPlacements.register(CaerulaArborModEntities.FEEDER_PROKARYOTE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+//		SpawnPlacements.register(ModEntities.FEEDER_PROKARYOTE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 //				(entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)));
 //	}
 //
