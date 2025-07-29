@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.model.idle": {
+		"animation.matrocellular_nurse.idle": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -517,7 +517,7 @@
 				}
 			}
 		},
-		"animation.model.move": {
+		"animation.matrocellular_nurse.move": {
 			"loop": true,
 			"animation_length": 1,
 			"bones": {
@@ -1041,7 +1041,7 @@
 				}
 			}
 		},
-		"animation.model.attack": {
+		"animation.matrocellular_nurse.attack": {
 			"animation_length": 1,
 			"bones": {
 				"body": {
@@ -1327,7 +1327,7 @@
 				}
 			}
 		},
-		"animation.model.die": {
+		"animation.matrocellular_nurse.die": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {

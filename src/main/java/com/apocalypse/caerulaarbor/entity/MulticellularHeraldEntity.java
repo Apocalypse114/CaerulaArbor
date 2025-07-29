@@ -1,14 +1,14 @@
-
 package com.apocalypse.caerulaarbor.entity;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
+import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
-import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
-import com.apocalypse.caerulaarbor.init.ModEntities;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.core.object.PlayState;
@@ -17,6 +17,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.GeoEntity;
 
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.network.PlayMessages;
@@ -24,12 +25,12 @@ import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.common.ForgeMod;
 
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.Salmon;
@@ -43,7 +44,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -52,73 +53,74 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.core.BlockPos;
+
+import com.apocalypse.caerulaarbor.init.ModEntities;
 
 import javax.annotation.Nullable;
 
-//TODO 我的行数怎么是你们的两倍！？
-
-public class DivicellularHoarderEntity extends SeaMonster {
-	public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.STRING);
-	public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(DivicellularHoarderEntity.class, EntityDataSerializers.STRING);
-	public boolean split = true;
+//TODO 兔头海嗣
+public class MulticellularHeraldEntity extends Monster implements GeoEntity {
+	public static final EntityDataAccessor<Boolean> SHOOT = SynchedEntityData.defineId(MulticellularHeraldEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(MulticellularHeraldEntity.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<String> TEXTURE = SynchedEntityData.defineId(MulticellularHeraldEntity.class, EntityDataSerializers.STRING);
+	public boolean shelled = false;
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private boolean swinging;
 	private boolean lastloop;
 	private long lastSwing;
 	public String animationprocedure = "empty";
 
-	public DivicellularHoarderEntity(PlayMessages.SpawnEntity packet, Level world) {
-		this(ModEntities.DIVICELLULAR_HOARDER.get(), world);
+	public MulticellularHeraldEntity(PlayMessages.SpawnEntity packet, Level world) {
+		this(ModEntities.MULTICELLULAR_HERALD.get(), world);
 	}
 
-	public DivicellularHoarderEntity(EntityType<DivicellularHoarderEntity> type, Level world) {
+	public MulticellularHeraldEntity(EntityType<MulticellularHeraldEntity> type, Level world) {
 		super(type, world);
-		xpReward = 0;
+		xpReward = 8;
 		setNoAi(false);
-		setMaxUpStep(0.6f);
+		setMaxUpStep(1.1f);
 		this.setPathfindingMalus(BlockPathTypes.WATER, 0);
 		this.moveControl = new MoveControl(this) {
 			@Override
 			public void tick() {
-				if (DivicellularHoarderEntity.this.isInWater())
-					DivicellularHoarderEntity.this.setDeltaMovement(DivicellularHoarderEntity.this.getDeltaMovement().add(0, 0.005, 0));
-				if (this.operation == Operation.MOVE_TO && !DivicellularHoarderEntity.this.getNavigation().isDone()) {
-					double dx = this.wantedX - DivicellularHoarderEntity.this.getX();
-					double dy = this.wantedY - DivicellularHoarderEntity.this.getY();
-					double dz = this.wantedZ - DivicellularHoarderEntity.this.getZ();
+				if (MulticellularHeraldEntity.this.isInWater())
+					MulticellularHeraldEntity.this.setDeltaMovement(MulticellularHeraldEntity.this.getDeltaMovement().add(0, 0.005, 0));
+				if (this.operation == Operation.MOVE_TO && !MulticellularHeraldEntity.this.getNavigation().isDone()) {
+					double dx = this.wantedX - MulticellularHeraldEntity.this.getX();
+					double dy = this.wantedY - MulticellularHeraldEntity.this.getY();
+					double dz = this.wantedZ - MulticellularHeraldEntity.this.getZ();
 					float f = (float) (Mth.atan2(dz, dx) * (double) (180 / Math.PI)) - 90;
-					float f1 = (float) (this.speedModifier * DivicellularHoarderEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
-					DivicellularHoarderEntity.this.setYRot(this.rotlerp(DivicellularHoarderEntity.this.getYRot(), f, 10));
-					DivicellularHoarderEntity.this.yBodyRot = DivicellularHoarderEntity.this.getYRot();
-					DivicellularHoarderEntity.this.yHeadRot = DivicellularHoarderEntity.this.getYRot();
-					if (DivicellularHoarderEntity.this.isInWater()) {
-						DivicellularHoarderEntity.this.setSpeed((float) DivicellularHoarderEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+					float f1 = (float) (this.speedModifier * MulticellularHeraldEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+					MulticellularHeraldEntity.this.setYRot(this.rotlerp(MulticellularHeraldEntity.this.getYRot(), f, 10));
+					MulticellularHeraldEntity.this.yBodyRot = MulticellularHeraldEntity.this.getYRot();
+					MulticellularHeraldEntity.this.yHeadRot = MulticellularHeraldEntity.this.getYRot();
+					if (MulticellularHeraldEntity.this.isInWater()) {
+						MulticellularHeraldEntity.this.setSpeed((float) MulticellularHeraldEntity.this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
 						float f2 = -(float) (Mth.atan2(dy, (float) Math.sqrt(dx * dx + dz * dz)) * (180 / Math.PI));
 						f2 = Mth.clamp(Mth.wrapDegrees(f2), -85, 85);
-						DivicellularHoarderEntity.this.setXRot(this.rotlerp(DivicellularHoarderEntity.this.getXRot(), f2, 5));
-						float f3 = Mth.cos(DivicellularHoarderEntity.this.getXRot() * (float) (Math.PI / 180.0));
-						DivicellularHoarderEntity.this.setZza(f3 * f1);
-						DivicellularHoarderEntity.this.setYya((float) (f1 * dy));
+						MulticellularHeraldEntity.this.setXRot(this.rotlerp(MulticellularHeraldEntity.this.getXRot(), f2, 5));
+						float f3 = Mth.cos(MulticellularHeraldEntity.this.getXRot() * (float) (Math.PI / 180.0));
+						MulticellularHeraldEntity.this.setZza(f3 * f1);
+						MulticellularHeraldEntity.this.setYya((float) (f1 * dy));
 					} else {
-						DivicellularHoarderEntity.this.setSpeed(f1 * 0.05F);
+						MulticellularHeraldEntity.this.setSpeed(f1 * 0.05F);
 					}
 				} else {
-					DivicellularHoarderEntity.this.setSpeed(0);
-					DivicellularHoarderEntity.this.setYya(0);
-					DivicellularHoarderEntity.this.setZza(0);
+					MulticellularHeraldEntity.this.setSpeed(0);
+					MulticellularHeraldEntity.this.setYya(0);
+					MulticellularHeraldEntity.this.setZza(0);
 				}
 			}
 		};
@@ -129,8 +131,7 @@ public class DivicellularHoarderEntity extends SeaMonster {
 		super.defineSynchedData();
 		this.entityData.define(SHOOT, false);
 		this.entityData.define(ANIMATION, "undefined");
-		this.entityData.define(TEXTURE, "divicellular_hoarder");
-		//this.entityData.define(split, true);
+		this.entityData.define(TEXTURE, "multicellular_init");
 	}
 
 	public void setTexture(String texture) {
@@ -142,7 +143,7 @@ public class DivicellularHoarderEntity extends SeaMonster {
 	}
 
 	@Override
-	public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -157,9 +158,7 @@ public class DivicellularHoarderEntity extends SeaMonster {
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
 		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 5, false) {
 			@Override
-			protected double getAttackReachSqr(@NotNull LivingEntity entity) {
-				return 1.5 * 1.5;
-			}
+			protected double getAttackReachSqr(@NotNull LivingEntity entity) {return 1.8 * 1.8;}
 		});
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowSquid.class, false, false));
 		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Squid.class, false, false));
@@ -171,13 +170,8 @@ public class DivicellularHoarderEntity extends SeaMonster {
 	}
 
 	@Override
-	public @NotNull MobType getMobType() {
+	public MobType getMobType() {
 		return MobType.WATER;
-	}
-
-	@Override
-	public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.flop")), 0.15f, 1);
 	}
 
 	@Override
@@ -198,7 +192,13 @@ public class DivicellularHoarderEntity extends SeaMonster {
 	}
 
 	@Override
-	public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
+		SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
+		return retval;
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putString("Texture", this.getTexture());
 	}
@@ -212,9 +212,22 @@ public class DivicellularHoarderEntity extends SeaMonster {
 
 	@Override
 	public void baseTick() {
-		if (this.level() instanceof ServerLevel _slvl)
-			self_split(_slvl,this,this.getX(),this.getY(),this.getZ());
 		super.baseTick();
+		if (this.tickCount % 5 == 0 && !shelled){
+			shelled = detectShells();
+			if(shelled){
+                this.setAnimation("animation.multicellular_herald.skill");
+				CaerulaArborMod.queueServerWork(17,()->{
+					Level level = this.level();
+					SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("item.armor.equip_leather"));
+					if (level.isClientSide())level.playLocalSound(this.blockPosition(),sound, SoundSource.HOSTILE,1,1,true);
+					else level.playSound(this,this.blockPosition(),sound,SoundSource.HOSTILE,1,1);
+				});
+				this.setTexture("multicellular_herald"); //有没有什么更好的更改外观的方法
+				double perc = this.getHealth() / this.getMaxHealth();
+				if(perc > 0)setAttr(perc);
+			}
+		}
 		this.refreshDimensions();
 	}
 
@@ -238,19 +251,14 @@ public class DivicellularHoarderEntity extends SeaMonster {
 		return false;
 	}
 
-	public static void init() {
-		SpawnPlacements.register(ModEntities.DIVICELLULAR_HOARDER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				(entityType, world, reason, pos, random) -> (world.getBlockState(pos).is(Blocks.WATER) && world.getBlockState(pos.above()).is(Blocks.WATER)));
-	}
-
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
-		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.5);
-		builder = builder.add(Attributes.MAX_HEALTH, 32);
+		builder = builder.add(Attributes.MOVEMENT_SPEED, 0.6);
+		builder = builder.add(Attributes.MAX_HEALTH, 50);
 		builder = builder.add(Attributes.ARMOR, 0);
-		builder = builder.add(Attributes.ATTACK_DAMAGE, 3);
-		builder = builder.add(Attributes.FOLLOW_RANGE, 16);
-		builder = builder.add(ForgeMod.SWIM_SPEED.get(), 0.5);
+		builder = builder.add(Attributes.ATTACK_DAMAGE, 9);
+		builder = builder.add(Attributes.FOLLOW_RANGE, 24);
+		builder = builder.add(ForgeMod.SWIM_SPEED.get(), 0.6);
 		return builder;
 	}
 
@@ -259,9 +267,15 @@ public class DivicellularHoarderEntity extends SeaMonster {
 			if ((event.isMoving() || !(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F))
 
 			) {
-				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.divicellular_hoarder.move"));
+				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.multicellular_herald.move"));
 			}
-			return event.setAndContinue(RawAnimation.begin().thenLoop("animation.divicellular_hoarder.idle"));
+			if (this.isDeadOrDying()) {
+				return event.setAndContinue(RawAnimation.begin().thenPlay("animation.multicellular_herald.die"));
+			}
+			if (this.isInWaterOrBubble()) {
+				return event.setAndContinue(RawAnimation.begin().thenLoop("animation.multicellular_herald.move"));
+			}
+			return event.setAndContinue(RawAnimation.begin().thenLoop("animation.multicellular_herald.idle"));
 		}
 		return PlayState.STOP;
 	}
@@ -274,12 +288,12 @@ public class DivicellularHoarderEntity extends SeaMonster {
 			this.swinging = true;
 			this.lastSwing = level().getGameTime();
 		}
-		if (this.swinging && this.lastSwing + 10L <= level().getGameTime()) {
+		if (this.swinging && this.lastSwing + 20L <= level().getGameTime()) {
 			this.swinging = false;
 		}
 		if (this.swinging && event.getController().getAnimationState() == AnimationController.State.STOPPED) {
 			event.getController().forceAnimationReset();
-			return event.setAndContinue(RawAnimation.begin().thenPlay("animation.divicellular_hoarder.attack"));
+			return event.setAndContinue(RawAnimation.begin().thenPlay("animation.multicellular_herald.attack"));
 		}
 		return PlayState.CONTINUE;
 	}
@@ -322,9 +336,9 @@ public class DivicellularHoarderEntity extends SeaMonster {
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar data) {
-		data.add(new AnimationController<>(this, "movement", 4, this::movementPredicate));
-		data.add(new AnimationController<>(this, "attacking", 4, this::attackingPredicate));
-		data.add(new AnimationController<>(this, "procedure", 4, this::procedurePredicate));
+		data.add(new AnimationController<>(this, "movement", 1, this::movementPredicate));
+		data.add(new AnimationController<>(this, "attacking", 1, this::attackingPredicate));
+		data.add(new AnimationController<>(this, "procedure", 1, this::procedurePredicate));
 	}
 
 	@Override
@@ -332,40 +346,31 @@ public class DivicellularHoarderEntity extends SeaMonster {
 		return this.cache;
 	}
 
-	private void self_split(ServerLevel level,Entity entity, double x, double y, double z){
-		if (entity == null)
-			return;
-		if (entity instanceof LivingEntity _ent && _ent.getHealth() < _ent.getMaxHealth() * 0.5 && split){
-			RandomSource source = level.random;
-			Entity toSpawn = ModEntities.DIVICELLULAR_HOARDER.get().create(level);
-			split = false;
-			if(entity instanceof DivicellularHoarderEntity _man){
-				_man.setAnimation("animation.divicellular_hoarder.split");
+	private boolean detectShells(){
+		BlockPos center = this.blockPosition();
+		Level level = this.level();
+		for(BlockPos pos:BlockPos.betweenClosed(center.offset(-2,-2,-2),center.offset(2,3,2))){
+			if(!level.isLoaded(pos))continue;
+			BlockState homo = level.getBlockState(pos);
+			if (homo.is(Blocks.BONE_BLOCK)){
+				if(level instanceof ServerLevel _sLevel) _sLevel.destroyBlock(pos,false);
+				this.lookAt(EntityAnchorArgument.Anchor.EYES, pos.getCenter());
+				return true;
 			}
-			_ent.setHealth((float) (_ent.getMaxHealth() * 0.5));
-			CaerulaArborMod.queueServerWork(10, ()-> {
-					SoundEvent sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.blow_out"));
-					if (sound != null) {
-						if (!level.isClientSide()) {
-							level.playSound(null, BlockPos.containing(entity.getX(), entity.getY(), entity.getZ()),
-									sound,
-									SoundSource.HOSTILE, 2, 1);
-						} else {
-							level.playLocalSound((entity.getX()), (entity.getY()), (entity.getZ()),
-									sound,
-									SoundSource.HOSTILE, 2, 1, false);
-						}
-					}
-					if (toSpawn instanceof DivicellularHoarderEntity _hoarder) {
-						_hoarder.split = false;
-						_hoarder.setHealth((float) (_ent.getMaxHealth() * 0.5));
-						_hoarder.setPos(x + Mth.nextDouble(source, -1, 1),
-								y,
-								z + Mth.nextDouble(source, -1, 1));
-						level.addFreshEntity(_hoarder);
-					}
-				}
-			);
 		}
+		return false;
 	}
+
+	private void setAttr(double perc){
+		var mapVar = MapVariables.get(this.level());
+		double a1 = 1.6,a2 = 1.4;
+		if(mapVar.strategySubsisting >= 4){
+			a1 = 2.2;a2=1.8;
+		}
+		AttributeInstance max_h = this.getAttribute(Attributes.MAX_HEALTH);
+		max_h.setBaseValue(max_h.getBaseValue() * a1);
+		AttributeInstance atk = this.getAttribute(Attributes.ATTACK_DAMAGE);
+		atk.setBaseValue(atk.getBaseValue() * a2);
+		this.setHealth((float) (this.getMaxHealth() * perc));
+    }
 }

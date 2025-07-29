@@ -41,5 +41,7 @@ public class ModRenderers {
         event.registerEntityRenderer(ModEntities.DIVICELLULAR_HOARDER.get(), DivicellularHoarderRenderer::new);
         event.registerEntityRenderer(ModEntities.EXOCELLULAR_DEPOSITER.get(), ExocellularDepositerRenderer::new);
         event.registerEntityRenderer(ModEntities.TOXOCELLULAR_DRIFTER.get(), ToxocallularDrifterRenderer::new);
+        event.registerEntityRenderer(ModEntities.MULTICELLULAR_HERALD.get(), MulticellularHeraldRenderer::new);
+        event.registerEntityRenderer(ModEntities.MATROCELLULAR_NURSE.get(), MatrocellularNurseRenderer::new);
     }
 }

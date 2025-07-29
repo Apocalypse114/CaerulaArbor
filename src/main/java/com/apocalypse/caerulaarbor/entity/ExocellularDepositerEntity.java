@@ -151,7 +151,7 @@ public class ExocellularDepositerEntity extends SeaMonster {
 		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 5, false) {
 			@Override
 			protected double getAttackReachSqr(@NotNull LivingEntity entity) {
-				return this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth();
+				return 1.5 * 1.5;
 			}
 		});
 		this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, GlowSquid.class, false, false));

@@ -1,7 +1,7 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.apostle.idle": {
+		"animation.multicellular_herald.idle": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -279,7 +279,7 @@
 				}
 			}
 		},
-		"animation.apostle.move": {
+		"animation.multicellular_herald.move": {
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
@@ -583,7 +583,7 @@
 				}
 			}
 		},
-		"animation.apostle.attack": {
+		"animation.multicellular_herald.attack": {
 			"animation_length": 1,
 			"bones": {
 				"body": {
@@ -758,7 +758,7 @@
 				}
 			}
 		},
-		"animation.apostle.die": {
+		"animation.multicellular_herald.die": {
 			"loop": "hold_on_last_frame",
 			"animation_length": 1,
 			"bones": {
@@ -905,7 +905,7 @@
 				}
 			}
 		},
-		"animation.apostle.skill": {
+		"animation.multicellular_herald.skill": {
 			"animation_length": 1.5,
 			"bones": {
 				"body": {

@@ -101,6 +101,12 @@ public class ModEntities {
     public static final RegistryObject<EntityType<ToxocellularDrifterEntity>> TOXOCELLULAR_DRIFTER = register("toxocellular_drifter",
             EntityType.Builder.<ToxocellularDrifterEntity>of(ToxocellularDrifterEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(ToxocellularDrifterEntity::new)
                     .sized(0.6f, 1.5f));
+    public static final RegistryObject<EntityType<MulticellularHeraldEntity>> MULTICELLULAR_HERALD = register("multicellular_herald",
+            EntityType.Builder.<MulticellularHeraldEntity>of(MulticellularHeraldEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(MulticellularHeraldEntity::new)
+                    .sized(0.6f, 1.7f));
+    public static final RegistryObject<EntityType<MatrocellularNurseEntity>> MATROCELLULAR_NURSE = register("matrocellular_nurse",
+            EntityType.Builder.<MatrocellularNurseEntity>of(MatrocellularNurseEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(MatrocellularNurseEntity::new)
+                    .sized(0.8f, 1.1f));
 
     // Projectiles
     public static final RegistryObject<EntityType<FishShootEntity>> FISH_SHOOT = register("fish_shoot",
@@ -152,6 +158,8 @@ public class ModEntities {
         registerWaterSeaMonster(ModEntities.EXOCELLULAR_DEPOSITER.get(), event);
         registerWaterSeaMonster(ModEntities.DIVICELLULAR_HOARDER.get(), event);
         registerWaterSeaMonster(ModEntities.TOXOCELLULAR_DRIFTER.get(), event);
+        registerWaterSeaMonster(ModEntities.MULTICELLULAR_HERALD.get(), event);
+        registerWaterSeaMonster(ModEntities.MATROCELLULAR_NURSE.get(), event);
     }
 
     public static <T extends Mob> void registerBasicSeaMonster(EntityType<T> type, SpawnPlacementRegisterEvent event) {
@@ -199,5 +207,7 @@ public class ModEntities {
         event.put(EXOCELLULAR_DEPOSITER.get(),ExocellularDepositerEntity.createAttributes().build());
         event.put(DIVICELLULAR_HOARDER.get(),DivicellularCloneEntity.createAttributes().build());
         event.put(TOXOCELLULAR_DRIFTER.get(),ToxocellularDrifterEntity.createAttributes().build());
+        event.put(MULTICELLULAR_HERALD.get(),MulticellularHeraldEntity.createAttributes().build());
+        event.put(MATROCELLULAR_NURSE.get(),MatrocellularNurseEntity.createAttributes().build());
     }
 }
