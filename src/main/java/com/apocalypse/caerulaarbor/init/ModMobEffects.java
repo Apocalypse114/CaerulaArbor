@@ -48,4 +48,6 @@ public class ModMobEffects {
 	public static final RegistryObject<MobEffect> ANGER_OF_TIDE = REGISTRY.register("anger_of_tide", () -> new AngerOfTideMobEffect());
 	public static final RegistryObject<MobEffect> DEDUCT_ONE_SANITY = REGISTRY.register("deduct_one_sanity", () -> new DeductOneSanityMobEffect());
 	public static final RegistryObject<MobEffect> ADD_ATTACK_PERCLY = REGISTRY.register("add_attack_percly", () -> new AddAttackPerclyMobEffect());
+	public static final RegistryObject<MobEffect> PALSY = REGISTRY.register("palsy", PalsyMobEffect::new);
+	public static final RegistryObject<MobEffect> PALSYING = REGISTRY.register("palsying", PalsyingMobEffect::new);
 }

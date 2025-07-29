@@ -3,18 +3,15 @@ package com.apocalypse.caerulaarbor.potion;
 
 import com.apocalypse.caerulaarbor.init.ModParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HaemophiliaMobEffect extends MobEffect {
+public class HaemophiliaMobEffect extends InvisibleMobEffect {
     public HaemophiliaMobEffect() {
         super(MobEffectCategory.NEUTRAL, -3381505);
     }
@@ -50,20 +47,5 @@ public class HaemophiliaMobEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 40 == 0;
-    }
-
-    @Override
-    public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new IClientMobEffectExtensions() {
-            @Override
-            public boolean isVisibleInInventory(MobEffectInstance effect) {
-                return false;
-            }
-
-            @Override
-            public boolean isVisibleInGui(MobEffectInstance effect) {
-                return false;
-            }
-        });
     }
 }

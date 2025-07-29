@@ -7,6 +7,7 @@ import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.capability.sanity.ISanityInjuryCapability;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
+import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import com.apocalypse.caerulaarbor.init.ModTags;
 import com.apocalypse.caerulaarbor.item.relic.IRelic;
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
@@ -36,7 +38,6 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class LivingEventHandler {
-
     @SubscribeEvent
     public static void onEntityTick(LivingEvent.LivingTickEvent event) {
         // 这个不能改成ModCapabilities.getSanityInjury，重生时候需要重新复制一遍cap
@@ -121,6 +122,26 @@ public class LivingEventHandler {
         var entity = event.getEntity();
         handleSanityInjuryResistance(entity);
         handleSeaBornSpawn(entity, event.getSpawnType());
+    }
+
+    /**
+     * 麻痹的伤害取消逻辑
+     */
+    @SubscribeEvent
+    public static void handlePalsy(LivingAttackEvent event) {
+        if (!(event.getSource().getEntity() instanceof LivingEntity attacker)) return;
+        if (attacker.hasEffect(ModMobEffects.PALSYING.get())) {
+            event.setCanceled(true);
+            return;
+        }
+        var palsyEffect = attacker.getEffect(ModMobEffects.PALSY.get());
+        if (palsyEffect == null) return;
+        attacker.addEffect(new MobEffectInstance(ModMobEffects.PALSYING.get(), 10, 0, false, false));
+        int amplifier = palsyEffect.getAmplifier();
+        attacker.removeEffect(ModMobEffects.PALSY.get());
+        if (amplifier > 0)
+            attacker.addEffect(new MobEffectInstance(ModMobEffects.PALSY.get(), -1, amplifier - 1, false, false, true));
+        event.setCanceled(true);
     }
 
     /**

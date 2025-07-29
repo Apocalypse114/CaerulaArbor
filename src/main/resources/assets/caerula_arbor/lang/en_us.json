@@ -693,5 +693,8 @@
   "item.caerula_arbor.sarkaz_kings_regal_rest.description_0": "When Life is full, player armor +3, amr toughness +2",
   "item.caerula_arbor.kings_armour.description_0": "§btransfer all Lives to Shield, and 10% chance to gain 1 Shield and cost 1 Life when kill a mob",
   "item.minecraft.lingering_potion.effect.inst_sanity_ii": "Lingering Potion of Inst Sanity",
-  "item.caerula_arbor.hand_sword": "Hand Sword"
+  "item.caerula_arbor.hand_sword": "Hand Sword",
+
+  "effect.caerula_arbor.palsy": "Paralysis",
+  "effect.caerula_arbor.palsying": "Paralysis Stun"
 }

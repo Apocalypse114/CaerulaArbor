@@ -6,21 +6,18 @@ import com.apocalypse.caerulaarbor.procedures.DeductPlayerSanityProcedure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UmbrellaSettleMobEffect extends MobEffect {
+public class UmbrellaSettleMobEffect extends InvisibleMobEffect {
     public UmbrellaSettleMobEffect() {
         super(MobEffectCategory.BENEFICIAL, -6710785);
     }
@@ -71,20 +68,5 @@ public class UmbrellaSettleMobEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 20 == 0;
-    }
-
-    @Override
-    public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new IClientMobEffectExtensions() {
-            @Override
-            public boolean isVisibleInInventory(MobEffectInstance effect) {
-                return false;
-            }
-
-            @Override
-            public boolean isVisibleInGui(MobEffectInstance effect) {
-                return false;
-            }
-        });
     }
 }

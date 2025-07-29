@@ -2,21 +2,18 @@
 package com.apocalypse.caerulaarbor.potion;
 
 import com.apocalypse.caerulaarbor.init.ModTags;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AngerOfTideMobEffect extends MobEffect {
+public class AngerOfTideMobEffect extends InvisibleMobEffect {
     public AngerOfTideMobEffect() {
         super(MobEffectCategory.BENEFICIAL, -10092544);
     }
@@ -47,20 +44,5 @@ public class AngerOfTideMobEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 10 == 0;
-    }
-
-    @Override
-    public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new IClientMobEffectExtensions() {
-            @Override
-            public boolean isVisibleInInventory(MobEffectInstance effect) {
-                return false;
-            }
-
-            @Override
-            public boolean isVisibleInGui(MobEffectInstance effect) {
-                return false;
-            }
-        });
     }
 }

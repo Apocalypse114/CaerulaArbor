@@ -72,7 +72,7 @@ public class SanityInjuryCapability implements ISanityInjuryCapability {
                         给半秒麻痹震颤
                         减少1级（0级时消除）
                  */
-                owner.addEffect(new MobEffectInstance(ModMobEffects.DIZZY.get(), 60, 0, false, false));
+                owner.addEffect(new MobEffectInstance(ModMobEffects.PALSY.get(), -1, 2, false, false, true));
                 owner.hurt(ModDamageTypes.causeNervousImpairmentDamage(owner.level().registryAccess(), null),
                         Mth.clamp(owner.getMaxHealth() * 0.8f, 12, 72));
             }

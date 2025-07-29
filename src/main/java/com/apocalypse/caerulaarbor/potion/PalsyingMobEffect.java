@@ -6,10 +6,9 @@ import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SanityImmuneMobEffect extends InvisibleMobEffect {
-
-    public SanityImmuneMobEffect() {
-        super(MobEffectCategory.BENEFICIAL, -3342337);
+public class PalsyingMobEffect extends InvisibleMobEffect {
+    public PalsyingMobEffect() {
+        super(MobEffectCategory.HARMFUL, -1);
     }
 
     @Override

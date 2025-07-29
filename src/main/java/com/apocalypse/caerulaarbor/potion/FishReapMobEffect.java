@@ -10,9 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -20,13 +18,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FishReapMobEffect extends MobEffect {
+public class FishReapMobEffect extends InvisibleMobEffect {
     public FishReapMobEffect() {
         super(MobEffectCategory.NEUTRAL, -6710785);
     }
@@ -70,20 +67,5 @@ public class FishReapMobEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 20 == 0;
-    }
-
-    @Override
-    public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new IClientMobEffectExtensions() {
-            @Override
-            public boolean isVisibleInInventory(MobEffectInstance effect) {
-                return false;
-            }
-
-            @Override
-            public boolean isVisibleInGui(MobEffectInstance effect) {
-                return false;
-            }
-        });
     }
 }

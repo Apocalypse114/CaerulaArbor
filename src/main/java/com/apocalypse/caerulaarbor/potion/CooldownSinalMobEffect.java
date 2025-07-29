@@ -4,21 +4,18 @@ package com.apocalypse.caerulaarbor.potion;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.MagmaCube;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CooldownSinalMobEffect extends MobEffect {
+public class CooldownSinalMobEffect extends InvisibleMobEffect {
     public CooldownSinalMobEffect() {
         super(MobEffectCategory.BENEFICIAL, -3342337);
     }
@@ -46,20 +43,5 @@ public class CooldownSinalMobEffect extends MobEffect {
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 20 == 0;
-    }
-
-    @Override
-    public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
-        consumer.accept(new IClientMobEffectExtensions() {
-            @Override
-            public boolean isVisibleInInventory(MobEffectInstance effect) {
-                return false;
-            }
-
-            @Override
-            public boolean isVisibleInGui(MobEffectInstance effect) {
-                return false;
-            }
-        });
     }
 }

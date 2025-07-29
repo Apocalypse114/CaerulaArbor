@@ -690,5 +690,8 @@
   "entity.caerula_arbor.predator_abyssal": "Predator Abyssal",
   "item.caerula_arbor.creeper_fish_spawn_egg": "Creeper Fish Spawn Egg",
   "item.caerula_arbor.splasher_abyssal_spawn_egg": "Splasher Abyssal Spawn Egg",
-  "item.caerula_arbor.route_shaper_spawn_egg": "Route Shaper Spawn Egg"
+  "item.caerula_arbor.route_shaper_spawn_egg": "Route Shaper Spawn Egg",
+
+  "effect.caerula_arbor.palsy": "麻痹",
+  "effect.caerula_arbor.palsying": "麻痹震颤"
 }
