@@ -89,9 +89,9 @@ public class ModEntities {
     public static final RegistryObject<EntityType<PathshaperFractalEntity>> PATHSHAPER_FRACTAL = register("pathshaper_fractal",
             EntityType.Builder.<PathshaperFractalEntity>of(PathshaperFractalEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(PathshaperFractalEntity::new)
                     .sized(0.7f, 1.5f));
-    public static final RegistryObject<EntityType<DivicellularCloneEntity>> DIVICELLULAR_CLONE = register("divicellular_clone",
-            EntityType.Builder.<DivicellularCloneEntity>of(DivicellularCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(DivicellularCloneEntity::new)
-                    .sized(0.5f, 1f));
+   // public static final RegistryObject<EntityType<DivicellularCloneEntity>> DIVICELLULAR_CLONE = register("divicellular_clone",
+   //         EntityType.Builder.<DivicellularCloneEntity>of(DivicellularCloneEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(16).setUpdateInterval(3).setCustomClientFactory(DivicellularCloneEntity::new)
+   //                 .sized(0.5f, 1f));这个，不需要了
     public static final RegistryObject<EntityType<ExocellularDepositerEntity>> EXOCELLULAR_DEPOSITER = register("exocellular_depositer",
             EntityType.Builder.<ExocellularDepositerEntity>of(ExocellularDepositerEntity::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(22).setUpdateInterval(3).setCustomClientFactory(ExocellularDepositerEntity::new)
                     .sized(0.625f, 1f));
@@ -154,7 +154,7 @@ public class ModEntities {
         registerBasicSeaMonster(ModEntities.RETCHING_BROODMOTHER.get(), event);
         registerBasicSeaMonster(ModEntities.SKIMMING_SEA_DRIFTER.get(), event);
         registerBasicSeaMonster(ModEntities.PATHSHAPER_FRACTAL.get(), event);
-        registerWaterSeaMonster(ModEntities.DIVICELLULAR_CLONE.get(), event);
+        //registerWaterSeaMonster(ModEntities.DIVICELLULAR_CLONE.get(), event);
         registerWaterSeaMonster(ModEntities.EXOCELLULAR_DEPOSITER.get(), event);
         registerWaterSeaMonster(ModEntities.DIVICELLULAR_HOARDER.get(), event);
         registerWaterSeaMonster(ModEntities.TOXOCELLULAR_DRIFTER.get(), event);
@@ -203,9 +203,9 @@ public class ModEntities {
         event.put(SKIMMING_SEA_DRIFTER.get(), SkimmingSeaDrifterEntity.createAttributes().build());
         event.put(PATH_SHAPER.get(), PathShaperEntity.createAttributes().build());
         event.put(PATHSHAPER_FRACTAL.get(), PathshaperFractalEntity.createAttributes().build());
-        event.put(DIVICELLULAR_CLONE.get(),DivicellularCloneEntity.createAttributes().build());
+        //event.put(DIVICELLULAR_CLONE.get(),DivicellularHoarderEntity.createAttributes().build());
         event.put(EXOCELLULAR_DEPOSITER.get(),ExocellularDepositerEntity.createAttributes().build());
-        event.put(DIVICELLULAR_HOARDER.get(),DivicellularCloneEntity.createAttributes().build());
+        event.put(DIVICELLULAR_HOARDER.get(),DivicellularHoarderEntity.createAttributes().build());
         event.put(TOXOCELLULAR_DRIFTER.get(),ToxocellularDrifterEntity.createAttributes().build());
         event.put(MULTICELLULAR_HERALD.get(),MulticellularHeraldEntity.createAttributes().build());
         event.put(MATROCELLULAR_NURSE.get(),MatrocellularNurseEntity.createAttributes().build());
