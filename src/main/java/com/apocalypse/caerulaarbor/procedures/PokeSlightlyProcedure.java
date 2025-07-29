@@ -13,7 +13,7 @@ public class PokeSlightlyProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity) {
 		if (entity == null)
 			return;
-		if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization < 3) {
+		if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization < 3) {
 			DeductPlayerSanityProcedure.execute(entity, Mth.nextInt(RandomSource.create(), 16, 32));
 		}
 		if (world instanceof ServerLevel _level)

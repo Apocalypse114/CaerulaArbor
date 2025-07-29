@@ -27,7 +27,7 @@ public class SeaMonsterAttackableTargetGoal<T extends LivingEntity> extends Near
         return this.mob.level().getEntitiesOfClass(Player.class, new AABB(this.mob.getOnPos()).inflate(16), e -> true)
                 .stream()
                 .noneMatch(player -> player.getCapability(ModCapabilities.PLAYER_VARIABLE)
-                        .map(cap -> cap.player_oceanization == 3)
+                        .map(cap -> cap.seabornization == 3)
                         .orElse(false)
                 );
     }

@@ -74,8 +74,8 @@ public class RoyalFateItem extends Item {
             double lives_left = cap.maxLive;
 
             cap.maxLive = 1;
-            cap.lives = 1;
-            cap.shield = cap.shield + lives_left + 3;
+            cap.life = 1;
+            cap.shield = (int) (cap.shield + lives_left + 3);
 
             stack.shrink(1);
         }

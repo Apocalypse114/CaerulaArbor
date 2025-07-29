@@ -72,7 +72,7 @@ public abstract class RelicItem extends Item implements IRelic {
                 cap.maxLive += this.getAddedLives();
             }
             if (this.getAddedMaxLives() != 0) {
-                cap.lives += this.getAddedMaxLives();
+                cap.life += this.getAddedMaxLives();
             }
             if (this.getAddedShield() != 0) {
                 cap.shield += this.getAddedShield();

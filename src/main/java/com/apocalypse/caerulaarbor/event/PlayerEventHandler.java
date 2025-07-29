@@ -4,6 +4,7 @@ import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModGameRules;
+import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import com.apocalypse.caerulaarbor.init.ModParticleTypes;
 import com.apocalypse.caerulaarbor.init.ModSounds;
 import com.apocalypse.caerulaarbor.item.relic.IRelic;
@@ -15,14 +16,17 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -109,8 +113,8 @@ public class PlayerEventHandler {
 
             sendSoundAndParticles(level, pos, ModParticleTypes.SHIELDLOSS.get());
             shouldCancel = true;
-        } else if (cap.lives > 0) {
-            cap.lives -= 1;
+        } else if (cap.life > 0) {
+            cap.life -= 1;
 
             sendSoundAndParticles(level, pos, ModParticleTypes.LIFELOSS.get());
             shouldCancel = true;
@@ -156,5 +160,40 @@ public class PlayerEventHandler {
         var cap = ModCapabilities.getPlayerVariables(player);
         cap.light = Mth.clamp(cap.light + Mth.nextInt(RandomSource.create(), 1, 3), 0, 100);
         cap.syncPlayerVariables(player);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerAttacked(LivingAttackEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            var variables = ModCapabilities.getPlayerVariables(player);
+            if (variables.isRejectionInvoked(PlayerVariable.Rejection.NEURODEGENERATION)) {
+                double rate = 0.08;
+                int time = 160;
+                float temp = player.level().getBiome(player.getOnPos()).get().getBaseTemperature();
+                if (temp >= 1.8) {
+                    rate = 0.02;
+                    time = 40;
+                }
+                if (temp <= 0.1) {
+                    rate = 0.12;
+                    time = 240;
+                }
+                if (Math.random() < rate && !player.level().isClientSide) {
+                    player.addEffect(new MobEffectInstance(ModMobEffects.FROZEN.get(), time, 0, false, false, true));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.isEndConquered()) return;
+        var player = event.getEntity();
+        if (player.level().isClientSide) return;
+
+        var variables = ModCapabilities.getPlayerVariables(player);
+        if (variables.isRejectionInvoked(PlayerVariable.Rejection.NEURODEGENERATION)) {
+            player.addEffect(new MobEffectInstance(ModMobEffects.FROZEN.get(), 300, 0, false, false, true));
+        }
     }
 }

@@ -1,9 +1,9 @@
 package com.apocalypse.caerulaarbor.client.gui;
 
-import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.menu.InfoStrategyAllMenu;
-import com.apocalypse.caerulaarbor.network.InfoStrategyAllButtonMessage;
+import com.apocalypse.caerulaarbor.network.ModNetwork;
+import com.apocalypse.caerulaarbor.network.message.send.InfoStrategyAllButtonMessage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -89,31 +89,31 @@ public class InfoStrategyAllScreen extends AbstractContainerScreen<InfoStrategyA
     public void init() {
         super.init();
         button_evolution_tree = new PlainTextButton(this.leftPos, this.topPos + 169, 76, 20, Component.translatable("gui.caerula_arbor.info_strategy_all.button_evolution_tree"), e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(0, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(0, x, y, z));
             InfoStrategyAllButtonMessage.handleButtonAction(entity, 0, x, y, z);
         }, this.font);
         guistate.put("button:button_evolution_tree", button_evolution_tree);
         this.addRenderableWidget(button_evolution_tree);
         imagebutton_breed_lit = new ImageButton(this.leftPos + 53, this.topPos + 80, 76, 76, 0, 0, 76, new ResourceLocation("caerula_arbor:textures/screens/atlas/imagebutton_breed_lit.png"), 76, 152, e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(1, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(1, x, y, z));
             InfoStrategyAllButtonMessage.handleButtonAction(entity, 1, x, y, z);
         });
         guistate.put("button:imagebutton_breed_lit", imagebutton_breed_lit);
         this.addRenderableWidget(imagebutton_breed_lit);
         imagebutton_grow_lit = new ImageButton(this.leftPos + 32, this.topPos, 65, 47, 0, 0, 47, new ResourceLocation("caerula_arbor:textures/screens/atlas/imagebutton_grow_lit.png"), 65, 94, e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(2, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(2, x, y, z));
             InfoStrategyAllButtonMessage.handleButtonAction(entity, 2, x, y, z);
         });
         guistate.put("button:imagebutton_grow_lit", imagebutton_grow_lit);
         this.addRenderableWidget(imagebutton_grow_lit);
         imagebutton_mig_lit = new ImageButton(this.leftPos + 164, this.topPos + 86, 78, 82, 0, 0, 82, new ResourceLocation("caerula_arbor:textures/screens/atlas/imagebutton_mig_lit.png"), 78, 164, e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(3, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(3, x, y, z));
             InfoStrategyAllButtonMessage.handleButtonAction(entity, 3, x, y, z);
         });
         guistate.put("button:imagebutton_mig_lit", imagebutton_mig_lit);
         this.addRenderableWidget(imagebutton_mig_lit);
         imagebutton_subs_lit = new ImageButton(this.leftPos + 143, this.topPos + 12, 62, 62, 0, 0, 62, new ResourceLocation("caerula_arbor:textures/screens/atlas/imagebutton_subs_lit.png"), 62, 124, e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(4, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyAllButtonMessage(4, x, y, z));
             InfoStrategyAllButtonMessage.handleButtonAction(entity, 4, x, y, z);
         });
         guistate.put("button:imagebutton_subs_lit", imagebutton_subs_lit);

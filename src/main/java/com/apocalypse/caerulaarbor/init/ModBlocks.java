@@ -19,7 +19,7 @@ public class ModBlocks {
 	public static final RegistryObject<Block> BLOCK_CRYSTAL = BLOCKS.register("block_crystal", BlockCrystalBlock::new);
 	public static final RegistryObject<Block> BLOCK_FATE = BLOCKS.register("block_fate", BlockFateBlock::new);
 	public static final RegistryObject<Block> SCREAMING_CHERRY = BLOCKS.register("screaming_cherry", ScreamingCherryBlock::new);
-	public static final RegistryObject<Block> REDSTONE_IRIS = BLOCKS.register("redstone_iris", ResdtoneIrisBlock::new);
+	public static final RegistryObject<Block> REDSTONE_IRIS = BLOCKS.register("redstone_iris", RedstoneIrisBlock::new);
 	public static final RegistryObject<Block> REDSTONE_IRIS_SEEDING = BLOCKS.register("redstone_iris_seeding", RedstoneIrisSeedingBlock::new);
 	public static final RegistryObject<Block> SEA_TRAIL_INIT = BLOCKS.register("sea_trail_init", SeaTrailInitBlock::new);
 	public static final RegistryObject<Block> SEA_TRAIL_GROWING = BLOCKS.register("sea_trail_growing", SeaTrailGrowingBlock::new);

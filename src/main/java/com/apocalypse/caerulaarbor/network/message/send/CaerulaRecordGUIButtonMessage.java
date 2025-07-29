@@ -1,4 +1,4 @@
-package com.apocalypse.caerulaarbor.network.message;
+package com.apocalypse.caerulaarbor.network.message.send;
 
 import com.apocalypse.caerulaarbor.menu.RelicShowcaseMenu;
 import net.minecraft.network.FriendlyByteBuf;

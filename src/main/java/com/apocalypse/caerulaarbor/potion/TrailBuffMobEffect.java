@@ -39,7 +39,7 @@ public class TrailBuffMobEffect extends MobEffect {
 		LevelAccessor world = entity.level();
 
 		if (!entity.getType().is(ModTags.EntityTypes.SEA_BORN)) {
-			if (!(entity instanceof Player && (entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization == 3)) {
+			if (!(entity instanceof Player && (entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization == 3)) {
 				entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC)), 2);
 				DeductPlayerSanityProcedure.execute(entity, 20);
 			}

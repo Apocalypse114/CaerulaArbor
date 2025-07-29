@@ -1,11 +1,11 @@
 package com.apocalypse.caerulaarbor.client.gui;
 
-import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.entity.BasinSeaReaperEntity;
 import com.apocalypse.caerulaarbor.init.ModEntities;
 import com.apocalypse.caerulaarbor.menu.InfoStrategyMigrationMenu;
-import com.apocalypse.caerulaarbor.network.InfoStrategyMigrationButtonMessage;
+import com.apocalypse.caerulaarbor.network.ModNetwork;
+import com.apocalypse.caerulaarbor.network.message.send.InfoStrategyMigrationButtonMessage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -90,7 +90,7 @@ public class InfoStrategyMigrationScreen extends AbstractContainerScreen<InfoStr
     public void init() {
         super.init();
         button_return = new PlainTextButton(this.leftPos + 217, this.topPos + 156, 36, 20, Component.translatable("gui.caerula_arbor.info_strategy_migration.button_return"), e -> {
-            CaerulaArborMod.PACKET_HANDLER.sendToServer(new InfoStrategyMigrationButtonMessage(0, x, y, z));
+            ModNetwork.PACKET_HANDLER.sendToServer(new InfoStrategyMigrationButtonMessage(0, x, y, z));
             InfoStrategyMigrationButtonMessage.handleButtonAction(entity, 0, x, y, z);
         }, this.font);
         guistate.put("button:button_return", button_return);

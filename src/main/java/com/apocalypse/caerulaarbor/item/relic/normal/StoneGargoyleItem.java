@@ -61,7 +61,7 @@ public class StoneGargoyleItem extends RelicItem {
 
         Relic.UTIL_ALLEY.gain(cap);
         cap.maxLive += 3;
-        cap.lives += 3;
+        cap.life += 3;
         cap.syncPlayerVariables(entity);
 
         stack.shrink(1);

@@ -56,7 +56,7 @@ public class SplasherAttackMobEffect extends MobEffect {
                 continue;
             }
             if (entityiterator instanceof Player) {
-                if ((entityiterator.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization >= 3) {
+                if ((entityiterator.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization >= 3) {
                     continue;
                 }
             }

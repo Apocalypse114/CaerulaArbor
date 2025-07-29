@@ -59,7 +59,7 @@ public class SeaTrailSolidBlock extends Block {
 		double y = pos.getY();
 		double z = pos.getZ();
 		if (entity != null) {
-			if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization < 2.85) {
+			if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization < 2.85) {
 				DeductPlayerSanityProcedure.execute(entity, Mth.nextInt(RandomSource.create(), 32, 96));
 			}
 			if ((LevelAccessor) world instanceof ServerLevel _level)

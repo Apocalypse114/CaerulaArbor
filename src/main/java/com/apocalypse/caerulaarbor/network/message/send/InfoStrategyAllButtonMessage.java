@@ -1,13 +1,12 @@
 
-package com.apocalypse.caerulaarbor.network;
+package com.apocalypse.caerulaarbor.network.message.send;
 
-import com.apocalypse.caerulaarbor.CaerulaArborMod;
-import com.apocalypse.caerulaarbor.procedures.OpenEvoTreeProcedure;
-import com.apocalypse.caerulaarbor.procedures.OpenStraBreedProcedure;
-import com.apocalypse.caerulaarbor.procedures.OpenStraGrowProcedure;
 import com.apocalypse.caerulaarbor.menu.InfoStrategyAllMenu;
 import com.apocalypse.caerulaarbor.menu.InfoStrategyMigrationMenu;
 import com.apocalypse.caerulaarbor.menu.InfoStrategySubsisMenu;
+import com.apocalypse.caerulaarbor.procedures.OpenEvoTreeProcedure;
+import com.apocalypse.caerulaarbor.procedures.OpenStraBreedProcedure;
+import com.apocalypse.caerulaarbor.procedures.OpenStraGrowProcedure;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,9 +18,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class InfoStrategyAllButtonMessage {
     private final int buttonID, x, y, z;
 
@@ -122,10 +117,5 @@ public class InfoStrategyAllButtonMessage {
                 }, _bpos);
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void registerMessage(FMLCommonSetupEvent event) {
-        CaerulaArborMod.addNetworkMessage(InfoStrategyAllButtonMessage.class, InfoStrategyAllButtonMessage::buffer, InfoStrategyAllButtonMessage::new, InfoStrategyAllButtonMessage::handler);
     }
 }

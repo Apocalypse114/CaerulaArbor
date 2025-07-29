@@ -13,8 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -90,7 +88,7 @@ public class CaerulaAnimusItem extends Item {
         if (!Relic.CURSED_HEART.gained(cap)) {
             Relic.CURSED_HEART.set(cap, 1);
             cap.light = Math.max(0, cap.light - 50);
-            cap.disoclusion = Mth.nextInt(RandomSource.create(), 1, 4);
+//            cap.disoclusion = Mth.nextInt(RandomSource.create(), 1, 4);
             cap.syncPlayerVariables(entity);
 
             if (world instanceof ServerLevel server) {

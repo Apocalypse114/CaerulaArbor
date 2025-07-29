@@ -33,8 +33,8 @@ public class TransformCellItem extends Item {
     @ParametersAreNonnullByDefault
     public @NotNull ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
         var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
-        if (cap.player_oceanization < 3 && !entity.level().isClientSide()) {
-            entity.addEffect(new MobEffectInstance(ModMobEffects.INFESTED.get(), 6000, (int) cap.player_oceanization));
+        if (cap.seabornization < 3 && !entity.level().isClientSide()) {
+            entity.addEffect(new MobEffectInstance(ModMobEffects.INFESTED.get(), 6000, (int) cap.seabornization));
         }
         return super.finishUsingItem(itemstack, world, entity);
     }

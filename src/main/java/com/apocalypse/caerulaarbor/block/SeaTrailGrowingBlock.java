@@ -82,7 +82,7 @@ public class SeaTrailGrowingBlock extends SeaTrailBaseBlock {
     }
 
     private void tryCauseSanityDamage(Player player) {
-        if (ModCapabilities.getPlayerVariables(player).player_oceanization >= 3) return;
+        if (ModCapabilities.getPlayerVariables(player).seabornization >= 3) return;
         ModCapabilities.getSanityInjury(player).hurt(player.getRandom().nextInt(16, 32));
     }
 }

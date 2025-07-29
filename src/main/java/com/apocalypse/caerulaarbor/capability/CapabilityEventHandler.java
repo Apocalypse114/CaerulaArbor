@@ -4,7 +4,8 @@ import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.map.MapVariables;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
-import com.apocalypse.caerulaarbor.network.message.s2c.SavedDataSyncMessage;
+import com.apocalypse.caerulaarbor.network.ModNetwork;
+import com.apocalypse.caerulaarbor.network.message.receive.SavedDataSyncMessage;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +44,7 @@ public class CapabilityEventHandler {
             event.getEntity().getCapability(ModCapabilities.PLAYER_VARIABLE, null).orElse(new PlayerVariable()).syncPlayerVariables(event.getEntity());
 
             var mapVariables = MapVariables.get(event.getEntity().level());
-            CaerulaArborMod.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SavedDataSyncMessage(mapVariables));
+            ModNetwork.PACKET_HANDLER.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) event.getEntity()), new SavedDataSyncMessage(mapVariables));
         }
     }
 
@@ -79,10 +80,11 @@ public class CapabilityEventHandler {
         PlayerVariable original = oldPlayer.getCapability(ModCapabilities.PLAYER_VARIABLE, null).orElse(new PlayerVariable());
         PlayerVariable clone = player.getCapability(ModCapabilities.PLAYER_VARIABLE, null).orElse(new PlayerVariable());
         clone.light = original.light;
-        clone.lives = original.lives;
+        clone.life = original.life;
         clone.maxLive = original.maxLive;
         clone.shield = original.shield;
-        clone.disoclusion = original.disoclusion;
+        clone.rejection = original.rejection;
+
         clone.show_stats = original.show_stats;
         clone.kingShowPtc = original.kingShowPtc;
 
@@ -94,7 +96,7 @@ public class CapabilityEventHandler {
 
         clone.player_king_suit = original.player_king_suit;
         clone.player_demon_suit = original.player_demon_suit;
-        clone.player_oceanization = original.player_oceanization;
+        clone.seabornization = original.seabornization;
         if (!isWasDeath) {
             clone.chitin_knife_selected = original.chitin_knife_selected;
         }

@@ -53,8 +53,8 @@ public class LightShowOverlay {
             event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.light, w / 2 - 6, 26, -1, false);
             event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.maxLive, 37, h - 21, -16764109, false);
             event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.maxLive, 36, h - 21, -10040065, false);
-            event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.lives, 21, h - 21, -16764109, false);
-            event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.lives, 20, h - 21, -1, false);
+            event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.life, 21, h - 21, -16764109, false);
+            event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.life, 20, h - 21, -1, false);
             if (cap.shield > 0) {
 
                 event.getGuiGraphics().drawString(Minecraft.getInstance().font, "" + cap.shield, 21, h - 36, -16777216, false);

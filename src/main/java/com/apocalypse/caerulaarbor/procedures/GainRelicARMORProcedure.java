@@ -32,13 +32,13 @@ public class GainRelicARMORProcedure {
             }
 
             Relic.KING_ARMOR.gain(cap);
-            double lives_left = cap.lives;
+            double lives_left = cap.life;
 
-            if (cap.lives > 1) {
-                cap.lives = 1;
+            if (cap.life > 1) {
+                cap.life = 1;
             }
 
-            cap.shield = cap.shield + lives_left + 3;
+            cap.shield = (int) (cap.shield + lives_left + 3);
             cap.syncPlayerVariables(entity);
         }
     }

@@ -1,7 +1,7 @@
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
     id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
@@ -32,20 +32,22 @@ java {
 
 minecraft {
     mappings channel: 'parchment', version: '2023.08.13-1.20.1'
-
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
     copyIdeResources = true
 
     runs {
         configureEach {
+            // 需要使用 JetBrains 的 JBR 作为运行时才能发挥作用
+            jvmArgs = [
+                    "-XX:+IgnoreUnrecognizedVMOptions",
+                    "-XX:+AllowEnhancedClassRedefinition"
+            ]
             workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'info'
-
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'geckolib.disable_examples', 'true'
-
             mods {
                 "${mod_id}" {
                     source sourceSets.main
@@ -55,43 +57,53 @@ minecraft {
 
         client {
             property 'forge.enabledGameTestNamespaces', mod_id
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'geckolib.disable_examples', 'true'
         }
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         data {
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
             args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude '.cache/**'
+}
 
 repositories {
     mavenLocal()
-
+//    maven {
+//        url = "https://maven.theillusivec4.top/"
+//        content {
+//            includeGroup "top.theillusivec4.curios"
+//        }
+//    }
     maven {
-        url = "https://maven.theillusivec4.top/"
-    }
-    maven {
-        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupByRegex("software\\.bernie.*")
+            includeGroup("com.eliotlash.mclib")
+        }
     }
     maven {
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
+        content {
+            includeGroup "mezz.jei"
+//            includeGroup "vazkii.patchouli"
+        }
     }
     maven {
         url "https://maven.shedaniel.me/"
+        content {
+            includeGroup "me.shedaniel.cloth"
+        }
     }
     maven {
         url "https://cursemaven.com"
@@ -171,9 +183,12 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
-processResources {
-    duplicatesStrategy = 'exclude' // 排除重复文件，保留第一个
-    // 或者使用 'fail' 来严格检查重复 (默认行为)
-    // 或者使用 'warn' 来警告但继续构建
-    // 或者使用 'include' 来包含所有重复文件 (可能导致运行时错误)
+
+// 让 idea 主动下载前置库的源码和 Javadoc
+// 新版本 idea 默认不会下载这两个，这虽然加快了构建速度，但是不方便调试
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

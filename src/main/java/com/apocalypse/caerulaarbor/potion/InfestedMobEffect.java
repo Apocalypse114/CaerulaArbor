@@ -41,7 +41,7 @@ public class InfestedMobEffect extends MobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         var world = entity.level();
-        if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization < 3) {
+        if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization < 3) {
             double dam = entity.getMaxHealth() * Mth.nextDouble(RandomSource.create(), 0.1, 0.25) * (amplifier + 1);
             if (entity.hasEffect(ModMobEffects.POWER_OF_ANCHOR.get())) {
                 dam *= 0.1;
@@ -79,7 +79,7 @@ public class InfestedMobEffect extends MobEffect {
 
         if (entity instanceof Player) {
             entity.getCapability(ModCapabilities.PLAYER_VARIABLE).ifPresent(capability -> {
-                capability.player_oceanization = Math.min(amplifier, 2) + 1;
+                capability.seabornization = Math.min(amplifier, 2) + 1;
                 capability.syncPlayerVariables(entity);
             });
             DeductPlayerSanityProcedure.execute(entity, 750 * (amplifier + 1));

@@ -36,7 +36,7 @@ public class ExpFuncProcedure {
         if (sourceentity instanceof Player) {
             var cap = sourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
             if (Relic.KING_EXTENSION.gained(cap)) {
-                if (cap.lives > 1 || !(world instanceof ServerLevel server)) return;
+                if (cap.life > 1 || !(world instanceof ServerLevel server)) return;
 
                 double exp_left = originalexperience;
                 while (exp_left >= 11) {
