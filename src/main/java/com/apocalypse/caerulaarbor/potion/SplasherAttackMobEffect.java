@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.potion;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.entity.FishSplashEntity;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.init.ModEntities;
@@ -56,7 +55,7 @@ public class SplasherAttackMobEffect extends MobEffect {
                 continue;
             }
             if (entityiterator instanceof Player) {
-                if ((entityiterator.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization >= 3) {
+                if ((ModCapabilities.getPlayerVariables(entityiterator)).seabornization >= 3) {
                     continue;
                 }
             }

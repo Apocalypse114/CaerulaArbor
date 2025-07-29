@@ -2,14 +2,16 @@
 package com.apocalypse.caerulaarbor.item;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
+import com.apocalypse.caerulaarbor.client.renderer.item.LegendarySpearItemRenderer;
 import com.apocalypse.caerulaarbor.init.ModEnchantments;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
-import com.apocalypse.caerulaarbor.client.renderer.item.LegendarySpearItemRenderer;
-import com.apocalypse.caerulaarbor.procedures.TridentEnchantProcedure;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -28,6 +30,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -113,7 +117,7 @@ public class LegendarySpearItem extends Item implements GeoItem {
     }
 
     @Override
-    public int getEnchantmentValue() {
+    public int getEnchantmentValue(ItemStack stack) {
         return 22;
     }
 
@@ -138,13 +142,32 @@ public class LegendarySpearItem extends Item implements GeoItem {
     @Override
     @ParametersAreNonnullByDefault
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-        ItemStack itemstack = ar.getObject();
+        var ar = super.use(world, entity, hand);
+        ItemStack stack = ar.getObject();
         double x = entity.getX();
         double y = entity.getY();
         double z = entity.getZ();
 
-        TridentEnchantProcedure.execute(world, x, y, z, entity, itemstack);
+        if (entity.getMainHandItem().getItem() != stack.getItem()) return ar;
+
+        ItemStack offhandItem = entity.getOffhandItem();
+
+        if (offhandItem.getEnchantmentLevel(Enchantments.SHARPNESS) > stack.getEnchantmentLevel(ModEnchantments.SYNESTHESIA.get())) {
+
+            var enchantments = stack.getAllEnchantments();
+            enchantments.put(ModEnchantments.SYNESTHESIA.get(), enchantments.get(Enchantments.SHARPNESS));
+            enchantments.remove(Enchantments.SHARPNESS);
+            EnchantmentHelper.setEnchantments(enchantments, stack);
+
+            if (world instanceof ServerLevel server) {
+                server.sendParticles(ParticleTypes.ENCHANT, x, y, z, 72, 1.2, 2, 1.2, 0.2);
+                server.playSound(null, BlockPos.containing(x, y, z), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 3, 1);
+            } else {
+                world.playLocalSound(x, y, z, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 3, 1, false);
+
+            }
+        }
+
         return ar;
     }
 

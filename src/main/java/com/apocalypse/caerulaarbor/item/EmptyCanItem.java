@@ -2,7 +2,7 @@
 package com.apocalypse.caerulaarbor.item;
 
 import com.apocalypse.caerulaarbor.init.ModItems;
-import com.apocalypse.caerulaarbor.procedures.GatherliquidFromAirProcedure;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +29,33 @@ public class EmptyCanItem extends Item {
     @ParametersAreNonnullByDefault
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
         InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-        GatherliquidFromAirProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, ar.getObject());
+        double x = entity.getX();
+        double y = entity.getY();
+        double z = entity.getZ();
+
+        ItemStack itemstack = ar.getObject();
+        var lookingBlock = world.getFluidState(BlockPos.containing(x + entity.getLookAngle().x, y + entity.getLookAngle().y, z + entity.getLookAngle().z)).createLegacyBlock().getBlock();
+
+        if (Blocks.WATER == lookingBlock) {
+            itemstack.shrink(1);
+            ItemHandlerHelper.giveItemToPlayer(entity, new ItemStack(ModItems.CANNED_WATER.get()));
+
+            if (!world.isClientSide()) {
+                world.playSound(null, entity.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1, 1);
+            } else {
+                world.playLocalSound(x, y, z, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1, 1, false);
+            }
+
+        } else if (Blocks.LAVA == lookingBlock) {
+            itemstack.shrink(1);
+            ItemHandlerHelper.giveItemToPlayer(entity, new ItemStack(ModItems.CANNED_LAVA.get()));
+
+            if (!world.isClientSide()) {
+                world.playSound(null, entity.blockPosition(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1, 1);
+            } else {
+                world.playLocalSound(x, y, z, SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1, 1, false);
+            }
+        }
         return ar;
     }
 

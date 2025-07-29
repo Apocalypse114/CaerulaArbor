@@ -39,7 +39,7 @@ public class PlayerEventHandler {
         if (!event.isVanillaCritical()) return;
         var player = event.getEntity();
 
-        var cap = player.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(player);
         cap.relics.forEach((relic, integer) -> {
             if (!relic.gained(player)) return;
             var relicItem = relic.item;
@@ -56,7 +56,7 @@ public class PlayerEventHandler {
     public static void onPlayerAttack(AttackEntityEvent event) {
         var player = event.getEntity();
 
-        var cap = player.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(player);
         cap.relics.forEach((relic, integer) -> {
             if (!relic.gained(player)) return;
             var relicItem = relic.item;
@@ -73,7 +73,7 @@ public class PlayerEventHandler {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         var player = event.player;
-        var cap = player.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(player);
         cap.relics.forEach((relic, integer) -> {
             if (relic.item instanceof IRelic iRelic) {
                 int level = iRelic.onPlayerTick(player, integer);
@@ -90,7 +90,7 @@ public class PlayerEventHandler {
         if (!(entity instanceof Player player)) return;
         Level level = player.level();
 
-        var cap = player.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(player);
 
         if (!level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) && !level.isClientSide) {
             for (var relic : Relic.values()) {

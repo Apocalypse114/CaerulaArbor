@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.item;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,7 +42,7 @@ public class RelicCursedRESEARCHItem extends Item {
         double y = entity.getY();
         double z = entity.getZ();
 
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
 
         if (!Relic.CURSED_RESEARCH.gained(cap)) {
             Relic.CURSED_RESEARCH.set(cap, 1);
@@ -58,7 +57,7 @@ public class RelicCursedRESEARCHItem extends Item {
             }
             if ((LevelAccessor) world instanceof ServerLevel _level)
                 _level.sendParticles(ParticleTypes.CRIMSON_SPORE, x, y, z, 99, 1, 1, 1, 1);
-            if (((LevelAccessor) world).isClientSide())
+            if (world.isClientSide())
                 Minecraft.getInstance().gameRenderer.displayItemActivation(itemstack);
         }
     }

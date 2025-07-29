@@ -62,7 +62,7 @@
 //        double dama;
 //        ItemStack weapon;
 //        if (sourceentity instanceof Player _livEnt) {
-//            var cap = sourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+//            var cap = ModCapabilities.getPlayerVariables(sourceentity);
 //            if (Relic.CURSED_EMELIGHT.gained(cap)) {
 //                sourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).ifPresent(capability -> {
 //                    capability.light = cap.light - Mth.nextDouble(RandomSource.create(), 0.1, 0.2);
@@ -182,7 +182,7 @@
 //            }
 //        }
 //        if (entity instanceof Player) {
-//            if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization < 3) {
+//            if ((ModCapabilities.getPlayerVariables(entity)).player_oceanization < 3) {
 //                entity.getCapability(ModCapabilities.PLAYER_VARIABLE).ifPresent(capability -> {
 //                    capability.player_oceanization = 0;
 //                    capability.syncPlayerVariables(entity);

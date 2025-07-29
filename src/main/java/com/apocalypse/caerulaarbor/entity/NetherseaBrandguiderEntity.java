@@ -1,17 +1,22 @@
 package com.apocalypse.caerulaarbor.entity;
 
+import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
+import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.procedures.LayTrialProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -29,6 +34,7 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.PlayMessages;
@@ -163,7 +169,39 @@ public class NetherseaBrandguiderEntity extends SeaMonster {
     @Override
     public void baseTick() {
         super.baseTick();
-        LayTrialProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ(), this);
+
+        var world = this.level();
+        var pos = this.blockPosition();
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+
+        if (this.getHealth() < this.getMaxHealth() * 0.5
+                && GameplayConfig.ENABLE_MOB_BREAK.get()
+                && world.getLevelData().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
+        ) {
+            if (!this.level().isClientSide()) {
+                this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20, 2));
+            }
+
+            if (this.getEntityData().get(DATA_laylimit) > 0) {
+                var state = world.getBlockState(pos);
+                if (state.canBeReplaced()
+                        && state.getBlock() != ModBlocks.SEA_TRAIL_GROWN.get()
+                        && ModBlocks.SEA_TRAIL_GROWN.get().defaultBlockState().canSurvive(world, pos)
+                ) {
+                    world.setBlock(pos, ModBlocks.SEA_TRAIL_GROWN.get().defaultBlockState(), 3);
+
+                    if (world instanceof ServerLevel server) {
+                        server.playLocalSound(x, y, z, SoundEvents.SCULK_VEIN_STEP, SoundSource.NEUTRAL, 2, 1, false);
+                    } else {
+                        world.playSound(null, pos, SoundEvents.SCULK_VEIN_STEP, SoundSource.NEUTRAL, 2, 1);
+                    }
+
+                    this.getEntityData().set(DATA_laylimit, this.getEntityData().get(DATA_laylimit) - 1);
+                }
+            }
+        }
         this.refreshDimensions();
     }
 

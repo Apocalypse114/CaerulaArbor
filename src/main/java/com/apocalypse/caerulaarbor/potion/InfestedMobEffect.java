@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.potion;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import com.apocalypse.caerulaarbor.procedures.DeductPlayerSanityProcedure;
 import net.minecraft.core.BlockPos;
@@ -41,7 +40,7 @@ public class InfestedMobEffect extends MobEffect {
     @Override
     public void applyEffectTick(@NotNull LivingEntity entity, int amplifier) {
         var world = entity.level();
-        if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization < 3) {
+        if ((ModCapabilities.getPlayerVariables(entity)).seabornization < 3) {
             double dam = entity.getMaxHealth() * Mth.nextDouble(RandomSource.create(), 0.1, 0.25) * (amplifier + 1);
             if (entity.hasEffect(ModMobEffects.POWER_OF_ANCHOR.get())) {
                 dam *= 0.1;

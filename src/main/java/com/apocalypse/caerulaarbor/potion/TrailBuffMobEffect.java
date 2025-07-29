@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.potion;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
 import com.apocalypse.caerulaarbor.init.ModTags;
 import com.apocalypse.caerulaarbor.procedures.DeductPlayerSanityProcedure;
@@ -39,7 +38,7 @@ public class TrailBuffMobEffect extends MobEffect {
 		LevelAccessor world = entity.level();
 
 		if (!entity.getType().is(ModTags.EntityTypes.SEA_BORN)) {
-			if (!(entity instanceof Player && (entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization == 3)) {
+			if (!(entity instanceof Player && (ModCapabilities.getPlayerVariables(entity)).seabornization == 3)) {
 				entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC)), 2);
 				DeductPlayerSanityProcedure.execute(entity, 20);
 			}

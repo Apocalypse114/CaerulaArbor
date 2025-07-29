@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.procedures;
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.config.common.RelicsConfig;
 import com.apocalypse.caerulaarbor.init.*;
 import net.minecraft.core.BlockPos;
@@ -58,7 +57,7 @@ public class PlayerHitFuncProcedure {
             return;
         boolean validItem;
         double light_cost;
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
         if (entity instanceof Player ent) {
             light_cost = amount * 0.01;
 
@@ -73,7 +72,7 @@ public class PlayerHitFuncProcedure {
                     }
                     if (world instanceof ServerLevel _level)
                         _level.sendParticles(ParticleTypes.SMOKE, (sourceentity.getX()), (sourceentity.getY()), (sourceentity.getZ()), 72, 0.85, 1, 0.85, 0.2);
-                    sourceentity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.THORNS)), entity instanceof LivingEntity _livEnt ? _livEnt.getArmorValue() : 0);
+                    sourceentity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.THORNS)), ent.getArmorValue());
                 });
             }
             if (Relic.TREATY.gained(cap)) {
@@ -141,7 +140,7 @@ public class PlayerHitFuncProcedure {
             }
         }
         if (immediatesourceentity instanceof Player livEnt) {
-            var cap1 = immediatesourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+            var cap1 = ModCapabilities.getPlayerVariables(immediatesourceentity);
             if (livEnt.getMainHandItem().is(ItemTags.create(new ResourceLocation("minecraft:hoes")))) {
                 if (Relic.HAND_FERTILITY.gained(cap)) {
                     entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.MAGIC)), (float) ((entity instanceof LivingEntity _livEnt ? _livEnt.getHealth() : -1) * 0.1));
@@ -163,7 +162,7 @@ public class PlayerHitFuncProcedure {
             }
         }
         if (sourceentity instanceof Player _livEnt1) {
-            var cap1 = sourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+            var cap1 = ModCapabilities.getPlayerVariables(sourceentity);
             if (immediatesourceentity instanceof Arrow) {
                 if (Relic.HAND_STRANGLE.gained(cap1)) {
                     validItem = false;
@@ -207,7 +206,7 @@ public class PlayerHitFuncProcedure {
                                 validItem = true;
                             } else {
                                 for (String stringiterator : RelicsConfig.HAND_FIREWORK.get()) {
-                                    if ((ForgeRegistries.ITEMS.getKey((sourceentity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem()).toString()).equals(stringiterator)) {
+                                    if ((ForgeRegistries.ITEMS.getKey(_livEnt1.getMainHandItem().getItem()).toString()).equals(stringiterator)) {
                                         validItem = true;
                                         break;
                                     }
@@ -238,7 +237,7 @@ public class PlayerHitFuncProcedure {
                             {
                                 final Vec3 _center = new Vec3(x, y, z);
                                 for (var entityiterator : world.getEntitiesOfClass(Monster.class, new AABB(_center, _center).inflate(5 / 2d), e -> true)) {
-                                    if (((ForgeRegistries.ENTITY_TYPES.getKey(entityiterator.getType()).toString()).equals(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())) && entityiterator != sourceentity) {
+                                    if (ForgeRegistries.ENTITY_TYPES.getKey(entityiterator.getType()).toString().equals(ForgeRegistries.ENTITY_TYPES.getKey(entity.getType()).toString())) {
                                         entityiterator.hurt(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FIREWORKS), sourceentity), (float) (amount * 3));
                                     }
                                 }

@@ -32,7 +32,7 @@ public class CannedBoiledWaterItem extends Item {
     }
 
     @Override
-    public int getEnchantmentValue() {
+    public int getEnchantmentValue(ItemStack stack) {
         return -1;
     }
 

@@ -4,7 +4,6 @@ package com.apocalypse.caerulaarbor.item.relic.cursed;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.capability.map.MapVariables;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -83,7 +82,7 @@ public class CaerulaAnimusItem extends Item {
         double x = entity.getX();
         double y = entity.getY();
         double z = entity.getZ();
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
 
         if (!Relic.CURSED_HEART.gained(cap)) {
             Relic.CURSED_HEART.set(cap, 1);

@@ -4,6 +4,7 @@ import com.apocalypse.caerulaarbor.init.ModItems;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -34,6 +35,11 @@ public enum ModItemTier implements Tier {
     }
 
     @Override
+    public int getEnchantmentValue() {
+        return enchantmentValue;
+    }
+
+    @Override
     public int getUses() {
         return uses;
     }
@@ -48,13 +54,9 @@ public enum ModItemTier implements Tier {
         return damage;
     }
 
-    @Override
-    public int getEnchantmentValue() {
-        return enchantmentValue;
-    }
 
     @Override
-    public Ingredient getRepairIngredient() {
+    public @NotNull Ingredient getRepairIngredient() {
         return repairIngredient.get();
     }
 }

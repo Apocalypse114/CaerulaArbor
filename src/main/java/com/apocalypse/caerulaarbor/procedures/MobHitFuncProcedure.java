@@ -81,7 +81,7 @@
 //            }
 //        }
 //        if (entity instanceof Player) {
-//            if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).player_oceanization >= 3) {
+//            if ((ModCapabilities.getPlayerVariables(entity)).player_oceanization >= 3) {
 //                if (MapVariables.get(world).strategyMigration > 0) {
 //                    for (Entity entityiterator : world.getEntities(entity,
 //                            new AABB((x - (8 + MapVariables.get(world).strategyMigration * 24)), (y - 16), (z - (8 + MapVariables.get(world).strategyMigration * 24)),

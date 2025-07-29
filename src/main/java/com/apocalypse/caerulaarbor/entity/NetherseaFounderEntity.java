@@ -1,13 +1,15 @@
 package com.apocalypse.caerulaarbor.entity;
 
+import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
 import com.apocalypse.caerulaarbor.entity.base.SeaMonster;
 import com.apocalypse.caerulaarbor.init.ModAttributes;
+import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.procedures.LayTrailProcedure;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -26,8 +28,10 @@ import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -155,10 +159,30 @@ public class NetherseaFounderEntity extends SeaMonster {
     @Override
     protected void tickDeath() {
         ++this.deathTime;
-        if (this.deathTime == 20) {
-            this.remove(NetherseaFounderEntity.RemovalReason.KILLED);
-            this.dropExperience();
-            LayTrailProcedure.execute(this.level(), this.getX(), this.getY(), this.getZ());
+        if (this.deathTime < 20) return;
+
+        this.remove(NetherseaFounderEntity.RemovalReason.KILLED);
+        this.dropExperience();
+
+        var world = this.level();
+        var pos = this.blockPosition();
+        double x = this.getX();
+        double y = this.getY();
+        double z = this.getZ();
+
+        if (ModBlocks.SEA_TRAIL_GROWN.get().defaultBlockState().canSurvive(world, pos)
+                && world.getBlockState(pos).canBeReplaced()
+                && GameplayConfig.ENABLE_MOB_BREAK.get()
+                && world.getLevelData().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
+        ) {
+            if (!world.isClientSide()) {
+                world.playSound(null, pos, SoundEvents.SCULK_VEIN_PLACE, SoundSource.NEUTRAL, 2, 1);
+            } else {
+                world.playLocalSound(x, y, z, SoundEvents.SCULK_VEIN_PLACE, SoundSource.NEUTRAL, 2, 1, false);
+            }
+
+            world.setBlock(pos, ModBlocks.SEA_TRAIL_GROWN.get().defaultBlockState(), 3);
+            world.levelEvent(2001, pos, Block.getId(ModBlocks.SEA_TRAIL_GROWN.get().defaultBlockState()));
         }
     }
 

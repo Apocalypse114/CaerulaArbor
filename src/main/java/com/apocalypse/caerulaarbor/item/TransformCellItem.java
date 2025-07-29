@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.item;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,9 +31,9 @@ public class TransformCellItem extends Item {
     @Override
     @ParametersAreNonnullByDefault
     public @NotNull ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
         if (cap.seabornization < 3 && !entity.level().isClientSide()) {
-            entity.addEffect(new MobEffectInstance(ModMobEffects.INFESTED.get(), 6000, (int) cap.seabornization));
+            entity.addEffect(new MobEffectInstance(ModMobEffects.INFESTED.get(), 6000, cap.seabornization));
         }
         return super.finishUsingItem(itemstack, world, entity);
     }

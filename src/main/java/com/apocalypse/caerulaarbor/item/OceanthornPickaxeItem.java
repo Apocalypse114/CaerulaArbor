@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class OceanthornPickaxeItem extends PickaxeItem {
 	public OceanthornPickaxeItem() {
@@ -31,7 +32,7 @@ public class OceanthornPickaxeItem extends PickaxeItem {
 				return 18;
 			}
 
-			public Ingredient getRepairIngredient() {
+			public @NotNull Ingredient getRepairIngredient() {
 				return Ingredient.of(new ItemStack(ModItems.OCEAN_CRYSTAL.get()));
 			}
 		}, 1, -2.4f, new Item.Properties());
@@ -53,7 +54,7 @@ public class OceanthornPickaxeItem extends PickaxeItem {
 	}
 
 	@Override
-	public boolean isRepairable(ItemStack itemstack) {
+	public boolean isRepairable(@NotNull ItemStack itemstack) {
 		return false;
 	}
 }

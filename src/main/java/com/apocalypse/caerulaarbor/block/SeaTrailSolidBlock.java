@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.block;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.procedures.DeductPlayerSanityProcedure;
 import com.apocalypse.caerulaarbor.procedures.GiveTrailBuffProcedure;
 import net.minecraft.core.BlockPos;
@@ -59,7 +58,7 @@ public class SeaTrailSolidBlock extends Block {
 		double y = pos.getY();
 		double z = pos.getZ();
 		if (entity != null) {
-			if ((entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable())).seabornization < 2.85) {
+			if ((ModCapabilities.getPlayerVariables(entity)).seabornization < 2.85) {
 				DeductPlayerSanityProcedure.execute(entity, Mth.nextInt(RandomSource.create(), 32, 96));
 			}
 			if ((LevelAccessor) world instanceof ServerLevel _level)

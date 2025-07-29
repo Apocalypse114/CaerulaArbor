@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.item.relic.epic;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.item.relic.RelicItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -49,7 +48,7 @@ public class HandOfBrandingItem extends RelicItem {
         ItemStack itemstack = ar.getObject();
 
         // TODO 优化获取实现方式
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
         if (Relic.HAND_ENGRAVE.get(cap) < 0) {
             if ((LevelAccessor) world instanceof Level _level) {
                 if (!_level.isClientSide()) {

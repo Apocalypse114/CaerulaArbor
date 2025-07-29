@@ -1,14 +1,11 @@
 package com.apocalypse.caerulaarbor.client.gui;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
-import com.apocalypse.caerulaarbor.capability.sanity.SanityInjuryCapability;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import com.apocalypse.caerulaarbor.menu.CaerulaRecorderMenu;
 import com.apocalypse.caerulaarbor.network.ModNetwork;
 import com.apocalypse.caerulaarbor.network.message.send.CaerulaRecordGUIButtonMessage;
 import com.apocalypse.caerulaarbor.procedures.GetOceanizeStateProcedure;
-import com.apocalypse.caerulaarbor.procedures.GetSanityProcedure;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Checkbox;
@@ -84,7 +81,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
 
         guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/target_shield.png"), this.leftPos + 4, this.topPos + 50, 0, 0, 24, 16, 24, 16);
 
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
 
         if (cap.light >= 85) {
             guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/light.png"), this.leftPos + 36, this.topPos - 37, 0, 0, 64, 32, 64, 32);
@@ -124,7 +121,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        var c = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var c = ModCapabilities.getPlayerVariables(entity);
 
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_health1"), 45, 71, -10092442, false);
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_health"), 44, 71, -1, false);
@@ -142,7 +139,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
         guiGraphics.drawString(this.font, "" + c.shield, 17, 53, -1, false);
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_discolution"), 102, 86, -13434829, false);
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_disoclution"), 101, 86, -3368449, false);
-        guiGraphics.drawString(this.font, twoDigit.format(entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable()).light), 100, -13, -1, false);
+        guiGraphics.drawString(this.font, twoDigit.format(ModCapabilities.getPlayerVariables(entity).light), 100, -13, -1, false);
         if (c.light >= 85)
             guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_lightsablaze"), 100, -29, -3342337, false);
         else if (c.light >= 50)
@@ -163,8 +160,8 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
 //                    guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_deformity"), 101, 147, -3368449, false);
 //        }
 
-        guiGraphics.drawString(this.font, GetSanityProcedure.execute(entity), 124, 50, -16737895, false);
-        guiGraphics.drawString(this.font, GetSanityProcedure.execute(entity), 123, 50, -1, false);
+        guiGraphics.drawString(this.font, "" + Math.round(ModCapabilities.getSanityInjury(entity).getValue()), 124, 50, -16737895, false);
+        guiGraphics.drawString(this.font, "" + Math.round(ModCapabilities.getSanityInjury(entity).getValue()), 123, 50, -1, false);
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_sanity1"), 124, 41, -16737895, false);
         guiGraphics.drawString(this.font, Component.translatable("gui.caerula_arbor.caerula_record_gui.label_sanity"), 123, 41, -1, false);
     }
@@ -177,7 +174,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
         this.addRenderableWidget(imagebutton_relic_icon);
         boolean result = false;
         if (entity != null) {
-            var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+            var cap = ModCapabilities.getPlayerVariables(entity);
             result = cap.show_stats;
         }
         show_hud = new Checkbox(this.leftPos + 4, this.topPos + 120, 20, 20, Component.translatable("gui.caerula_arbor.caerula_record_gui.show_hud"), result);
@@ -196,13 +193,6 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
      */
     private static int getSanityIndex(Player player) {
         var effect = Optional.ofNullable(player.getEffect(ModMobEffects.SANITY_IMMUNE.get()));
-        if (effect.isPresent()) {
-            return Math.min(effect.get().getDuration() / 10, 19);
-        }
-        var capability = player.getCapability(ModCapabilities.SANITY_INJURY).resolve();
-        if (capability.isPresent() && capability.get() instanceof SanityInjuryCapability capabilityImpl) {
-            return Math.min((int) capabilityImpl.getValue() / 50, 19);
-        }
-        return 0;
+        return effect.map(mobEffectInstance -> Math.min(mobEffectInstance.getDuration() / 10, 19)).orElseGet(() -> Math.min((int) ModCapabilities.getSanityInjury(player).getValue() / 50, 19));
     }
 }

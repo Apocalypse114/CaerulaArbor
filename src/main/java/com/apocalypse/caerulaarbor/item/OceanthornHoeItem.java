@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 public class OceanthornHoeItem extends HoeItem {
 	public OceanthornHoeItem() {
@@ -27,11 +28,12 @@ public class OceanthornHoeItem extends HoeItem {
 				return 2;
 			}
 
+			@Override
 			public int getEnchantmentValue() {
 				return 18;
 			}
 
-			public Ingredient getRepairIngredient() {
+			public @NotNull Ingredient getRepairIngredient() {
 				return Ingredient.of(new ItemStack(ModItems.OCEAN_CRYSTAL.get()));
 			}
 		}, 0, -1f, new Item.Properties());
@@ -53,7 +55,7 @@ public class OceanthornHoeItem extends HoeItem {
 	}
 
 	@Override
-	public boolean isRepairable(ItemStack itemstack) {
+	public boolean isRepairable(@NotNull ItemStack itemstack) {
 		return false;
 	}
 }

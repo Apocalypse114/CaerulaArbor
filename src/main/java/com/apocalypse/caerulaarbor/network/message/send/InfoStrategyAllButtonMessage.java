@@ -1,28 +1,22 @@
 
 package com.apocalypse.caerulaarbor.network.message.send;
 
-import com.apocalypse.caerulaarbor.menu.InfoStrategyAllMenu;
-import com.apocalypse.caerulaarbor.menu.InfoStrategyMigrationMenu;
-import com.apocalypse.caerulaarbor.menu.InfoStrategySubsisMenu;
-import com.apocalypse.caerulaarbor.procedures.OpenEvoTreeProcedure;
-import com.apocalypse.caerulaarbor.procedures.OpenStraBreedProcedure;
-import com.apocalypse.caerulaarbor.procedures.OpenStraGrowProcedure;
+import com.apocalypse.caerulaarbor.menu.*;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class InfoStrategyAllButtonMessage {
@@ -63,59 +57,41 @@ public class InfoStrategyAllButtonMessage {
     }
 
     public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
-        Level world = entity.level();
-        var guistate = InfoStrategyAllMenu.guistate;
+        var world = entity.level();
         // security measure to prevent arbitrary chunk generation
-        if (!world.hasChunkAt(new BlockPos(x, y, z)))
+        var pos = new BlockPos(x, y, z);
+        if (!world.hasChunkAt(pos))
             return;
+
         if (buttonID == 0) {
-
-            OpenEvoTreeProcedure.execute(world, x, y, z, entity);
+            openMenu(entity, pos, "EvoTree", (id, inventory) -> new EvoTreeMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos)));
+        } else if (buttonID == 1) {
+            openMenu(entity, pos, "InfoStrategyBreed", (id, inventory) -> new InfoStrategyBreedMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos)));
+        } else if (buttonID == 2) {
+            openMenu(entity, pos, "InfoStrategyGrow", (id, inventory) -> new InfoStrategyGrowMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos)));
+        } else if (buttonID == 3) {
+            openMenu(entity, pos, "InfoStrategyMigration", (id, inventory) -> new InfoStrategyMigrationMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos)));
+        } else if (buttonID == 4) {
+            openMenu(entity, pos, "InfoStrategySubsis", (id, inventory) -> new InfoStrategySubsisMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(pos)));
         }
-        if (buttonID == 1) {
+    }
 
-            OpenStraBreedProcedure.execute(world, x, y, z, entity);
-        }
-        if (buttonID == 2) {
+    private static void openMenu(Player player, BlockPos pos, String name, BiFunction<Integer, Inventory, AbstractContainerMenu> menu) {
+        player.closeContainer();
 
-            OpenStraGrowProcedure.execute(world, x, y, z, entity);
-        }
-        if (buttonID == 3) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+                @Override
+                public @NotNull Component getDisplayName() {
+                    return Component.literal(name);
+                }
 
-            entity.closeContainer();
-            if ((Entity) entity instanceof ServerPlayer _ent) {
-                BlockPos _bpos = BlockPos.containing(x, y, z);
-                NetworkHooks.openScreen(_ent, new MenuProvider() {
-                    @Override
-                    public Component getDisplayName() {
-                        return Component.literal("InfoStrategyMigration");
-                    }
-
-                    @Override
-                    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                        return new InfoStrategyMigrationMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(_bpos));
-                    }
-                }, _bpos);
-            }
-        }
-        if (buttonID == 4) {
-            if ((Entity) entity instanceof Player _player)
-                _player.closeContainer();
-            if ((Entity) entity instanceof ServerPlayer _ent) {
-                BlockPos _bpos = BlockPos.containing(x, y, z);
-                NetworkHooks.openScreen(_ent, new MenuProvider() {
-                    @Override
-                    public @NotNull Component getDisplayName() {
-                        return Component.literal("InfoStrategySubsis");
-                    }
-
-                    @Override
-                    @ParametersAreNonnullByDefault
-                    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-                        return new InfoStrategySubsisMenu(id, inventory, new FriendlyByteBuf(Unpooled.buffer()).writeBlockPos(_bpos));
-                    }
-                }, _bpos);
-            }
+                @Override
+                @ParametersAreNonnullByDefault
+                public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
+                    return menu.apply(id, inventory);
+                }
+            }, pos);
         }
     }
 }

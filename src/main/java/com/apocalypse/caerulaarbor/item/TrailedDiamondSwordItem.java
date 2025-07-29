@@ -90,8 +90,7 @@ public class TrailedDiamondSwordItem extends SwordItem {
     }
 
     @Override
-    @ParametersAreNonnullByDefault
-    public void appendHoverText(ItemStack itemstack, Level level, List<Component> list, TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack itemstack, Level level, @NotNull List<Component> list, @NotNull TooltipFlag flag) {
         super.appendHoverText(itemstack, level, list, flag);
         list.add(Component.translatable("item.caerula_arbor.trailed_diamond_sword.description_0"));
         list.add(Component.translatable("item.caerula_arbor.trailed_diamond_sword.description_1"));

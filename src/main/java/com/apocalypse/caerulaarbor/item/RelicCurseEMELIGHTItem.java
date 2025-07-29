@@ -4,7 +4,6 @@ package com.apocalypse.caerulaarbor.item;
 import com.apocalypse.caerulaarbor.block.EmergencyLightBlock;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -86,7 +85,7 @@ public class RelicCurseEMELIGHTItem extends Item {
         double y = entity.getY();
         double z = entity.getZ();
 
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
         if (!Relic.CURSED_EMELIGHT.gained(cap)) {
             Relic.CURSED_EMELIGHT.set(cap, 1);
             cap.syncPlayerVariables(entity);

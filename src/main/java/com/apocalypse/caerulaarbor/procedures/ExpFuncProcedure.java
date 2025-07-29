@@ -2,7 +2,6 @@ package com.apocalypse.caerulaarbor.procedures;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -34,7 +33,7 @@ public class ExpFuncProcedure {
         if (sourceentity == null)
             return;
         if (sourceentity instanceof Player) {
-            var cap = sourceentity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+            var cap = ModCapabilities.getPlayerVariables(sourceentity);
             if (Relic.KING_EXTENSION.gained(cap)) {
                 if (cap.life > 1 || !(world instanceof ServerLevel server)) return;
 

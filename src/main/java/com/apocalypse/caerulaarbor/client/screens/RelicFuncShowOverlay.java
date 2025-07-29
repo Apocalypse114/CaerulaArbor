@@ -2,7 +2,6 @@
 package com.apocalypse.caerulaarbor.client.screens;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModMobEffects;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +19,7 @@ public class RelicFuncShowOverlay {
         var player = Minecraft.getInstance().player;
         if (player == null) return;
 
-        var cap = player.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(player);
         if (cap.kingShowPtc) return;
 
         event.getGuiGraphics().blit(new ResourceLocation("caerula_arbor:textures/screens/icon_king.png"), 6, 8, Mth.clamp(cap.player_king_suit * 16, 0, 32), 0, 16, 16, 48, 16);

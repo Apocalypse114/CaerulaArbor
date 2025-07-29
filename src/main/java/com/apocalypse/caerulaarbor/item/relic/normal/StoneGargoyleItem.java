@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.item.relic.normal;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
 import com.apocalypse.caerulaarbor.item.relic.RelicItem;
 import net.minecraft.ChatFormatting;
@@ -57,7 +56,7 @@ public class StoneGargoyleItem extends RelicItem {
             Minecraft.getInstance().gameRenderer.displayItemActivation(stack);
         }
 
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
 
         Relic.UTIL_ALLEY.gain(cap);
         cap.maxLive += 3;

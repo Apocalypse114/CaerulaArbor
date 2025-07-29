@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.item.relic.cursed;
 
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
-import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
 import com.apocalypse.caerulaarbor.procedures.DeductPlayerSanityProcedure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -85,7 +84,7 @@ public class LuminousCorpseItem extends Item {
         double y = entity.getY();
         double z = entity.getZ();
 
-        var cap = entity.getCapability(ModCapabilities.PLAYER_VARIABLE).orElse(new PlayerVariable());
+        var cap = ModCapabilities.getPlayerVariables(entity);
 
         if (Relic.CURSED_GLOWBODY.gained(cap)) return;
 
