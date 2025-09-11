@@ -20,6 +20,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.core.Holder;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {
@@ -147,9 +151,12 @@ public class ModEntities {
 
     @SubscribeEvent
     public static void onRegisterSpawnPlacement(SpawnPlacementRegisterEvent event) {
-        registerBasicSeaMonster(ModEntities.SHELL_SEA_RUNNER.get(), event);
-        registerBasicSeaMonster(ModEntities.DEEP_SEA_SLIDER.get(), event);
-        registerBasicSeaMonster(ModEntities.RIDGE_SEA_SPITTER.get(), event);
+        // Weather-restricted ground monsters
+        registerWeatherRestrictedGroundMonster(ModEntities.SHELL_SEA_RUNNER.get(), event);
+        registerWeatherRestrictedGroundMonster(ModEntities.DEEP_SEA_SLIDER.get(), event);
+        registerWeatherRestrictedGroundMonster(ModEntities.RIDGE_SEA_SPITTER.get(), event);
+
+        // Others keep original rules
         registerBasicSeaMonster(ModEntities.FLOATING_SEA_DRIFTER.get(), event);
         registerBasicSeaMonster(ModEntities.BASIN_SEA_REAPER.get(), event);
         registerBasicSeaMonster(ModEntities.POCKET_SEA_CRAWLER.get(), event);
@@ -176,6 +183,45 @@ public class ModEntities {
     public static <T extends Mob> void registerBasicSeaMonster(EntityType<T> type, SpawnPlacementRegisterEvent event) {
         event.register(type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 (entityType, world, reason, pos, random) -> (world.getDifficulty() != Difficulty.PEACEFUL && Monster.isDarkEnoughToSpawn(world, pos, random) && Mob.checkMobSpawnRules(entityType, world, reason, pos, random)),
+                SpawnPlacementRegisterEvent.Operation.OR);
+    }
+
+    // New: biome- and weather-aware ground spawn rule
+    public static <T extends Mob> void registerWeatherRestrictedGroundMonster(EntityType<T> type, SpawnPlacementRegisterEvent event) {
+        event.register(type, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                (entityType, world, reason, pos, random) -> {
+                    if (world.getDifficulty() == Difficulty.PEACEFUL) return false;
+
+                    Holder<Biome> biome = world.getBiome(pos);
+                    boolean isMushroom = biome.is(Biomes.MUSHROOM_FIELDS);
+                    boolean inOcean = biome.is(BiomeTags.IS_OCEAN);
+                    boolean inBeach = biome.is(BiomeTags.IS_BEACH);
+                    boolean inStonyShore = biome.is(Biomes.STONY_SHORE);
+                    boolean inBaseBiomes = (inOcean || inBeach || inStonyShore) && !isMushroom;
+
+                    boolean inPlains = biome.is(Biomes.PLAINS) || biome.is(Biomes.SUNFLOWER_PLAINS);
+
+                    // Only allow in specified biomes
+                    if (!(inBaseBiomes || inPlains)) return false;
+
+                    // Keep vanilla placement checks (solid ground, space, etc.)
+                    if (!Mob.checkMobSpawnRules(entityType, world, reason, pos, random)) return false;
+
+                    // Monsters should still respect darkness
+                    if (!Monster.isDarkEnoughToSpawn(world, pos, random)) return false;
+
+                    // Plains variants only spawn during rain/thunder with chance control
+                    if (inPlains) {
+                        boolean thundering = world.getLevelData().isThundering();
+                        boolean raining = world.getLevelData().isRaining() && biome.value().hasPrecipitation();
+                        if (!thundering && !raining) return false;
+                        float chance = thundering ? 1.0f : 0.5f;
+                        return random.nextFloat() < chance;
+                    }
+
+                    // Base biomes: spawn under normal conditions (no weather gating)
+                    return true;
+                },
                 SpawnPlacementRegisterEvent.Operation.OR);
     }
 

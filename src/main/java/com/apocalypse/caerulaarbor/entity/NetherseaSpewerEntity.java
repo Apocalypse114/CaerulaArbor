@@ -98,8 +98,8 @@ public class NetherseaSpewerEntity extends SeaMonster implements RangedAttackMob
     @Override
     @ParametersAreNonnullByDefault
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-        if (this.getAttributes().hasAttribute(ModAttributes.SANITY_INJURY_DAMAGE.get()))
-            this.getAttribute(ModAttributes.SANITY_INJURY_DAMAGE.get()).setBaseValue(2);
+        if (this.getAttributes().hasAttribute(ModAttributes.SANITY_RATE.get()))
+            this.getAttribute(ModAttributes.SANITY_RATE.get()).setBaseValue(2);
         return super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
     }
 

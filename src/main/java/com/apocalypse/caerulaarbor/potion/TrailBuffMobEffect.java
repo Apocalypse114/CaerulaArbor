@@ -22,7 +22,7 @@ import java.util.List;
 public class TrailBuffMobEffect extends InvisibleMobEffect {
 	public TrailBuffMobEffect() {
 		super(MobEffectCategory.NEUTRAL, -10053121);
-		this.addAttributeModifier(ModAttributes.SANITY_INJURY_DAMAGE.get(), "204fd8a1-28dc-3106-bb46-8c9977e6079d", 1, AttributeModifier.Operation.MULTIPLY_BASE);
+		this.addAttributeModifier(ModAttributes.SANITY_RATE.get(), "204fd8a1-28dc-3106-bb46-8c9977e6079d", 1, AttributeModifier.Operation.MULTIPLY_BASE);
 	}
 
 	@Override

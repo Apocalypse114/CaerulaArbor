@@ -103,7 +103,7 @@ public class DeepSeaSliderEntity extends SeaMonster {
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor world, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
         SpawnGroupData retval = super.finalizeSpawn(world, difficulty, reason, livingdata, tag);
-        var san = getAttribute(ModAttributes.SANITY_INJURY_DAMAGE.get());
+        var san = getAttribute(ModAttributes.SANITY_RATE.get());
         if (san != null) {
             san.setBaseValue(10);
         }

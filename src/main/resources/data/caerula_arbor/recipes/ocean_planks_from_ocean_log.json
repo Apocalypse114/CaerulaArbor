@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    { "item": "caerula_arbor:ocean_log" }
+  ],
+  "result": {
+    "item": "caerula_arbor:ocean_plank",
+    "count": 4
+  }
+}

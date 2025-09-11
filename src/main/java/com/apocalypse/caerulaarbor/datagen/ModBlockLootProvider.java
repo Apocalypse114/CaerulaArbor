@@ -110,6 +110,33 @@ public class ModBlockLootProvider extends BlockLootSubProvider {
         this.add(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_SLAB.get()));
         this.dropSelf(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_WALL.get());
         this.dropSelf(ModBlocks.SAL_VIENTO_PILLAR.get());
+
+        // SEA VIENTO series
+        this.dropSelf(ModBlocks.SEA_VIENTO_SAND.get());
+        this.dropSelf(ModBlocks.SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.SEA_VIENTO_SANDSTONE_STAIRS.get());
+        this.add(ModBlocks.SEA_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SEA_VIENTO_SANDSTONE_SLAB.get()));
+        this.dropSelf(ModBlocks.SEA_VIENTO_SANDSTONE_WALL.get());
+        this.dropSelf(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE_WALL.get());
+        this.dropSelf(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_STAIRS.get());
+        this.add(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_SLAB.get()));
+        this.dropSelf(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_STAIRS.get());
+        this.add(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB.get()));
+        this.dropSelf(ModBlocks.CUT_SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_STAIRS.get());
+        this.add(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_SLAB.get()));
+        this.dropSelf(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_WALL.get());
+        this.dropSelf(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE.get());
+        this.dropSelf(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_STAIRS.get());
+        this.add(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_SLAB.get(), block -> createSlabItemTable(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_SLAB.get()));
+        this.dropSelf(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_WALL.get());
+        this.dropSelf(ModBlocks.SEA_VIENTO_PILLAR.get());
+
+        // Ocean Grass
+        this.dropSelf(ModBlocks.OCEAN_GRASS_BLOCK.get());
     }
 
     @Override

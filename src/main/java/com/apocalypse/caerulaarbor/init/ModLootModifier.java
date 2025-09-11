@@ -22,6 +22,9 @@ public class ModLootModifier {
     public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, CaerulaArborMod.MODID);
 
     public static final RegistryObject<Codec<CaerulaArborModLootTableModifier>> LOOT_MODIFIER = LOOT_MODIFIERS.register("caerula_arbor_loot_modifier", CaerulaArborModLootTableModifier.CODEC);
+    
+    // Enhanced Fortune Modifier for light capability adjustment
+    public static final RegistryObject<Codec<EnhancedFortuneModifier>> ENHANCED_FORTUNE_MODIFIER = LOOT_MODIFIERS.register("enhanced_fortune_modifier", EnhancedFortuneModifier.CODEC);
 
     public static class CaerulaArborModLootTableModifier extends LootModifier {
         public static final Supplier<Codec<CaerulaArborModLootTableModifier>> CODEC = Suppliers

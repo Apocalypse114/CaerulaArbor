@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "caerula_arbor:block/ocean_log" },
+    "axis=z": { "model": "caerula_arbor:block/ocean_log", "x": 90 },
+    "axis=x": { "model": "caerula_arbor:block/ocean_log", "x": 90, "y": 90 }
+  }
+}

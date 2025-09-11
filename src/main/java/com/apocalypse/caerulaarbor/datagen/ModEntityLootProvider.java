@@ -30,7 +30,8 @@ public class ModEntityLootProvider extends EntityLootSubProvider {
                 LootTable.lootTable().withPool(
                         LootPool.lootPool().setRolls(ConstantValue.exactly(1.0f))
                                 .add(LootItem.lootTableItem(ModItems.BONE_SHARD.get())
-                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))
+                                        // 从固定1个改为1-3个
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                 )
                 )
@@ -39,11 +40,13 @@ public class ModEntityLootProvider extends EntityLootSubProvider {
                 LootTable.lootTable().withPool(
                         LootPool.lootPool().setRolls(ConstantValue.exactly(1.0f))
                                 .add(LootItem.lootTableItem(ModItems.OCEAN_PHLOEM.get())
-                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))
+                                        // 从固定1个改为1-3个
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                         .setWeight(70)
                                 ).add(LootItem.lootTableItem(ModItems.OCEAN_PEDUNCLE.get())
-                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))
+                                        // 从固定1个改为1-3个
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                         .setWeight(30)
                                 )
@@ -62,7 +65,8 @@ public class ModEntityLootProvider extends EntityLootSubProvider {
                 LootTable.lootTable().withPool(
                         LootPool.lootPool().setRolls(ConstantValue.exactly(1.0f))
                                 .add(LootItem.lootTableItem(ModItems.OCEAN_FIBRE.get())
-                                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))
+                                        // 从固定1个改为1-3个
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                 )
                 )
@@ -117,16 +121,6 @@ public class ModEntityLootProvider extends EntityLootSubProvider {
                                 .add(LootItem.lootTableItem(ModItems.OCEAN_CRYSTAL.get())
                                         .setWeight(32)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                                ).add(LootItem.lootTableItem(ModItems.OCEAN_CUTIN.get())
-                                        .setWeight(24)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))
-                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
-                                )
-                ).withPool(
-                        LootPool.lootPool().setRolls(UniformGenerator.between(0, 1))
-                                .add(LootItem.lootTableItem(Items.GUNPOWDER)
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))
                                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F)))
                                 )
                 )
@@ -435,10 +429,23 @@ public class ModEntityLootProvider extends EntityLootSubProvider {
         this.add(ModEntities.EXOCELLULAR_DEPOSITER.get(), LootTable.lootTable());
         this.add(ModEntities.DIVICELLULAR_HOARDER.get(), LootTable.lootTable());
         this.add(ModEntities.TOXOCELLULAR_DRIFTER.get(), LootTable.lootTable());
+        // 新增：为 THE_ABANDONED 提供空战利品表，避免数据生成校验缺失
+        this.add(ModEntities.THE_ABANDONED.get(), LootTable.lootTable());
+        // 补回：QUINTUS 为生物实体，需要战利品表
+        this.add(ModEntities.QUINTUS.get(), LootTable.lootTable());
+        // 移除对各类弹体/特效实体（不应有实体战利品表）的添加：ABANDONED_SHOOT、FISH_SHOOT、FISH_SPLASH、FAKERGG_SHOOT、FLEEFISH_BULLET
+        // this.add(ModEntities.ABANDONED_SHOOT.get(), LootTable.lootTable());
+        // this.add(ModEntities.FISH_SHOOT.get(), LootTable.lootTable());
+        // this.add(ModEntities.FISH_SPLASH.get(), LootTable.lootTable());
+        // this.add(ModEntities.FAKERGG_SHOOT.get(), LootTable.lootTable());
+        // this.add(ModEntities.FLEEFISH_BULLET.get(), LootTable.lootTable());
     }
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
-        return ModEntities.ENTITY_TYPES.getEntries().stream().map(RegistryObject::get);
+        // 仅返回“需要实体战利品表”的生物实体，过滤掉 MobCategory.MISC（弹体、特效、载具等）
+        return ModEntities.ENTITY_TYPES.getEntries().stream()
+                .map(RegistryObject::get)
+                .filter(type -> type.getCategory() != net.minecraft.world.entity.MobCategory.MISC);
     }
 }

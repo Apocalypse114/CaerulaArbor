@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "caerula_arbor:block/sea_viento_sandstone_slab"
+    },
+    "type=double": {
+      "model": "caerula_arbor:block/sea_viento_sandstone"
+    },
+    "type=top": {
+      "model": "caerula_arbor:block/sea_viento_sandstone_slab_top"
+    }
+  }
+}

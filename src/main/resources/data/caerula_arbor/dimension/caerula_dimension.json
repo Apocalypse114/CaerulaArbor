@@ -1,0 +1,12 @@
+{
+  "type": "caerula_arbor:caerula_type",
+  "generator": {
+    "type": "minecraft:noise",
+    "seed": 0,
+    "settings": "minecraft:overworld",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "caerula_arbor:sea_viento_shore"
+    }
+  }
+}

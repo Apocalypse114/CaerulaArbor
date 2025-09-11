@@ -27,6 +27,7 @@ public class InstantSanityMobEffect extends InvisibleMobEffect {
 
 	@Override
 	public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
+        if (entity.level().isClientSide) return; // 仅服务端生效
 		SIHelper.causeSanityInjury(entity, 125 * ((double) amplifier + 1));
 	}
 

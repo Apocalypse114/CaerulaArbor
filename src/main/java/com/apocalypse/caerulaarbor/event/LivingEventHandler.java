@@ -100,11 +100,11 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
-        if (event.isCanceled()) return;
+        if(event.isCanceled()) return;
 
         LivingEntity entity = event.getEntity();
         Level level = entity.level();
-        if (entity.hasEffect(ModMobEffects.PERMANENCE.get())) {
+        if(entity.hasEffect(ModMobEffects.PERMANENCE.get())){
             event.setCanceled(true);
             return;
         }
@@ -151,20 +151,14 @@ public class LivingEventHandler {
 
     @SubscribeEvent
     public static void onLivingDamage(LivingDamageEvent event) {
-        LivingEntity target = event.getEntity();
-        if (target == null) return;
+        if(event == null)return;
+        LivingEntity entity = event.getEntity();
+        if (entity == null) return;
         Entity source = event.getSource().getEntity();
-        if (source == null) return;
-        if (source instanceof LivingEntity living) {
-            var sanityInjuryDamageAttr = living.getAttribute(ModAttributes.SANITY_INJURY_DAMAGE.get());
-            double sanityInjuryDamage = sanityInjuryDamageAttr == null ? 0 : sanityInjuryDamageAttr.getValue();
-            var sanityInjuryDamageRateAttr = living.getAttribute(ModAttributes.SANITY_INJURY_DAMAGE_RATE.get());
-            double sanityInjuryDamageRate = sanityInjuryDamageRateAttr == null ? 0 : sanityInjuryDamageRateAttr.getValue();
-            var globalSanityInjuryRateAttr = living.getAttribute(ModAttributes.GLOBAL_SANITY_INJURY_RATE.get());
-            double globalSanityInjuryRate = globalSanityInjuryRateAttr == null ? 1 : globalSanityInjuryRateAttr.getValue();
-
-            double damage = (sanityInjuryDamage + event.getAmount() * sanityInjuryDamageRate) * globalSanityInjuryRate;
-            ModCapabilities.getSanityInjury(target).hurt(damage);
+        if(source == null) return;
+        if(source instanceof LivingEntity _enemy){
+            double sanity_rate = _enemy.getAttributeValue(ModAttributes.SANITY_RATE.get());
+            if(sanity_rate > 0 && event.getAmount() > 0) ModCapabilities.getSanityInjury(entity).hurt(sanity_rate * event.getAmount());
         }
     }
 
@@ -172,15 +166,11 @@ public class LivingEventHandler {
      * 比 invulnerableTime 更权威的无敌（并不
      */
     @SubscribeEvent
-    public void onEntityAttacked(LivingAttackEvent event) {
+    public void onEntityAttacked(LivingAttackEvent event){
+        if(event == null) return;
         LivingEntity entity = event.getEntity();
-        if (entity.hasEffect(ModMobEffects.PERMANENCE.get())) {
-            event.setCanceled(true);
-            return;
-        }
-        if (entity instanceof SeaMonster seaMonster && seaMonster.isPermanent()) {
-            event.setCanceled(true);
-        }
+        if(entity.hasEffect(ModMobEffects.PERMANENCE.get())){event.setCanceled(true);return;}
+        if((entity instanceof SeaMonster seaMonster) && seaMonster.isPermanent())event.setCanceled(true);
     }
 
     /**

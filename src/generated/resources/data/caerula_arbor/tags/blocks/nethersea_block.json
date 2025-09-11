@@ -9,6 +9,16 @@
     "caerula_arbor:nethersea_tile_slab",
     "caerula_arbor:nethersea_tile_wall",
     "caerula_arbor:nethersea_pressure_plate",
+    "caerula_arbor:nethersea_button",
+    "caerula_arbor:nethersea_bricks",
+    "caerula_arbor:nethersea_brick_stairs",
+    "caerula_arbor:nethersea_brick_slab",
+    "caerula_arbor:nethersea_brick_wall",
+    "caerula_arbor:nethersea_tiles",
+    "caerula_arbor:nethersea_tile_stairs",
+    "caerula_arbor:nethersea_tile_slab",
+    "caerula_arbor:nethersea_tile_wall",
+    "caerula_arbor:nethersea_pressure_plate",
     "caerula_arbor:nethersea_button"
   ]
 }

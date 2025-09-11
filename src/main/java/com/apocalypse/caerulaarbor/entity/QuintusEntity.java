@@ -216,7 +216,7 @@ public class QuintusEntity extends SkilledSeaMonster {
         builder = builder.add(Attributes.ATTACK_DAMAGE, 9);
         builder = builder.add(Attributes.FOLLOW_RANGE, 64);
         builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 10);
-        builder = builder.add(ModAttributes.SANITY_INJURY_DAMAGE.get(), 10);
+        builder = builder.add(ModAttributes.SANITY_RATE.get(), 10);
         return builder;
     }
 
@@ -329,7 +329,7 @@ public class QuintusEntity extends SkilledSeaMonster {
         MobEffectInstance dizzy = new MobEffectInstance(ModMobEffects.DIZZY.get(),60,0,false,false);
         ent.addEffect(dizzy);
         float damage = (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5);
-        double rate = this.getAttributeValue(ModAttributes.SANITY_INJURY_DAMAGE.get());
+        double rate = this.getAttributeValue(ModAttributes.SANITY_RATE.get());
         ent.hurt(this.level().damageSources().magic(), damage);
         ModCapabilities.getSanityInjury(ent).hurt(damage * rate);
     }

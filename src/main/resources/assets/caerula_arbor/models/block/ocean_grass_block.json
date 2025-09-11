@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "top": "caerula_arbor:block/oceangrass_block_top",
+    "side": "caerula_arbor:block/oceangrass_block",
+    "bottom": "minecraft:block/dirt"
+  }
+}

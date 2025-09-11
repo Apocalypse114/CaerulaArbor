@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "caerula_arbor:block/sea_viento_sandstone_bottom",
+    "side": "caerula_arbor:block/sea_viento_sandstone_bottom",
+    "top": "caerula_arbor:block/sea_viento_sandstone_bottom"
+  }
+}

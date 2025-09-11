@@ -353,7 +353,7 @@ public class ToxocellularDrifterEntity extends Monster implements RangedAttackMo
         builder = builder.add(Attributes.FOLLOW_RANGE, 16);
         builder = builder.add(Attributes.KNOCKBACK_RESISTANCE, 1);
         builder = builder.add(ForgeMod.SWIM_SPEED.get(), 0.4);
-        builder = builder.add(ModAttributes.SANITY_INJURY_DAMAGE.get(), 10);
+        builder = builder.add(ModAttributes.SANITY_RATE.get(), 10);
         return builder;
     }
 

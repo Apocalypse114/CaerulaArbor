@@ -124,7 +124,7 @@ public class NetherseaPredatorEntity extends SeaMonster {
     @Override
     @ParametersAreNonnullByDefault
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData livingdata, @Nullable CompoundTag tag) {
-        var san = this.getAttribute(ModAttributes.SANITY_INJURY_DAMAGE.get());
+        var san = this.getAttribute(ModAttributes.SANITY_RATE.get());
         if (san != null) {
             san.setBaseValue(9);
         }

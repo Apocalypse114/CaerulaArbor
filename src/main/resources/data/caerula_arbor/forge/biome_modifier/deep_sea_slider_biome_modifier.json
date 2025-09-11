@@ -1,0 +1,22 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": [
+    "ocean",
+    "lukewarm_ocean",
+    "warm_ocean",
+    "cold_ocean",
+    "frozen_ocean",
+    "deep_ocean",
+    "deep_lukewarm_ocean",
+    "deep_cold_ocean",
+    "deep_frozen_ocean",
+    "plains",
+    "sunflower_plains"
+  ],
+  "spawners": {
+    "type": "caerula_arbor:deep_sea_slider",
+    "weight": 50,
+    "minCount": 1,
+    "maxCount": 2
+  }
+}
