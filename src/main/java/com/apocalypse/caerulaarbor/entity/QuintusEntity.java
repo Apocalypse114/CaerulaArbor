@@ -6,10 +6,7 @@ import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
 import com.apocalypse.caerulaarbor.entity.ai.Skill;
 import com.apocalypse.caerulaarbor.entity.ai.goal.SeaMonsterAttackableTargetGoal;
 import com.apocalypse.caerulaarbor.entity.base.SkilledSeaMonster;
-import com.apocalypse.caerulaarbor.init.ModAttributes;
-import com.apocalypse.caerulaarbor.init.ModBlocks;
-import com.apocalypse.caerulaarbor.init.ModEntities;
-import com.apocalypse.caerulaarbor.init.ModMobEffects;
+import com.apocalypse.caerulaarbor.init.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -85,8 +82,8 @@ public class QuintusEntity extends SkilledSeaMonster {
     public QuintusEntity(EntityType<QuintusEntity> type, Level world) {
         super(type, world);
         xpReward = 64;
-        this.addSkill(Skill.Builder.of().init(200).max(200).duration(20).build());
-        this.addSkill(Skill.Builder.of().init(1200).max(2400).duration(40).build());
+        this.addSkill(Skill.Builder.of().init(200).max(200).durative(20).build());
+        this.addSkill(Skill.Builder.of().init(1200).max(2400).durative(40).build());
         initUnderTidesEntities();
         setNoAi(false);
         setMaxUpStep(2f);

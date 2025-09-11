@@ -1,6 +1,8 @@
 {
   "values": [
     "caerula_arbor:chitin_block",
+    "caerula_arbor:complex_chitin_block",
+    "caerula_arbor:chitin_block",
     "caerula_arbor:complex_chitin_block"
   ]
 }

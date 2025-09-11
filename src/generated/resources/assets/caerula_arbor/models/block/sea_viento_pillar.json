@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "caerula_arbor:block/sea_viento_pillar_top",
+    "side": "caerula_arbor:block/sea_viento_pillar_side"
+  }
+}

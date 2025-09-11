@@ -101,6 +101,39 @@ public class ModBlockStateProvider extends BlockStateProvider {
         slabBlock((SlabBlock) ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/sal_viento_sandstone_bottom"));
         wallBlock((WallBlock) ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_WALL.get(), CaerulaArborMod.loc("block/sal_viento_sandstone_bottom"));
         axisBlock((RotatedPillarBlock) ModBlocks.SAL_VIENTO_PILLAR.get(), CaerulaArborMod.loc("block/sal_viento_pillar_side"), CaerulaArborMod.loc("block/sal_viento_pillar_top"));
+
+        // SEA VIENTO series
+        blockWithItem(ModBlocks.SEA_VIENTO_SAND);
+        simpleBlockWithItem(ModBlocks.SEA_VIENTO_SANDSTONE.get(), models().cubeBottomTop("sea_viento_sandstone", CaerulaArborMod.loc("block/sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"), CaerulaArborMod.loc("block/sea_viento_sandstone_top")));
+        stairsBlock((StairBlock) ModBlocks.SEA_VIENTO_SANDSTONE_STAIRS.get(), blockTexture(ModBlocks.SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        slabBlock((SlabBlock) ModBlocks.SEA_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"), CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        wallBlock((WallBlock) ModBlocks.SEA_VIENTO_SANDSTONE_WALL.get(), blockTexture(ModBlocks.SEA_VIENTO_SANDSTONE.get()));
+        simpleBlockWithItem(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE.get(), models().cubeColumn("chiseled_sea_viento_sandstone", CaerulaArborMod.loc("block/chiseled_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_top")));
+        wallBlock((WallBlock) ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE_WALL.get(), blockTexture(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE.get()));
+        blockWithItem(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE);
+        stairsBlock((StairBlock) ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_STAIRS.get(), blockTexture(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/smooth_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/smooth_sea_viento_sandstone"));
+        slabBlock((SlabBlock) ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/smooth_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/smooth_sea_viento_sandstone"), CaerulaArborMod.loc("block/smooth_sea_viento_sandstone"));
+        simpleBlockWithItem(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE.get(), models().cubeAll("square_pattern_sea_viento_sandstone", CaerulaArborMod.loc("block/sea_viento_sandstone_top")));
+        stairsBlock((StairBlock) ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_STAIRS.get(), CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        slabBlock((SlabBlock) ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        simpleBlockWithItem(ModBlocks.CUT_SEA_VIENTO_SANDSTONE.get(), models().cubeColumn("cut_sea_viento_sandstone", CaerulaArborMod.loc("block/cut_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_top")));
+        stairsBlock((StairBlock) ModBlocks.CUT_SEA_VIENTO_SANDSTONE_STAIRS.get(), blockTexture(ModBlocks.CUT_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/cut_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        slabBlock((SlabBlock) ModBlocks.CUT_SEA_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.CUT_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/cut_sea_viento_sandstone"),
+                CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"), CaerulaArborMod.loc("block/sea_viento_sandstone_top"));
+        wallBlock((WallBlock) ModBlocks.CUT_SEA_VIENTO_SANDSTONE_WALL.get(), blockTexture(ModBlocks.CUT_SEA_VIENTO_SANDSTONE.get()));
+        simpleBlockWithItem(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE.get(), models().cubeAll("cracked_sea_viento_sandstone", CaerulaArborMod.loc("block/sea_viento_sandstone_bottom")));
+        stairsBlock((StairBlock) ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_STAIRS.get(), CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"));
+        slabBlock((SlabBlock) ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_SLAB.get(), blockTexture(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE.get()), CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"));
+        wallBlock((WallBlock) ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_WALL.get(), CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"));
+        axisBlock((RotatedPillarBlock) ModBlocks.SEA_VIENTO_PILLAR.get(), CaerulaArborMod.loc("block/sea_viento_pillar_side"), CaerulaArborMod.loc("block/sea_viento_pillar_top"));
     }
 
     private String name(Block block) {

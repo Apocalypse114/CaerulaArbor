@@ -3,8 +3,10 @@ package com.apocalypse.caerulaarbor.network;
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.network.message.receive.PlayerVariablesSyncMessage;
 import com.apocalypse.caerulaarbor.network.message.receive.SavedDataSyncMessage;
+import com.apocalypse.caerulaarbor.network.message.receive.SanityInjurySyncMessage;
 import com.apocalypse.caerulaarbor.network.message.send.CaerulaRecordGUIButtonMessage;
 import com.apocalypse.caerulaarbor.network.message.send.RelicShowcaseButtonMessage;
+import com.apocalypse.caerulaarbor.network.message.send.LightEditSubmitMessage;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
@@ -26,9 +28,11 @@ public class ModNetwork {
     public static void register() {
         playToClient(PlayerVariablesSyncMessage.class, PlayerVariablesSyncMessage::encode, PlayerVariablesSyncMessage::decode, PlayerVariablesSyncMessage::handler);
         playToClient(SavedDataSyncMessage.class, SavedDataSyncMessage::encode, SavedDataSyncMessage::decode, SavedDataSyncMessage::handler);
+        playToClient(SanityInjurySyncMessage.class, SanityInjurySyncMessage::encode, SanityInjurySyncMessage::decode, SanityInjurySyncMessage::handler);
 
         playToServer(CaerulaRecordGUIButtonMessage.class, CaerulaRecordGUIButtonMessage::encode, CaerulaRecordGUIButtonMessage::decode, CaerulaRecordGUIButtonMessage::handler);
         playToServer(RelicShowcaseButtonMessage.class, RelicShowcaseButtonMessage::buffer, RelicShowcaseButtonMessage::new, RelicShowcaseButtonMessage::handler);
+        playToServer(LightEditSubmitMessage.class, LightEditSubmitMessage::encode, LightEditSubmitMessage::decode, LightEditSubmitMessage::handler);
     }
 
     public static <T> void playToClient(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {

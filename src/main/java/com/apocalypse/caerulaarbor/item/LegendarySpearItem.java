@@ -1,3 +1,4 @@
+
 package com.apocalypse.caerulaarbor.item;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
@@ -51,6 +52,7 @@ import java.util.function.Consumer;
 
 public class LegendarySpearItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public String animationprocedure = "empty";
 
     public LegendarySpearItem() {
         super(new Item.Properties().durability(7445).fireResistant().rarity(Rarity.UNCOMMON));
@@ -75,12 +77,36 @@ public class LegendarySpearItem extends Item implements GeoItem {
     }
 
     private PlayState idlePredicate(AnimationState<?> event) {
-        event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.lengendspear.idle"));
+        if (this.animationprocedure.equals("empty")) {
+            event.getController().setAnimation(RawAnimation.begin().thenLoop("animation.lengendspear.idle"));
+            return PlayState.CONTINUE;
+        }
+        return PlayState.STOP;
+    }
+
+    String prevAnim = "empty";
+
+    private PlayState procedurePredicate(AnimationState<?> event) {
+        if (!this.animationprocedure.equals("empty") && event.getController().getAnimationState() == AnimationController.State.STOPPED || (!this.animationprocedure.equals(prevAnim) && !this.animationprocedure.equals("empty"))) {
+            if (!this.animationprocedure.equals(prevAnim))
+                event.getController().forceAnimationReset();
+            event.getController().setAnimation(RawAnimation.begin().thenPlay(this.animationprocedure));
+            if (event.getController().getAnimationState() == AnimationController.State.STOPPED) {
+                this.animationprocedure = "empty";
+                event.getController().forceAnimationReset();
+            }
+        } else if (this.animationprocedure.equals("empty")) {
+            prevAnim = "empty";
+            return PlayState.STOP;
+        }
+        prevAnim = this.animationprocedure;
         return PlayState.CONTINUE;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar data) {
+        var procedureController = new AnimationController<>(this, "procedureController", 0, this::procedurePredicate);
+        data.add(procedureController);
         var idleController = new AnimationController<>(this, "idleController", 0, this::idlePredicate);
         data.add(idleController);
     }

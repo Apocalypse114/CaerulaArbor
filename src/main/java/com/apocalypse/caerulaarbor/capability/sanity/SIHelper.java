@@ -9,8 +9,11 @@ import net.minecraft.world.entity.LivingEntity;
 
 public class SIHelper {
     public static void causeSanityInjury(LivingEntity living, double value) {
+        // 仅在服务端计算，避免客户端重复与视觉假象
+        if (living.level().isClientSide) return;
         var sanRate = living.getAttribute(ModAttributes.SANITY_RATE.get());
-        double sanRateValue = sanRate == null ? 0 : sanRate.getValue();
+        double sanRateValue = sanRate == null ? 1 : sanRate.getValue();
+        if (sanRateValue <= 0) sanRateValue = 1; // 容错：默认或被清零时按1倍计算
         double damage = value * sanRateValue;
         ModCapabilities.getSanityInjury(living).hurt(damage);
     }

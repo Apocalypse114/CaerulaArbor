@@ -1,8 +1,8 @@
 {
   "required": true,
   "package": "com.apocalypse.caerulaarbor.mixin",
-  "compatibilityLevel": "JAVA_17",
   "refmap": "mixins.caerula_arbor.refmap.json",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
     "LivingEntityMixin"
   ],

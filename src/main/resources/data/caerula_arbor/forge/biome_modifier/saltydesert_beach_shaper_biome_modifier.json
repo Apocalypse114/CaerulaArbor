@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "caerula_arbor:saltydesert",
+  "features": "caerula_arbor:saltydesert_beach_shaper",
+  "step": "top_layer_modification"
+}

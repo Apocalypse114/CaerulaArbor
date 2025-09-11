@@ -3,7 +3,6 @@ package com.apocalypse.caerulaarbor.event;
 import com.apocalypse.caerulaarbor.capability.ModCapabilities;
 import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.capability.player.PlayerVariable;
-import com.apocalypse.caerulaarbor.config.common.GameplayConfig;
 import com.apocalypse.caerulaarbor.init.*;
 import com.apocalypse.caerulaarbor.item.relic.IRelic;
 import net.minecraft.core.BlockPos;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -31,7 +29,8 @@ import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerEventHandler {
@@ -221,6 +220,9 @@ public class PlayerEventHandler {
         var player = event.getPlayer();
         if (player == null) return;
         if (player.isCreative() || player.isSpectator()) return;
+
+        // 灯火值<50时的时运降级逻辑已移到战利品修饰器和客户端显示中处理
+
         if (!event.getState().is(ModTags.Blocks.NETHERSEA_BLOCK)) return;
 
         var pos = event.getPos();
@@ -231,29 +233,5 @@ public class PlayerEventHandler {
         var cap = ModCapabilities.getPlayerVariables(player);
         if (cap.seabornization > 3) return;
         ModCapabilities.getSanityInjury(player).hurt(Mth.nextInt(RandomSource.create(), 16, 32));
-    }
-
-    /**
-     * 玩家食用配置中存在的食物，恢复灯火
-     */
-    @SubscribeEvent
-    public static void onUseItemFinish(LivingEntityUseItemEvent.Finish event) {
-        var entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
-
-        var cap = ModCapabilities.getPlayerVariables(player);
-        var list = GameplayConfig.LIGHTS_RECOVERY_FOOD_LIST.get();
-        var item = event.getItem();
-        var id = ForgeRegistries.ITEMS.getKey(item.getItem());
-        if (id == null) return;
-
-        for (var food : list) {
-            String str = food.trim().replace(" ", "");
-            var properties = str.split(",");
-            if (properties.length != 3) continue;
-            if (!id.toString().equals(properties[0])) continue;
-            cap.light = Math.min(100, cap.light + Mth.nextInt(RandomSource.create(), Integer.parseInt(properties[1]), Integer.parseInt(properties[2])));
-            cap.syncPlayerVariables(entity);
-        }
     }
 }

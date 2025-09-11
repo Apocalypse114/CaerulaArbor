@@ -72,6 +72,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.OCEAN_PEDUNCLE);
         simpleItem(ModItems.COOKED_PEDUNCLE);
         simpleItem(ModItems.ELITE_PEDUNCLE);
+        simpleItem(ModItems.SEA_MEAT);
+        simpleItem(ModItems.COOKED_SM);
 
         // spawn eggs
         ModItems.SPAWN_EGGS.getEntries().forEach(this::spawnEggItem);
@@ -105,6 +107,23 @@ public class ModItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_SLAB);
         evenSimplerBlockItem(ModBlocks.SAL_VIENTO_PILLAR);
         wallItem(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_WALL, CaerulaArborMod.loc("block/sal_viento_sandstone_bottom"));
+
+        // SEA VIENTO series
+        evenSimplerBlockItem(ModBlocks.SEA_VIENTO_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(ModBlocks.SEA_VIENTO_SANDSTONE_SLAB);
+        wallItem(ModBlocks.SEA_VIENTO_SANDSTONE_WALL, ModBlocks.SEA_VIENTO_SANDSTONE);
+        wallItem(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE_WALL, ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE);
+        evenSimplerBlockItem(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_SLAB);
+        evenSimplerBlockItem(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB);
+        evenSimplerBlockItem(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_SLAB);
+        wallItem(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_WALL, ModBlocks.CUT_SEA_VIENTO_SANDSTONE);
+        evenSimplerBlockItem(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_STAIRS);
+        evenSimplerBlockItem(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_SLAB);
+        evenSimplerBlockItem(ModBlocks.SEA_VIENTO_PILLAR);
+        wallItem(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_WALL, CaerulaArborMod.loc("block/sea_viento_sandstone_bottom"));
     }
 
     private ItemModelBuilder simpleItem(RegistryObject<Item> item) {

@@ -59,6 +59,7 @@ public class ModItems {
     public static final RegistryObject<Item> CAFFEINE = ITEMS.register("caffeine", CaffeineItem::new);
     public static final RegistryObject<Item> SOLO_MUSIC_BOX = ITEMS.register("solo_music_box", SoloMusicBoxItem::new);
     public static final RegistryObject<Item> MUSIC_BOX_FIXED = ITEMS.register("music_box_fixed", MusicBoxFixedItem::new);
+    public static final RegistryObject<Item> DEV_PARAM_EDITOR = ITEMS.register("dev_param_editor", DevParamEditorItem::new);
     public static final RegistryObject<Item> ORIGINIUM_IRIS = ITEMS.register("originium_iris", OriginiumIrisItem::new);
     public static final RegistryObject<Item> THERMOGRAPH = ITEMS.register("thermograph", ThermographItem::new);
     public static final RegistryObject<Item> GAULISH_TOPONYM_ORIGINS = ITEMS.register("gaulish_toponym_origins", GaulishToponymOriginsItem::new);
@@ -74,6 +75,8 @@ public class ModItems {
     public static final RegistryObject<Item> COOKED_FIBRE = ITEMS.register("cooked_fibre", CookedFibreItem::new);
     public static final RegistryObject<Item> OCEAN_CHITIN = ITEMS.register("ocean_chitin", OceanChitinItem::new);
     public static final RegistryObject<Item> COOKED_MOR = ITEMS.register("cooked_mor", CookedMorItem::new);
+    public static final RegistryObject<Item> SEA_MEAT = ITEMS.register("sea_meat", SeaMeatItem::new);
+    public static final RegistryObject<Item> COOKED_SM = ITEMS.register("cooked_sm", CookedSmItem::new);
     public static final RegistryObject<Item> SWORD_OCEAN_CRYSTAL = ITEMS.register("sword_ocean_crystal", SwordOceanCrystalItem::new);
     public static final RegistryObject<Item> CHITIN_HELMET = ITEMS.register("chitin_helmet", () -> new ArmorItem(ModArmorMaterial.CHITIN, ArmorItem.Type.HELMET, new Item.Properties()));
     public static final RegistryObject<Item> CHITIN_CHESTPLATE = ITEMS.register("chitin_chestplate", () -> new ArmorItem(ModArmorMaterial.CHITIN, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
@@ -146,6 +149,7 @@ public class ModItems {
     public static final RegistryObject<Item> ELITE_PEDUNCLE = ITEMS.register("elite_peduncle", ElitePeduncleItem::new);
     public static final RegistryObject<Item> COOKED_PEDUNCLE = ITEMS.register("cooked_peduncle", CookedPeduncleItem::new);
     public static final RegistryObject<Item> OCEAN_ARROW = ITEMS.register("ocean_arrow", OceanArrowItem::new);
+    public static final RegistryObject<Item> SOURCE_ESS = ITEMS.register("source_ess", SourceEssItem::new);
 
     /**
      * Relics
@@ -236,6 +240,10 @@ public class ModItems {
     public static final RegistryObject<Item> BOMB_TRAILER = block(ModBlocks.BOMB_TRAILER);
     public static final RegistryObject<Item> OCEAN_GLASS = block(ModBlocks.OCEAN_GLASS);
     public static final RegistryObject<Item> OCEAN_GLASSPANE = block(ModBlocks.OCEAN_GLASSPANE);
+    public static final RegistryObject<Item> OCEAN_GRASS_BLOCK = block(ModBlocks.OCEAN_GRASS_BLOCK);
+    public static final RegistryObject<Item> OCEAN_LOG = block(ModBlocks.OCEAN_LOG);
+    public static final RegistryObject<Item> OCEAN_LEAVES = block(ModBlocks.OCEAN_LEAVES);
+    public static final RegistryObject<Item> OCEAN_PLANK = block(ModBlocks.OCEAN_PLANK);
     public static final RegistryObject<Item> OCEAN_CRYSTAL_BLOCK = block(ModBlocks.OCEAN_CRYSTAL_BLOCK);
     public static final RegistryObject<Item> TIDE_OBSERVATION = block(ModBlocks.TIDE_OBSERVATION_STATION);
     public static final RegistryObject<Item> BLOCK_KETTLE = block(ModBlocks.BLOCK_KETTLE);
@@ -286,6 +294,30 @@ public class ModItems {
     public static final RegistryObject<Item> CRACKED_SAL_VIENTO_SANDSTONE_SLAB = block(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_SLAB);
     public static final RegistryObject<Item> CRACKED_SAL_VIENTO_SANDSTONE_WALL = block(ModBlocks.CRACKED_SAL_VIENTO_SANDSTONE_WALL);
     public static final RegistryObject<Item> SAL_VIENTO_PILLAR = block(ModBlocks.SAL_VIENTO_PILLAR);
+
+    // Sea Viento Series 海蓝方块物品
+    public static final RegistryObject<Item> SEA_VIENTO_SAND = block(ModBlocks.SEA_VIENTO_SAND);
+    public static final RegistryObject<Item> SEA_VIENTO_SANDSTONE = block(ModBlocks.SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> SEA_VIENTO_SANDSTONE_STAIRS = block(ModBlocks.SEA_VIENTO_SANDSTONE_STAIRS);
+    public static final RegistryObject<Item> SEA_VIENTO_SANDSTONE_SLAB = block(ModBlocks.SEA_VIENTO_SANDSTONE_SLAB);
+    public static final RegistryObject<Item> SEA_VIENTO_SANDSTONE_WALL = block(ModBlocks.SEA_VIENTO_SANDSTONE_WALL);
+    public static final RegistryObject<Item> CHISELED_SEA_VIENTO_SANDSTONE = block(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> CHISELED_SEA_VIENTO_SANDSTONE_WALL = block(ModBlocks.CHISELED_SEA_VIENTO_SANDSTONE_WALL);
+    public static final RegistryObject<Item> SMOOTH_SEA_VIENTO_SANDSTONE = block(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> SMOOTH_SEA_VIENTO_SANDSTONE_STAIRS = block(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_STAIRS);
+    public static final RegistryObject<Item> SMOOTH_SEA_VIENTO_SANDSTONE_SLAB = block(ModBlocks.SMOOTH_SEA_VIENTO_SANDSTONE_SLAB);
+    public static final RegistryObject<Item> SQUARE_PATTERN_SEA_VIENTO_SANDSTONE = block(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_STAIRS = block(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_STAIRS);
+    public static final RegistryObject<Item> SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB = block(ModBlocks.SQUARE_PATTERN_SEA_VIENTO_SANDSTONE_SLAB);
+    public static final RegistryObject<Item> CUT_SEA_VIENTO_SANDSTONE = block(ModBlocks.CUT_SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> CUT_SEA_VIENTO_SANDSTONE_STAIRS = block(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_STAIRS);
+    public static final RegistryObject<Item> CUT_SEA_VIENTO_SANDSTONE_SLAB = block(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_SLAB);
+    public static final RegistryObject<Item> CUT_SEA_VIENTO_SANDSTONE_WALL = block(ModBlocks.CUT_SEA_VIENTO_SANDSTONE_WALL);
+    public static final RegistryObject<Item> CRACKED_SEA_VIENTO_SANDSTONE = block(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE);
+    public static final RegistryObject<Item> CRACKED_SEA_VIENTO_SANDSTONE_STAIRS = block(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_STAIRS);
+    public static final RegistryObject<Item> CRACKED_SEA_VIENTO_SANDSTONE_SLAB = block(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_SLAB);
+    public static final RegistryObject<Item> CRACKED_SEA_VIENTO_SANDSTONE_WALL = block(ModBlocks.CRACKED_SEA_VIENTO_SANDSTONE_WALL);
+    public static final RegistryObject<Item> SEA_VIENTO_PILLAR = block(ModBlocks.SEA_VIENTO_PILLAR);
 
     private static RegistryObject<Item> block(RegistryObject<Block> block) {
         return BLOCKS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
