@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "caerula_arbor:block/chiseled_sea_viento_sandstone"
+  }
+}

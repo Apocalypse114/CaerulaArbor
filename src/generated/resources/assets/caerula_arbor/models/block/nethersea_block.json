@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "caerula_arbor:block/nethersea_block"
+  }
+}

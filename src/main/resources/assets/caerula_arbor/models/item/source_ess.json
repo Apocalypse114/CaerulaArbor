@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "caerula_arbor:item/source_ess"
+  }
+}

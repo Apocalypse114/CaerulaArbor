@@ -1,8 +1,8 @@
+
 package com.apocalypse.caerulaarbor.item.relic.epic;
 
-import com.apocalypse.caerulaarbor.capability.ModCapabilities;
-import com.apocalypse.caerulaarbor.capability.Relic;
 import com.apocalypse.caerulaarbor.init.ModBlocks;
+import com.apocalypse.caerulaarbor.procedures.GainRelicARMORProcedure;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -39,20 +39,9 @@ public class KingsArmourItem extends Item {
 
     @Override
     @ParametersAreNonnullByDefault
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player entity, InteractionHand hand) {
-        InteractionResultHolder<ItemStack> ar = super.use(level, entity, hand);
-        var cap = ModCapabilities.getPlayerVariables(entity);
-        if (!Relic.KING_ARMOR.gained(cap)) {
-            Relic.KING_ARMOR.gain(cap);
-            double lives_left = cap.life;
-
-            if (cap.life > 1) {
-                cap.life = 1;
-            }
-
-            cap.shield = (int) (cap.shield + lives_left + 3);
-            cap.syncPlayerVariables(entity);
-        }
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+        InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+        GainRelicARMORProcedure.execute(world, entity.getX(), entity.getY(), entity.getZ(), entity, ar.getObject());
         return ar;
     }
 

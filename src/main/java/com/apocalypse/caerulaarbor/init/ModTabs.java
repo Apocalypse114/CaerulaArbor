@@ -107,6 +107,8 @@ public class ModTabs {
                         tabData.accept(ModItems.SEA_TRAIL_MOR.get());
                         tabData.accept(ModItems.COOKED_MOR.get());
                         tabData.accept(ModItems.CARAMEL_MOR.get());
+                        tabData.accept(ModItems.SEA_MEAT.get());
+                        tabData.accept(ModItems.COOKED_SM.get());
                         tabData.accept(ModItems.BONE_SHARD.get());
                         tabData.accept(ModItems.OCEAN_PHLOEM.get());
                         tabData.accept(ModItems.OCEAN_FIBRE.get());
@@ -131,6 +133,7 @@ public class ModTabs {
                         tabData.accept(ModItems.COOKED_PEDUNCLE.get());
                         tabData.accept(ModItems.ELITE_PEDUNCLE.get());
                         tabData.accept(ModItems.OCEAN_ARROW.get());
+                        tabData.accept(ModItems.SOURCE_ESS.get());
                     }).build());
 
     public static final RegistryObject<CreativeModeTab> CAERULA_BLOCKS = REGISTRY.register("caerula_blocks",

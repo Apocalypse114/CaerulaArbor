@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "caerula_arbor:block/smooth_sea_viento_sandstone",
+    "side": "caerula_arbor:block/smooth_sea_viento_sandstone",
+    "top": "caerula_arbor:block/smooth_sea_viento_sandstone"
+  }
+}

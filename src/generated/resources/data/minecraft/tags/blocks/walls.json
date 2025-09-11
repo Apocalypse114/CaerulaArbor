@@ -5,6 +5,10 @@
     "caerula_arbor:cut_sal_viento_sandstone_wall",
     "caerula_arbor:cracked_sal_viento_sandstone_wall",
     "caerula_arbor:nethersea_brick_wall",
-    "caerula_arbor:nethersea_tile_wall"
+    "caerula_arbor:nethersea_tile_wall",
+    "caerula_arbor:sea_viento_sandstone_wall",
+    "caerula_arbor:chiseled_sea_viento_sandstone_wall",
+    "caerula_arbor:cut_sea_viento_sandstone_wall",
+    "caerula_arbor:cracked_sea_viento_sandstone_wall"
   ]
 }

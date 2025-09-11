@@ -23,10 +23,12 @@ public class SanityOverlay implements IGuiOverlay {
         if (player == null) return;
 
         var cap = ModCapabilities.getSanityInjury(player);
+        // 与 CaerulaRecordGUIScreen 统一：按当前能力值计算分段，向下取整到 0-19 段
+        int index = Mth.clamp((int) Mth.floor((float) (cap.getValue() / 50.0f)), 0, 19);
         guiGraphics.blit(
                 SANITY,
                 screenWidth / 2 + 92, screenHeight - 19,
-                Mth.clamp((int) Math.ceil(cap.getValue() / 50) * 16, 0, 304),
+                index * 16,
                 0, 16, 16, 320, 16
         );
     }

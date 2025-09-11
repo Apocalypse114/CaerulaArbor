@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "caerula_arbor:block/sea_viento_sandstone_top"
+  }
+}

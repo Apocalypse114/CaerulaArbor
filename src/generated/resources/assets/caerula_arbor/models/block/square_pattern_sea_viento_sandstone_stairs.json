@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "caerula_arbor:block/sea_viento_sandstone_top",
+    "side": "caerula_arbor:block/sea_viento_sandstone_top",
+    "top": "caerula_arbor:block/sea_viento_sandstone_top"
+  }
+}

@@ -32,6 +32,27 @@
     "caerula_arbor:nethersea_tile_slab",
     "caerula_arbor:nethersea_tile_wall",
     "caerula_arbor:nethersea_pressure_plate",
-    "caerula_arbor:nethersea_button"
+    "caerula_arbor:nethersea_button",
+    "caerula_arbor:sea_viento_sandstone",
+    "caerula_arbor:sea_viento_sandstone_stairs",
+    "caerula_arbor:sea_viento_sandstone_slab",
+    "caerula_arbor:sea_viento_sandstone_wall",
+    "caerula_arbor:chiseled_sea_viento_sandstone",
+    "caerula_arbor:chiseled_sea_viento_sandstone_wall",
+    "caerula_arbor:smooth_sea_viento_sandstone",
+    "caerula_arbor:smooth_sea_viento_sandstone_stairs",
+    "caerula_arbor:smooth_sea_viento_sandstone_slab",
+    "caerula_arbor:square_pattern_sea_viento_sandstone",
+    "caerula_arbor:square_pattern_sea_viento_sandstone_stairs",
+    "caerula_arbor:square_pattern_sea_viento_sandstone_slab",
+    "caerula_arbor:cut_sea_viento_sandstone",
+    "caerula_arbor:cut_sea_viento_sandstone_stairs",
+    "caerula_arbor:cut_sea_viento_sandstone_slab",
+    "caerula_arbor:cut_sea_viento_sandstone_wall",
+    "caerula_arbor:cracked_sea_viento_sandstone",
+    "caerula_arbor:cracked_sea_viento_sandstone_stairs",
+    "caerula_arbor:cracked_sea_viento_sandstone_slab",
+    "caerula_arbor:cracked_sea_viento_sandstone_wall",
+    "caerula_arbor:sea_viento_pillar"
   ]
 }

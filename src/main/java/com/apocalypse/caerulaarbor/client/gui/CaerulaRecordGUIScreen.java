@@ -85,7 +85,9 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
             guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/light_extinguish.png"), this.leftPos + 36, this.topPos - 37, 0, 0, 64, 32, 64, 32);
         }
 
-        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/sanity.png"), this.leftPos + 106, this.topPos + 43, Mth.clamp(getSanityIndex(entity) * 16, 0, 304), 0, 16, 16, 320, 16);
+        // 统一与HUD：按能力当前值分段（0-19），去除基于免疫效果的动画
+        int index = Mth.clamp((int) (ModCapabilities.getSanityInjury(entity).getValue() / 50), 0, 19);
+        guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/sanity.png"), this.leftPos + 106, this.topPos + 43, index * 16, 0, 16, 16, 320, 16);
 //        switch (cap.disoclusion) {
 //            case 1 ->
 //                    guiGraphics.blit(new ResourceLocation("caerula_arbor:textures/screens/disoclution_attention.png"), this.leftPos + 96, this.topPos + 91, 0, 0, 64, 64, 64, 64);
@@ -168,7 +170,7 @@ public class CaerulaRecordGUIScreen extends AbstractContainerScreen<CaerulaRecor
      * @return 0-19的int，代表损伤条从空到满
      */
     private static int getSanityIndex(Player player) {
-        var effect = Optional.ofNullable(player.getEffect(ModMobEffects.SANITY_IMMUNE.get()));
-        return effect.map(mobEffectInstance -> Math.min(mobEffectInstance.getDuration() / 10, 19)).orElseGet(() -> Math.min((int) ModCapabilities.getSanityInjury(player).getValue() / 50, 19));
+        // 统一为基于能力值的分段显示，去除基于免疫效果时长的动画逻辑
+        return Math.min((int) (ModCapabilities.getSanityInjury(player).getValue() / 50), 19);
     }
 }

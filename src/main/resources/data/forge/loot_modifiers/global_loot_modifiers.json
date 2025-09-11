@@ -4,7 +4,8 @@
     "caerula_arbor:template_spawn_1",
     "caerula_arbor:template_spawn_2",
     "caerula_arbor:template_spawn_3",
-    "caerula_arbor:get_hot_kettle"
+    "caerula_arbor:get_hot_kettle",
+    "caerula_arbor:enhanced_fortune"
   ],
   "replace": false
 }

@@ -1,0 +1,8 @@
+{
+  "type": "caerula_arbor:enhanced_fortune_modifier",
+  "conditions": [
+    { "condition": "minecraft:any_of", "terms": [
+      { "condition": "minecraft:random_chance", "chance": 1.0 }
+    ]}
+  ]
+}

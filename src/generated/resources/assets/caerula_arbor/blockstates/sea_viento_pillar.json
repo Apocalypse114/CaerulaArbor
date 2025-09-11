@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "caerula_arbor:block/sea_viento_pillar_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "caerula_arbor:block/sea_viento_pillar"
+    },
+    "axis=z": {
+      "model": "caerula_arbor:block/sea_viento_pillar_horizontal",
+      "x": 90
+    }
+  }
+}
