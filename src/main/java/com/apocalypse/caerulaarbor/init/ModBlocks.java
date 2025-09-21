@@ -2,6 +2,7 @@ package com.apocalypse.caerulaarbor.init;
 
 import com.apocalypse.caerulaarbor.CaerulaArborMod;
 import com.apocalypse.caerulaarbor.block.*;
+import com.apocalypse.caerulaarbor.init.ModTabs;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -99,4 +100,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> SMOOTH_MAR_VIENTO_SANDSTONE = BLOCKS.register("smooth_mar_viento_sandstone", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F)));
     public static final RegistryObject<Block> CUT_MAR_VIENTO_SANDSTONE = BLOCKS.register("cut_mar_viento_sandstone", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
     public static final RegistryObject<Block> MAR_VIENTO_PILLAR = BLOCKS.register("mar_viento_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(0.8F)));
+
+    // Sea Log Series 海原木系列
+    public static final RegistryObject<Block> SEA_LOG = BLOCKS.register("sea_log",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)));
+    public static final RegistryObject<Block> SEA_PLANKS = BLOCKS.register("sea_planks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)));
+    public static final RegistryObject<Block> SEA_LOG_LEAVES = BLOCKS.register("sea_log_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)));
 }

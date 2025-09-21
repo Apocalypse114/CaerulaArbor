@@ -95,6 +95,21 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 ModBlocks.COMPLEX_CHITIN_BLOCK.get()
         );
 
+        // Sea Log Series 海原木系列方块标签
+        this.tag(BlockTags.MINEABLE_WITH_AXE).add(
+                ModBlocks.SEA_LOG.get(),
+                ModBlocks.SEA_PLANKS.get()
+        );
+        this.tag(BlockTags.LOGS).add(
+                ModBlocks.SEA_LOG.get()
+        );
+        this.tag(BlockTags.PLANKS).add(
+                ModBlocks.SEA_PLANKS.get()
+        );
+        this.tag(BlockTags.LEAVES).add(
+                ModBlocks.SEA_LOG_LEAVES.get()
+        );
+
         this.tag(ModTags.Blocks.NETHERSEA_BLOCK).add(
                 ModBlocks.NETHERSEA_BRICKS.get(),
                 ModBlocks.NETHERSEA_BRICK_STAIRS.get(),

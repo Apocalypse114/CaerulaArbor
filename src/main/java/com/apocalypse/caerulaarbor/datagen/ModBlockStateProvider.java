@@ -113,6 +113,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(ModBlocks.CUT_MAR_VIENTO_SANDSTONE.get(), models().cubeColumn("cut_mar_viento_sandstone", CaerulaArborMod.loc("block/cut_mar_viento_sandstone"),
                 CaerulaArborMod.loc("block/mar_viento_sandstone_top")));
         axisBlock((RotatedPillarBlock) ModBlocks.MAR_VIENTO_PILLAR.get(), CaerulaArborMod.loc("block/mar_viento_pillar_side"), CaerulaArborMod.loc("block/mar_viento_pillar_top"));
+
+        // Sea Log Series 海原木系列方块
+        axisBlock((RotatedPillarBlock) ModBlocks.SEA_LOG.get(), CaerulaArborMod.loc("block/SeaLog"), CaerulaArborMod.loc("block/SeaLog_top"));
+        blockWithItem(ModBlocks.SEA_PLANKS);
+        simpleBlockWithItem(ModBlocks.SEA_LOG_LEAVES.get(), models().cubeAll("sea_log_leaves", CaerulaArborMod.loc("block/SeaLogLeaves")));
     }
 
     private String name(Block block) {

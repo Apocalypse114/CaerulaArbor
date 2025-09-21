@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "S S",
+    "SSS"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "item": "caerula_arbor:sea_planks"
+    }
+  },
+  "result": {
+    "item": "minecraft:campfire",
+    "count": 1
+  }
+}

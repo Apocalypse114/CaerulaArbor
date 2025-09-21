@@ -295,6 +295,11 @@ public class ModItems {
     public static final RegistryObject<Item> CUT_SEA_VIENTO_SANDSTONE = block(ModBlocks.CUT_MAR_VIENTO_SANDSTONE);
     public static final RegistryObject<Item> SEA_VIENTO_PILLAR = block(ModBlocks.MAR_VIENTO_PILLAR);
 
+    // Sea Log Series 海原木系列物品
+    public static final RegistryObject<Item> SEA_LOG = block(ModBlocks.SEA_LOG);
+    public static final RegistryObject<Item> SEA_PLANKS = block(ModBlocks.SEA_PLANKS);
+    public static final RegistryObject<Item> SEA_LOG_LEAVES = block(ModBlocks.SEA_LOG_LEAVES);
+
     private static RegistryObject<Item> block(RegistryObject<Block> block) {
         return BLOCKS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
     }

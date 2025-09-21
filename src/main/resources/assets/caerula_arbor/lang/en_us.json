@@ -743,5 +743,8 @@
   "item.caerula_arbor.hand_sword": "Hand Sword",
 
   "effect.caerula_arbor.palsy": "Paralysis",
-  "effect.caerula_arbor.palsying": "Paralysis Stun"
+  "effect.caerula_arbor.palsying": "Paralysis Stun",
+  "block.caerula_arbor.sea_log": "Ocean Log",
+  "block.caerula_arbor.sea_planks": "Ocean Planks",
+  "block.caerula_arbor.sea_log_leaves": "Ocean Leaves"
 }

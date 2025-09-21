@@ -743,5 +743,9 @@
   "item.caerula_arbor.route_shaper_spawn_egg": "Route Shaper Spawn Egg",
 
   "effect.caerula_arbor.palsy": "麻痹",
-  "effect.caerula_arbor.palsying": "麻痹震颤"
+  "effect.caerula_arbor.palsying": "麻痹震颤",
+  
+  "block.caerula_arbor.sea_log": "深蓝原木",
+  "block.caerula_arbor.sea_planks": "深蓝木板",
+  "block.caerula_arbor.sea_log_leaves": "深蓝树叶"
 }
