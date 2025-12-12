@@ -9,7 +9,8 @@
   "client": [
     "ChatComponentMixin",
     "GameRendererMixin",
-    "LocalPlayerMixin"
+    "LocalPlayerMixin",
+    "MutableComponentMixin"
   ],
   "minVersion": "0.8",
   "injectors": {
